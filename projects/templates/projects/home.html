@@ -1,0 +1,51 @@
+{% extends "core/base.html" %} {% block content %}
+<div class="row border-bottom pb-2">
+    <div class="col-md">
+        <h5>List of projects</h5>
+    </div>
+    <div class="col-md">
+        <a
+            role="button"
+            class="btn btn-primary btn-sm float-md-right"
+            href="{% url 'projects-create' %}"
+        >
+            Add New Project
+        </a>
+    </div>
+</div>
+<div class="row">
+    {% for prj in projects %}
+    <div class="col-md-4 pt-2">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{prj.name}}</h5>
+                <p class="card-text text-muted mb-1">
+                    <i class="fa fa-question-circle"></i> {{prj.type}}
+                </p>
+                <p class="card-text text-muted mb-1">
+                    <i class="fa fa-map-marker-alt"></i
+                    ><span> {{prj.get_location}}</span>
+                </p>
+                <p class="card-text text-muted mb-1">
+                    <i class="fa fa-info-circle"></i> {{prj.get_status}}
+                </p>
+                <p class="card-text text-muted mb-1">
+                    <i class="fa fa-clock"></i> {{prj.duration}} year(s)
+                </p>
+            </div>
+            <div class="card-footer text-muted">
+                <a
+                    href="{% url 'projects-detail' prj.id %}"
+                    class="btn btn-sm btn-outline-secondary"
+                    >Details</a
+                >
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col">
+        <p>No any project added yet</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content%}
