@@ -1,0 +1,17 @@
+{% extends "core/base.html" %} {% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h5>You have been logged out</h5>
+        <div class="border-top pt-3">
+            <small class="text-muted"
+                ><a
+                    role="button"
+                    href="{% url 'users-login' %}"
+                    class="btn btn-sm btn-outline-secondary"
+                    >Log in again</a
+                ></small
+            >
+        </div>
+    </div>
+</div>
+{% endblock content%}

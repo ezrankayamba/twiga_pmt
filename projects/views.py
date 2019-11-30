@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def setups(request):
+    return render(request, 'projects/setups.html', {})

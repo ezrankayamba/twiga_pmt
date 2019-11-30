@@ -13,6 +13,52 @@ body,
     color: #cac9c9;
 }
 
+.bg-form-header {
+    background: #ffd400;
+}
+
+.account-img {
+    height: 96px;
+    width: 96px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.account-heading {
+    font-size: 2.5rem;
+}
+
+#navMenu > ul > li.nav-item.dropdown {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#navMenu > ul > li.nav-item.dropdown:actove {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul {
+    background: #2b7070;
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul > li {
+    border-bottom: 1px solid #777;
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul > li:last-child {
+    border-bottom: none;
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul > li:hover > a {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul > li > a {
+    padding: 0.1rem 0.4rem;
+    display: block;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.5);
+}
+
 #root {
     min-height: 100%;
 }

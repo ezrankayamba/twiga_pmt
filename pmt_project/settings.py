@@ -1,4 +1,5 @@
 import os
+import json
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -14,6 +15,10 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'core.apps.CoreConfig',
+    'projects.apps.ProjectsConfig',
+    'setups.apps.SetupsConfig',
+    'users.apps.UsersConfig',
+    'nots.apps.NotsConfig',
 
 
     'django.contrib.admin',
@@ -22,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'crispy_forms',
 
 ]
 
@@ -110,3 +117,24 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'users-profile'
+
+with open('/etc/config.json') as fp:
+    config = json.load(fp)
+    # print(config)
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = config.get('EMAIL_USER')
+# EMAIL_HOST_PASSWORD = config.get('EMAIL_PASS')
+
+
+# Session - 3 minutes without activity, logout!
+SESSION_EXPIRE_SECONDS = 180
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 30
