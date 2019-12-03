@@ -1,0 +1,42 @@
+<div class="card-header p-0">
+    <a
+        class="btn p-2 btn-block text-left"
+        role="button"
+        data-toggle="collapse"
+        data-target="#consultant"
+        aria-expanded="false"
+        aria-controls="consultant"
+    >
+        Consultant
+    </a>
+</div>
+<div id="consultant" class="collapse" data-parent="#details">
+    <div class="card-body p-2">
+        {%if prj.consultant%}
+        <p class="mb-1">
+            {{prj.consultant.name}}
+        </p>
+        {%if prj.consultant.contact_person %}
+        <p class="mb-1 text-muted">
+            {{prj.consultant.contact_person}} - {{prj.consultant.position}}
+        </p>
+        {%endif%}
+        <p class="mb-1 text-muted">
+            <i class="fa fa-phone"></i
+            ><a
+                role="button"
+                href="tel:{{prj.consultant.phone}}"
+                class="btn btn-sm text-muted"
+                >{{prj.consultant.phone}}</a
+            >
+        </p>
+        {%else%}
+        <a
+            class="btn btn-sm btn-outline-primary"
+            role="button"
+            href="{% url 'projects-update' prj.id %}"
+            >Not set, Add consultant</a
+        >
+        {%endif%}
+    </div>
+</div>

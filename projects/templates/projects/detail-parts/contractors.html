@@ -1,0 +1,56 @@
+<div class="card-header p-0">
+    <a
+        class="btn p-2 btn-block text-left"
+        role="button"
+        data-toggle="collapse"
+        data-target="#contractor"
+        aria-expanded="false"
+        aria-controls="contractor"
+    >
+        Contractors
+    </a>
+</div>
+<div id="contractor" class="collapse" data-parent="#details">
+    <div class="card-body p-2">
+        <div class="row bg-light pt-2 pb-2">
+            <div class="col">
+                <a
+                    href="{%url 'projects-contractor-create' prj.id %}"
+                    role="button"
+                    class="btn btn-sm btn-outline-primary"
+                    >Add contractor</a
+                >
+            </div>
+        </div>
+        <div class="row">
+            {%for prj_contr in prj.project_contractors.all%}
+            <div class="col-md pb-3">
+                <p class="mb-1">
+                    {{prj_contr.contractor.name}}
+                </p>
+                <p class="mb-1 text-muted">
+                    {%if prj_contr.sub_contractor %} Sub Contractor {%else%}
+                    Contractor {%endif%}
+                </p>
+                <p class="mb-1 text-muted">
+                    {{prj_contr.contractor.contact_person}} -
+                    {{prj_contr.contractor.position}}
+                </p>
+                <a class="btn btn-sm btn-outline-danger" href="#" role="button"
+                    ><i class="fa fa-trash-alt"></i> Delete</a
+                >
+                <a
+                    class="btn btn-sm btn-outline-secondary"
+                    href="{%url 'projects-contractor-update' prj.id prj_contr.id%}"
+                    role="button"
+                    ><i class="fa fa-edit"></i> Edit</a
+                >
+            </div>
+            {%empty%}
+            <div class="col">
+                <p>No contractor added</p>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>

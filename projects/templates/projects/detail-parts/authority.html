@@ -1,0 +1,42 @@
+<div class="card-header p-0">
+    <a
+        class="btn p-2 btn-block text-left"
+        role="button"
+        data-toggle="collapse"
+        data-target="#authority"
+        aria-expanded="true"
+        aria-controls="authority"
+    >
+        Authority
+    </a>
+</div>
+<div id="authority" class="collapse show" data-parent="#details">
+    <div class="card-body p-2">
+        {%if prj.authority%}
+        <p class="mb-1">
+            {{prj.authority.name}}
+        </p>
+        {%if prj.authority.contact_person %}
+        <p class="mb-1 text-muted">
+            {{prj.authority.contact_person}} - {{prj.authority.position}}
+        </p>
+        {%endif%}
+        <p class="mb-1 text-muted">
+            <i class="fa fa-phone"></i
+            ><a
+                role="button"
+                href="tel:{{prj.authority.phone}}"
+                class="btn btn-sm text-muted"
+                >{{prj.authority.phone}}</a
+            >
+        </p>
+        {%else%}
+        <a
+            class="btn btn-sm btn-outline-primary"
+            role="button"
+            href="{% url 'projects-update' prj.id %}"
+            >Not set, Add authority</a
+        >
+        {%endif%}
+    </div>
+</div>

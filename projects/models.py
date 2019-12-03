@@ -20,6 +20,8 @@ class Project(models.Model):
     municipal = models.CharField(max_length=40, null=True)
     town = models.CharField(max_length=40, null=True)
     duration = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Duration(Years)'))
+    authority = models.ForeignKey(to=s_models.Authority, related_name="projects", on_delete=models.PROTECT, null=True)
+    consultant = models.ForeignKey(to=s_models.Consultant, related_name="projects", on_delete=models.PROTECT, null=True)
 
     def get_status(self):
         for en in PROJECT_STATUS_LIST:
@@ -34,4 +36,31 @@ class Project(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('projects-home', kwargs={})
+        return reverse('projects-detail', kwargs={'pk': self.pk})
+
+
+class ProjectContractor(models.Model):
+    project = models.ForeignKey(to=Project, related_name="project_contractors", on_delete=models.PROTECT)
+    contractor = models.ForeignKey(to=s_models.Contractor, related_name="project_contractors", on_delete=models.PROTECT)
+    sub_contractor = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse('projects-detail', kwargs={'pk': self.project.id})
+
+
+class ProjectFinancer(models.Model):
+    project = models.ForeignKey(to=Project, related_name="project_financers", on_delete=models.PROTECT)
+    financer = models.ForeignKey(to=s_models.Financer, related_name="project_financers", on_delete=models.PROTECT)
+
+    def get_absolute_url(self):
+        return reverse('projects-detail', kwargs={'pk': self.project.id})
+
+
+class ProjectSupplier(models.Model):
+    project = models.ForeignKey(to=Project, related_name="project_suppliers", on_delete=models.PROTECT)
+    supplier = models.ForeignKey(to=s_models.Supplier, related_name="project_suppliers", on_delete=models.PROTECT)
+    price = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Price(TZS)'))
+    remarks = models.CharField(max_length=255, verbose_name=('Specific Requirement'))
+
+    def get_absolute_url(self):
+        return reverse('projects-detail', kwargs={'pk': self.project.id})

@@ -1,166 +1,27 @@
 {% extends "core/base.html" %} {% block content %}
 <div class="row border-bottom pb-2">
-    <div class="col-md">
-        <h5>{{prj.name}}</h5>
-    </div>
-    <div class="col-md">
-        <a
-            role="button"
-            class="btn btn-primary btn-sm float-md-right"
-            href="{% url 'projects-update' prj.id %}"
-        >
-            Edit Project
-        </a>
-    </div>
+    {% include "projects/detail-parts/header.html" %}
 </div>
 <div class="row bg-light">
-    <p class="col-md text-muted mb-1">
-        <i class="fa fa-question-circle"></i> {{prj.type}}
-    </p>
-    <p class="col-md-6 text-muted mb-1">
-        <i class="fa fa-map-marker-alt"></i><span> {{prj.get_location}}</span>
-    </p>
-    <p class="col-md text-muted mb-1">
-        <i class="fa fa-info-circle"></i> {{prj.get_status}}
-    </p>
-    <p class="col-md card-text text-muted mb-1">
-        <i class="fa fa-clock"></i> {{prj.duration}} year(s)
-    </p>
+    {% include "projects/detail-parts/info.html" %}
 </div>
 <div class="row">
     <div class="col pt-2">
         <div class="accordion" id="details">
             <div class="card">
-                <div class="card-header p-0">
-                    <a
-                        class="btn p-2 btn-block text-left"
-                        role="button"
-                        data-toggle="collapse"
-                        data-target="#authority"
-                        aria-expanded="true"
-                        aria-controls="authority"
-                    >
-                        Authority
-                    </a>
-                </div>
-                <div
-                    id="authority"
-                    class="collapse show"
-                    data-parent="#details"
-                >
-                    <div class="card-body p-2">
-                        <p class="mb-1">
-                            Tanzania Railway Corporation
-                        </p>
-                        <p class="mb-1 text-muted">
-                            Edson Mbgaga - Civil Engineer
-                        </p>
-                        <p class="mb-1 text-muted">
-                            <i class="fa fa-phone"></i
-                            ><a
-                                role="button"
-                                href="tel:+255713123066"
-                                class="btn btn-sm text-muted"
-                                >+255 713 123 066</a
-                            >
-                        </p>
-                    </div>
-                </div>
+                {% include "projects/detail-parts/authority.html" %}
             </div>
             <div class="card">
-                <div class="card-header p-0">
-                    <a
-                        class="btn p-2 btn-block text-left"
-                        role="button"
-                        data-toggle="collapse"
-                        data-target="#contractor"
-                        aria-expanded="false"
-                        aria-controls="contractor"
-                    >
-                        Contractors
-                    </a>
-                </div>
-                <div id="contractor" class="collapse" data-parent="#details">
-                    <div class="card-body p-2">
-                        Contractors
-                    </div>
-                </div>
+                {% include "projects/detail-parts/contractors.html" %}
             </div>
             <div class="card">
-                <div class="card-header p-0">
-                    <a
-                        class="btn p-2 btn-block text-left"
-                        role="button"
-                        data-toggle="collapse"
-                        data-target="#subcontractor"
-                        aria-expanded="false"
-                        aria-controls="subcontractor"
-                    >
-                        Sub Contractors
-                    </a>
-                </div>
-                <div id="subcontractor" class="collapse" data-parent="#details">
-                    <div class="card-body p-2">
-                        Sub Contractors
-                    </div>
-                </div>
+                {% include "projects/detail-parts/financers.html" %}
             </div>
             <div class="card">
-                <div class="card-header p-0">
-                    <a
-                        class="btn p-2 btn-block text-left"
-                        role="button"
-                        data-toggle="collapse"
-                        data-target="#financier"
-                        aria-expanded="false"
-                        aria-controls="financier"
-                    >
-                        Financiers
-                    </a>
-                </div>
-                <div id="financier" class="collapse" data-parent="#details">
-                    <div class="card-body p-2">
-                        Financiers
-                    </div>
-                </div>
+                {% include "projects/detail-parts/consultant.html" %}
             </div>
             <div class="card">
-                <div class="card-header p-0">
-                    <a
-                        class="btn p-2 btn-block text-left"
-                        role="button"
-                        data-toggle="collapse"
-                        data-target="#consultant"
-                        aria-expanded="false"
-                        aria-controls="consultant"
-                    >
-                        Consultant
-                    </a>
-                </div>
-                <div id="consultant" class="collapse" data-parent="#details">
-                    <div class="card-body p-2">
-                        Consultant
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header p-0">
-                    <a
-                        class="btn p-2 btn-block text-left"
-                        role="button"
-                        data-toggle="collapse"
-                        data-target="#location"
-                        aria-expanded="false"
-                        aria-controls="location"
-                    >
-                        Location
-                    </a>
-                </div>
-                <div id="location" class="collapse" data-parent="#details">
-                    <div class="card-body p-2">
-                        Location
-                    </div>
-                </div>
+                {% include "projects/detail-parts/suppliers.html" %}
             </div>
         </div>
     </div>

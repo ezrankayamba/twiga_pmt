@@ -1,0 +1,52 @@
+<div class="card-header p-0">
+    <a
+        class="btn p-2 btn-block text-left"
+        role="button"
+        data-toggle="collapse"
+        data-target="#supplier"
+        aria-expanded="false"
+        aria-controls="supplier"
+    >
+        Suppliers
+    </a>
+</div>
+<div id="supplier" class="collapse" data-parent="#details">
+    <div class="card-body p-2">
+        <div class="row bg-light pt-2 pb-2">
+            <div class="col">
+                <a
+                    href="{%url 'projects-supplier-create' prj.id %}"
+                    role="button"
+                    class="btn btn-sm btn-outline-primary"
+                    >Add supplier</a
+                >
+            </div>
+        </div>
+        <div class="row">
+            {%for prj_sup in prj.project_suppliers.all%}
+            <div class="col-md pb-3">
+                <p class="mb-1">
+                    {{prj_sup.supplier.name}}
+                </p>
+                <p class="mb-1 text-muted">
+                    {{prj_sup.supplier.contact_person}} -
+                    {{prj_sup.supplier.position}}
+                </p>
+                <a class="btn btn-sm btn-outline-danger" href="#" role="button"
+                    ><i class="fa fa-trash-alt"></i> Delete</a
+                >
+                <a
+                    class="btn btn-sm btn-outline-secondary"
+                    href="{%url 'projects-supplier-update' prj.id prj_sup.id%}"
+                    role="button"
+                    ><i class="fa fa-edit"></i> Edit</a
+                >
+            </div>
+            {%empty%}
+            <div class="col">
+                <p>No supplier added</p>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>
