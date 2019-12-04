@@ -1,0 +1,16 @@
+{% extends "core/pop.html" %} {% load crispy_forms_tags %} {% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend>Region</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content%}

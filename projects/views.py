@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from . import models
+from . import forms
 
 
 @login_required
@@ -21,12 +22,18 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
 
 class ProjectCreateView(generic.CreateView):
     model = models.Project
-    fields = ['name', 'type', 'region', 'municipal', 'town', 'duration', 'authority', 'consultant']
+    form_class = forms.ProjectCreateForm
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 
 
 class ProjectUpdateView(generic.UpdateView):
     model = models.Project
-    fields = ['name', 'type', 'region', 'municipal', 'town', 'duration', 'authority', 'consultant']
+    form_class = forms.ProjectUpdateForm
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 
 
 class ProjectDetailView(generic.DetailView):

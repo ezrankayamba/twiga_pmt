@@ -15,8 +15,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'core.apps.CoreConfig',
-    'projects.apps.ProjectsConfig',
     'setups.apps.SetupsConfig',
+    'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
     'nots.apps.NotsConfig',
 

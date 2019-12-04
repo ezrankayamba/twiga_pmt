@@ -1,5 +1,5 @@
 {% extends "core/base.html" %} {% block content %}
-<div class="row border-bottom pb-2">
+<div class="row pb-2">
     <div class="col-md">
         <h5>List of projects</h5>
     </div>
@@ -14,38 +14,39 @@
     </div>
 </div>
 <div class="row">
-    {% for prj in projects %}
-    <div class="col-md-4 pt-2">
-        <div class="card">
-            <div class="card-body">
-                <h5>{{prj.name}}</h5>
-                <p class="card-text text-muted mb-1">
-                    <i class="fa fa-question-circle"></i> {{prj.type}}
-                </p>
-                <p class="card-text text-muted mb-1">
-                    <i class="fa fa-map-marker-alt"></i
-                    ><span> {{prj.get_location}}</span>
-                </p>
-                <p class="card-text text-muted mb-1">
-                    <i class="fa fa-info-circle"></i> {{prj.get_status}}
-                </p>
-                <p class="card-text text-muted mb-1">
-                    <i class="fa fa-clock"></i> {{prj.duration}} year(s)
-                </p>
-            </div>
-            <div class="card-footer text-muted">
-                <a
-                    href="{% url 'projects-detail' prj.id %}"
-                    class="btn btn-sm btn-outline-secondary"
-                    >Details</a
-                >
-            </div>
-        </div>
+    <div class="col table-responsive-sm">
+        <table class="table table-sm table-striped">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">Location</th>
+                <th scope="col">Status</th>
+                <th scope="col">Duration</th>
+                <th scope="col"></th>
+            </tr>
+            {% for prj in projects %}
+            <tr>
+                <td scope="row">{{prj.id}}</td>
+                <td>{{prj.name}}</td>
+                <td>{{prj.type}}</td>
+                <td>{{prj.start_date}}</td>
+                <td>{{prj.get_location}}</td>
+                <td>{{prj.get_status}}</td>
+                <td>{{prj.duration }}</td>
+                <td>
+                    <a
+                        role="button"
+                        class="btn btn-link btn-sm"
+                        href="{% url 'projects-detail' prj.id %}"
+                        >Details</a
+                    >
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-    {% empty %}
-    <div class="col">
-        <p>No any project added yet</p>
-    </div>
-    {% endfor %}
+    {% for prj in projects %} {% endfor %}
 </div>
 {% endblock content%}

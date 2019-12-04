@@ -1,0 +1,126 @@
+<script type="text/javascript">
+(function() {
+    let loadDistrUrl = "{% url 'setups-load-districts' %}";
+    console.log(loadDistrUrl);
+    document.querySelector("#id_region").addEventListener("change", e => {
+        console.log(e);
+        document.querySelector("#btn_select_district").disabled = e.target
+            .value ?
+            false :
+            true;
+        let id = e.target.value | 0;
+        fetch(`${window.location.origin}${loadDistrUrl}?region=${id}`)
+            .then(res => {
+                return res.text();
+            })
+            .then(function(res) {
+                console.log("Response: ", res);
+                document.querySelector("#id_district").innerHTML = res;
+            })
+            .catch(function(error) {
+                console.log("Request failed", error);
+            });
+    });
+
+    let w = window.innerWidth / 2;
+    let h = (window.innerHeight * 3) / 4;
+    let baseUrl = window.location.origin;
+
+    [
+        { name: "type", url: '{% url "setups-type-create" %}' },
+        { name: "region", url: '{% url "setups-region-create" %}' },
+        { name: "district", url: '{% url "setups-district-create" %}' },
+        { name: "authority", url: '{% url "setups-authority-create" %}' },
+        { name: "consultant", url: '{% url "setups-consultant-create" %}' }
+    ].forEach(fld => {
+        let name = fld.name;
+        let container = document.querySelector(`#div_id_${name}`);
+        console.log(container);
+        let sel = container.querySelector("select");
+        let btn = document.createElement("button");
+        btn.innerHTML = `<i class="fa fa-plus"></i>`;
+        btn.classList.add("btn");
+        btn.classList.add("btn-link");
+        btn.classList.add("text-secondary");
+        btn.classList.add("pr-0");
+        btn.classList.add("pl-1");
+        btn.dataset.url = fld.url;
+        btn.type = "button";
+        btn.classList.add("add-other");
+        btn.title = "Add other";
+        if (name === "district") {
+            btn.disabled = document.querySelector("#id_region").value ? false : true;
+            btn.id = "btn_select_district";
+        }
+        sel.parentNode.insertBefore(btn, sel.nextSibling);
+        sel.parentElement.classList.add("d-flex");
+    });
+
+    let list = document.querySelectorAll(".add-other");
+
+    list.forEach(btn => {
+        btn.addEventListener("click", e => {
+            let url = btn.dataset.url;
+            url = baseUrl + url;
+            if (btn.id === "btn_select_district") {
+                url = `${url}?region=${
+                        document.querySelector("#id_region").value
+                    }`;
+            }
+            console.log(url);
+            popupCenter(url, "popUpWindow", w, h);
+        });
+    });
+})();
+
+function closePopup(newID, newRepr, id) {
+    let x = document.querySelector(id);
+    let option = document.createElement("option");
+    option.text = newRepr;
+    option.selected = true;
+    x.add(option);
+
+    console.log("Select: ", x);
+
+    console.log(newID, newRepr, id);
+    popupWindow.close();
+}
+
+function popupCenter(url, title, w, h) {
+    var dualScreenLeft =
+        window.screenLeft != undefined ? window.screenLeft : window.screenX;
+    var dualScreenTop =
+        window.screenTop != undefined ? window.screenTop : window.screenY;
+
+    var width = window.innerWidth ?
+        window.innerWidth :
+        document.documentElement.clientWidth ?
+        document.documentElement.clientWidth :
+        screen.width;
+    var height = window.innerHeight ?
+        window.innerHeight :
+        document.documentElement.clientHeight ?
+        document.documentElement.clientHeight :
+        screen.height;
+
+    var systemZoom = width / window.screen.availWidth;
+    var left = (width - w) / 2 / systemZoom + dualScreenLeft;
+    var top = (height - h) / 2 / systemZoom + dualScreenTop;
+    top = (top * 3) / 4;
+    popupWindow = window.open(
+        url,
+        title,
+        "resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes,width=" +
+        w / systemZoom +
+        ", height=" +
+        h / systemZoom +
+        ", top=" +
+        top +
+        ", left=" +
+        left
+    );
+
+    if (window.focus) popupWindow.focus();
+}
+
+</script>

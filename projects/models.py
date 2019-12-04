@@ -5,23 +5,18 @@ from setups import models as s_models
 PROJECT_STATUS_LIST = (('INT', "Initiated"), ('ONG', "Ongoing"), ('CMP', "Completed"))
 
 
-class Type(models.Model):
-    name = models.CharField(max_length=40, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Project(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    type = models.ForeignKey(to=Type, related_name="projects", on_delete=models.PROTECT)
-    status = models.CharField(max_length=10, default='INT')
+    start_date = models.DateField(null=True)
+    type = models.ForeignKey(to=s_models.Type, related_name="projects", on_delete=models.PROTECT)
+    status = models.CharField(max_length=10, default='INT', choices=PROJECT_STATUS_LIST)
     region = models.ForeignKey(to=s_models.Region, related_name="projects", on_delete=models.PROTECT, null=True)
-    municipal = models.CharField(max_length=40, null=True)
+    district = models.ForeignKey(to=s_models.District, related_name="projects", on_delete=models.PROTECT, null=True)
     town = models.CharField(max_length=40, null=True)
     duration = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Duration(Years)'))
     authority = models.ForeignKey(to=s_models.Authority, related_name="projects", on_delete=models.PROTECT, null=True)
     consultant = models.ForeignKey(to=s_models.Consultant, related_name="projects", on_delete=models.PROTECT, null=True)
+    remarks = models.CharField(max_length=1000, null=True, blank=True)
 
     def get_status(self):
         for en in PROJECT_STATUS_LIST:
@@ -30,7 +25,7 @@ class Project(models.Model):
         return 'Unknown'
 
     def get_location(self):
-        return f'{self.region}, {self.municipal}, {self.town}'
+        return f'{self.region}, {self.district}, {self.town}'
 
     def __str__(self):
         return self.name

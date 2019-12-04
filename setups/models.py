@@ -1,8 +1,23 @@
 from django.db import models
 
 
+class Type(models.Model):
+    name = models.CharField(max_length=40, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Region(models.Model):
     name = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+
+class District(models.Model):
+    name = models.CharField(max_length=40)
+    region = models.ForeignKey(to=Region, on_delete=models.CASCADE, related_name='districts')
 
     def __str__(self):
         return self.name
