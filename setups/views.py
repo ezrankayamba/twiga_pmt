@@ -51,6 +51,36 @@ class ConsultantCreateView(generic.CreateView):
         return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_consultant");</script>')
 
 
+class SupplierCreateView(generic.CreateView):
+    model = models.Supplier
+    template_name = 'setups/popups/supplier_form.html'
+    fields = ['name']
+
+    def form_valid(self, form):
+        instance = form.save()
+        return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_supplier");</script>')
+
+
+class FinancerCreateView(generic.CreateView):
+    model = models.Financer
+    template_name = 'setups/popups/financer_form.html'
+    fields = ['name']
+
+    def form_valid(self, form):
+        instance = form.save()
+        return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_financer");</script>')
+
+
+class ContractorCreateView(generic.CreateView):
+    model = models.Contractor
+    template_name = 'setups/popups/contractor_form.html'
+    fields = ['name']
+
+    def form_valid(self, form):
+        instance = form.save()
+        return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_contractor");</script>')
+
+
 class RegionCreateView(generic.CreateView):
     model = models.Region
     template_name = 'setups/popups/region_form.html'

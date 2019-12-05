@@ -5,6 +5,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 from . import models
 from . import forms
+from django.urls import reverse
 
 
 @login_required
@@ -45,6 +46,11 @@ class ProjectContractorCreateView(generic.CreateView):
     model = models.ProjectContractor
     fields = ['contractor', 'sub_contractor']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['setup_url'] = reverse('setups-contractor-create')
+        return context
+
     def form_valid(self, form):
         project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
         form.instance.project = project
@@ -54,6 +60,11 @@ class ProjectContractorCreateView(generic.CreateView):
 class ProjectContractorUpdateView(generic.UpdateView):
     model = models.ProjectContractor
     fields = ['contractor', 'sub_contractor']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['setup_url'] = reverse('setups-contractor-create')
+        return context
 
     def form_valid(self, form):
         project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
@@ -65,6 +76,11 @@ class ProjectFinancerCreateView(generic.CreateView):
     model = models.ProjectFinancer
     fields = ['financer']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['setup_url'] = reverse('setups-financer-create')
+        return context
+
     def form_valid(self, form):
         project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
         form.instance.project = project
@@ -75,6 +91,11 @@ class ProjectFinancerUpdateView(generic.UpdateView):
     model = models.ProjectFinancer
     fields = ['financer']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['setup_url'] = reverse('setups-financer-create')
+        return context
+
     def form_valid(self, form):
         project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
         form.instance.project = project
@@ -83,7 +104,13 @@ class ProjectFinancerUpdateView(generic.UpdateView):
 
 class ProjectSupplierCreateView(generic.CreateView):
     model = models.ProjectSupplier
-    fields = ['supplier', 'price', 'remarks']
+    fields = ['supplier', 'price', 'quantity']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['setup_url'] = reverse('setups-supplier-create')
+        print('Url: ', context['setup_url'])
+        return context
 
     def form_valid(self, form):
         project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
@@ -93,7 +120,13 @@ class ProjectSupplierCreateView(generic.CreateView):
 
 class ProjectSupplierUpdateView(generic.UpdateView):
     model = models.ProjectSupplier
-    fields = ['supplier']
+    fields = ['supplier', 'price', 'quantity']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['setup_url'] = reverse('setups-supplier-create')
+        print('Url: ', context['setup_url'])
+        return context
 
     def form_valid(self, form):
         project = get_object_or_404(models.Project, id=self.kwargs['project_id'])

@@ -1,10 +1,10 @@
-{% extends "core/base.html" %} {% load crispy_forms_tags %} {% block content %}
+{% extends "core/pop.html" %} {% load crispy_forms_tags %} {% block content %}
 <div class="row">
     <div class="col-md-6 offset-md-3">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend>Project Financer</legend>
+                <legend>Supplier</legend>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
@@ -13,4 +13,4 @@
         </form>
     </div>
 </div>
-{% include 'projects/form_setup_link_js.html' %} {% endblock content%}
+{% endblock content%}

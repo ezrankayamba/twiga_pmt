@@ -1,38 +1,10 @@
 <script type="text/javascript">
 (function() {
-    let loadDistrUrl = "{% url 'setups-load-districts' %}";
-    console.log(loadDistrUrl);
-    document.querySelector("#id_region").addEventListener("change", e => {
-        console.log(e);
-        document.querySelector("#btn_select_district").disabled = e.target
-            .value ?
-            false :
-            true;
-        let id = e.target.value | 0;
-        fetch(`${window.location.origin}${loadDistrUrl}?region=${id}`)
-            .then(res => {
-                return res.text();
-            })
-            .then(function(res) {
-                console.log("Response: ", res);
-                document.querySelector("#id_district").innerHTML = res;
-            })
-            .catch(function(error) {
-                console.log("Request failed", error);
-            });
-    });
-
     let w = window.innerWidth / 2;
     let h = (window.innerHeight * 3) / 4;
     let baseUrl = window.location.origin;
-
-    [
-        { name: "type", url: '{% url "setups-type-create" %}' },
-        { name: "region", url: '{% url "setups-region-create" %}' },
-        { name: "district", url: '{% url "setups-district-create" %}' },
-        { name: "authority", url: '{% url "setups-authority-create" %}' },
-        { name: "consultant", url: '{% url "setups-consultant-create" %}' }
-    ].forEach(fld => {
+    let fld = document.querySelector('.select');
+    if (fld) {
         let name = fld.name;
         let container = document.querySelector(`#div_id_${name}`);
         console.log(container);
@@ -44,7 +16,7 @@
         btn.classList.add("text-secondary");
         btn.classList.add("pr-0");
         btn.classList.add("pl-1");
-        btn.dataset.url = fld.url;
+        btn.dataset.url = "{{ setup_url }}";
         btn.type = "button";
         btn.classList.add("add-other");
         btn.title = "Add other";
@@ -54,7 +26,7 @@
         }
         sel.parentNode.insertBefore(btn, sel.nextSibling);
         sel.parentElement.classList.add("d-flex");
-    });
+    }
 
     let list = document.querySelectorAll(".add-other");
 

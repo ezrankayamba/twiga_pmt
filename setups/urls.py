@@ -9,4 +9,7 @@ urlpatterns = [
     path('region/create', views.RegionCreateView.as_view(), name='setups-region-create'),
     path('district/create', views.DistrictCreateView.as_view(), name='setups-district-create'),
     path('region/districts', views.load_districts, name='setups-load-districts'),
+    path('supplier/create', views.SupplierCreateView.as_view(), name='setups-supplier-create'),
+    path('financer/create', views.FinancerCreateView.as_view(), name='setups-financer-create'),
+    path('contractor/create', views.ContractorCreateView.as_view(), name='setups-contractor-create'),
 ]
