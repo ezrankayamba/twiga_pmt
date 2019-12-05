@@ -9,6 +9,7 @@ class ProjectCreateForm(ModelForm):
         fields = ['name', 'type', 'start_date', 'region', 'district', 'town', 'duration', 'authority', 'consultant', 'quantity_demanded', 'quantity_supplied', 'remarks']
         widgets = {
             'remarks': Textarea(attrs={'rows': 2}),
+            'start_date': DateInput(attrs={'class': 'datepicker', 'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
