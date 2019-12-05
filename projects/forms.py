@@ -14,7 +14,10 @@ class ProjectCreateForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['district'].queryset = s_models.District.objects.none()
+        # if self.instance.region:
+        #     self.fields['district'].queryset = s_models.District.objects.filter(region=self.instance.region)
+        # else:
+        #     self.fields['district'].queryset = s_models.District.objects.none()
 
 
 class ProjectUpdateForm(ModelForm):
@@ -28,7 +31,7 @@ class ProjectUpdateForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance.region:
-            self.fields['district'].queryset = s_models.District.objects.filter(region=self.instance.region)
-        else:
-            self.fields['district'].queryset = s_models.District.objects.none()
+        # if self.instance.region:
+        #     self.fields['district'].queryset = s_models.District.objects.filter(region=self.instance.region)
+        # else:
+        #     self.fields['district'].queryset = s_models.District.objects.none()

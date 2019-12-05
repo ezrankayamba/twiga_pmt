@@ -1,7 +1,6 @@
 <script type="text/javascript">
 let loadDistrUrl = "{% url 'setups-load-districts' %}";
-console.log(loadDistrUrl);
-let regionChanged = (el) => {
+let refreshOnRegion = (el, cb) => {
     document.querySelector("#btn_select_district").disabled = el
         .value ?
         false :
@@ -12,33 +11,30 @@ let regionChanged = (el) => {
             return res.text();
         })
         .then(function(res) {
-            console.log("Response: ", res);
             document.querySelector("#id_district").innerHTML = res;
+            cb()
         })
         .catch(function(error) {
             console.log("Request failed", error);
         });
 };
 (function() {
+    console.log(loadDistrUrl);
     document.querySelector("#id_region").addEventListener("change", e => {
         console.log(e);
-        regionChanged(e.target)
+        let el = e.target
+        refreshOnRegion(el, () => {
+            console.log('Loaded successfully')
+        })
     });
 
     let w = window.innerWidth / 2;
     let h = (window.innerHeight * 3) / 4;
     let baseUrl = window.location.origin;
-
-    [
-        { name: "type", url: '{% url "setups-type-create" %}' },
-        { name: "region", url: '{% url "setups-region-create" %}' },
-        { name: "district", url: '{% url "setups-district-create" %}' },
-        { name: "authority", url: '{% url "setups-authority-create" %}' },
-        { name: "consultant", url: '{% url "setups-consultant-create" %}' }
-    ].forEach(fld => {
+    let regionSel = undefined;
+    [{ name: "type", url: '{% url "setups-type-create" %}' }, { name: "region", url: '{% url "setups-region-create" %}' }, { name: "district", url: '{% url "setups-district-create" %}' }, { name: "authority", url: '{% url "setups-authority-create" %}' }, { name: "consultant", url: '{% url "setups-consultant-create" %}' }].forEach(fld => {
         let name = fld.name;
         let container = document.querySelector(`#div_id_${name}`);
-        console.log(container);
         let sel = container.querySelector("select");
         let btn = document.createElement("button");
         btn.innerHTML = `<i class="fa fa-plus"></i>`;
@@ -57,6 +53,16 @@ let regionChanged = (el) => {
         }
         sel.parentNode.insertBefore(btn, sel.nextSibling);
         sel.parentElement.classList.add("d-flex");
+        if (name === 'region') {
+            regionSel = sel;
+        }
+        if (name === 'district') {
+            let tmp = sel.value;
+            console.log('Value: ', tmp);
+            refreshOnRegion(regionSel, () => {
+                sel.value = tmp;
+            });
+        }
     });
 
     let list = document.querySelectorAll(".add-other");
@@ -86,7 +92,7 @@ function closePopup(newID, newRepr, id) {
 
     console.log("Select: ", x);
     if (x.id === 'id_region') {
-        regionChanged(x)
+        refreshOnRegion(x)
     }
 
     console.log(newID, newRepr, id);
