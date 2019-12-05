@@ -1,25 +1,28 @@
 <script type="text/javascript">
+let loadDistrUrl = "{% url 'setups-load-districts' %}";
+console.log(loadDistrUrl);
+let regionChanged = (el) => {
+    document.querySelector("#btn_select_district").disabled = el
+        .value ?
+        false :
+        true;
+    let id = el.value | 0;
+    fetch(`${window.location.origin}${loadDistrUrl}?region=${id}`)
+        .then(res => {
+            return res.text();
+        })
+        .then(function(res) {
+            console.log("Response: ", res);
+            document.querySelector("#id_district").innerHTML = res;
+        })
+        .catch(function(error) {
+            console.log("Request failed", error);
+        });
+};
 (function() {
-    let loadDistrUrl = "{% url 'setups-load-districts' %}";
-    console.log(loadDistrUrl);
     document.querySelector("#id_region").addEventListener("change", e => {
         console.log(e);
-        document.querySelector("#btn_select_district").disabled = e.target
-            .value ?
-            false :
-            true;
-        let id = e.target.value | 0;
-        fetch(`${window.location.origin}${loadDistrUrl}?region=${id}`)
-            .then(res => {
-                return res.text();
-            })
-            .then(function(res) {
-                console.log("Response: ", res);
-                document.querySelector("#id_district").innerHTML = res;
-            })
-            .catch(function(error) {
-                console.log("Request failed", error);
-            });
+        regionChanged(e.target)
     });
 
     let w = window.innerWidth / 2;
@@ -82,6 +85,9 @@ function closePopup(newID, newRepr, id) {
     x.add(option);
 
     console.log("Select: ", x);
+    if (x.id === 'id_region') {
+        regionChanged(x)
+    }
 
     console.log(newID, newRepr, id);
     popupWindow.close();
