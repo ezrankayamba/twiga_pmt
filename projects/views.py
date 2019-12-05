@@ -21,7 +21,7 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
 
-class ProjectCreateView(generic.CreateView):
+class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
     model = models.Project
     form_class = forms.ProjectCreateForm
 
@@ -29,7 +29,7 @@ class ProjectCreateView(generic.CreateView):
         return super().form_valid(form)
 
 
-class ProjectUpdateView(generic.UpdateView):
+class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = models.Project
     form_class = forms.ProjectUpdateForm
 
@@ -37,12 +37,12 @@ class ProjectUpdateView(generic.UpdateView):
         return super().form_valid(form)
 
 
-class ProjectDetailView(generic.DetailView):
+class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = models.Project
     context_object_name = 'prj'
 
 
-class ProjectContractorCreateView(generic.CreateView):
+class ProjectContractorCreateView(LoginRequiredMixin, generic.CreateView):
     model = models.ProjectContractor
     fields = ['contractor', 'sub_contractor']
 
@@ -57,7 +57,7 @@ class ProjectContractorCreateView(generic.CreateView):
         return super(ProjectContractorCreateView, self).form_valid(form)
 
 
-class ProjectContractorUpdateView(generic.UpdateView):
+class ProjectContractorUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = models.ProjectContractor
     fields = ['contractor', 'sub_contractor']
 
@@ -72,7 +72,7 @@ class ProjectContractorUpdateView(generic.UpdateView):
         return super(ProjectContractorUpdateView, self).form_valid(form)
 
 
-class ProjectFinancerCreateView(generic.CreateView):
+class ProjectFinancerCreateView(LoginRequiredMixin, generic.CreateView):
     model = models.ProjectFinancer
     fields = ['financer']
 
@@ -87,7 +87,7 @@ class ProjectFinancerCreateView(generic.CreateView):
         return super(ProjectFinancerCreateView, self).form_valid(form)
 
 
-class ProjectFinancerUpdateView(generic.UpdateView):
+class ProjectFinancerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = models.ProjectFinancer
     fields = ['financer']
 
@@ -102,7 +102,7 @@ class ProjectFinancerUpdateView(generic.UpdateView):
         return super(ProjectFinancerUpdateView, self).form_valid(form)
 
 
-class ProjectSupplierCreateView(generic.CreateView):
+class ProjectSupplierCreateView(LoginRequiredMixin, generic.CreateView):
     model = models.ProjectSupplier
     fields = ['supplier', 'price', 'quantity']
 
@@ -118,7 +118,7 @@ class ProjectSupplierCreateView(generic.CreateView):
         return super(ProjectSupplierCreateView, self).form_valid(form)
 
 
-class ProjectSupplierUpdateView(generic.UpdateView):
+class ProjectSupplierUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = models.ProjectSupplier
     fields = ['supplier', 'price', 'quantity']
 
