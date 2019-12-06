@@ -5,6 +5,20 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend>Project</legend>
+                <div class="d-flex justify-content-between">
+                    <p>
+                        {% if form.latitude.value and form.longitude.value %}
+                        GPS Cordinates: {{form.instance}} {% else %} No GPS
+                        Location Captured {% endif %}
+                    </p>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary"
+                        id="captureGPS"
+                    >
+                        <a class="fa fa-search-location"></a> Refresh
+                    </button>
+                </div>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
@@ -15,4 +29,18 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    let setLocation = loc => {
+        document.querySelector("input[name=longitude]").value =
+            loc.coords.longitude;
+        document.querySelector("input[name=latitude]").value =
+            loc.coords.latitude;
+    };
+    document.querySelector("#captureGPS").addEventListener("click", e => {
+        console.log("Capture location");
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(setLocation);
+        }
+    });
+</script>
 {% include 'projects/form_scripts.html' %} {% endblock content%}

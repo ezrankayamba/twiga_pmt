@@ -23,12 +23,19 @@ class Project(models.Model):
     remarks = models.CharField(max_length=1000, null=True, blank=True)
     quantity_demanded = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=('Quantity Demanded (Tons)'))
     quantity_supplied = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=('Quantity Supplied (Tons)'))
+    latitude = models.DecimalField(decimal_places=20, max_digits=20, null=True, blank=True, verbose_name=('Latitude'))
+    longitude = models.DecimalField(decimal_places=20, max_digits=20, null=True, blank=True, verbose_name=('Longitude'))
 
     def get_status(self):
         for en in PROJECT_STATUS_LIST:
             if(en[0] == self.status):
                 return en[1]
         return 'Unknown'
+
+    def get_cordinates(self):
+        if self.latitude == None or self.longitude == None:
+            return None
+        return f'({self.longitude}, {self.latitude})'
 
     def get_time_remaining(self):
         if self.start_date == None:
