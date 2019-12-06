@@ -1,22 +1,21 @@
 {% extends "core/base.html" %} {% load static %} {% block content %}
 <script type="text/javascript">
-function docReady(fn) {
-    if (
-        document.readyState === "complete" ||
-        document.readyState === "interactive"
-    ) {
-        setTimeout(fn, 1);
-    } else {
-        document.addEventListener("DOMContentLoaded", fn);
+    function docReady(fn) {
+        if (
+            document.readyState === "complete" ||
+            document.readyState === "interactive"
+        ) {
+            setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
     }
-}
-var dynamicColor = function() {
-    var r = Math.floor(Math.random() * 255);
-    var g = Math.floor(Math.random() * 255);
-    var b = Math.floor(Math.random() * 255);
-    return "rgb(" + r + "," + g + "," + b + ")";
-};
-
+    var dynamicColor = function() {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    };
 </script>
 <div class="row">
     <div class="col-md pb-2">
@@ -63,10 +62,15 @@ var dynamicColor = function() {
     </div>
 </div>
 {% endblock content%} {% block my_script %}
-<script type="text/javascript" src="{%static 'core/chartjs/chart.bundle.js'%}"></script>
-<script type="text/javascript" src="{%static 'core/chartjs/datalabels.js'%}"></script>
+<script
+    type="text/javascript"
+    src="{%static 'core/chartjs/chart.bundle.js'%}"
+></script>
+<script
+    type="text/javascript"
+    src="{%static 'core/chartjs/datalabels.js'%}"
+></script>
 <script type="text/javascript">
-// Chart.plugins.unregister(ChartDataLabels);
-
+    // Chart.plugins.unregister(ChartDataLabels);
 </script>
 {% endblock %}

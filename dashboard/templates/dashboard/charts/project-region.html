@@ -1,4 +1,11 @@
-<canvas data-url="{%url 'data-project-region'%}" id="projectRegion"></canvas>
+<div class="chart-wrapper">
+    <div class="chart-area-wrapper">
+        <canvas
+            data-url="{%url 'data-project-region'%}"
+            id="projectRegion"
+        ></canvas>
+    </div>
+</div>
 <script>
     docReady(() => {
         let chartEl = document.getElementById("projectRegion");
@@ -53,7 +60,6 @@
                 ];
                 myPieChart.data.labels = res.labels;
                 myPieChart.update();
-                console.log(myPieChart);
             })
             .catch(err => {
                 console.error(err);

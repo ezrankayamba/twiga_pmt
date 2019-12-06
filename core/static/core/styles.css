@@ -109,3 +109,21 @@ body,
 .nowrap {
     white-space: nowrap;
 }
+
+@media screen and (max-width: 768px) {
+    .chart-wrapper {
+        position: relative;
+        overflow-x: scroll;
+    }
+
+    .chart-wrapper > canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+    }
+
+    .chart-area-wrapper {
+        width: 600px;
+    }
+}
