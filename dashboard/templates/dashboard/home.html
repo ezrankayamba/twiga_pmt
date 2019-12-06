@@ -1,3 +1,72 @@
-{% extends "core/base.html" %} {% block content %}
-<h6>The dashboard here</h6>
-{% endblock content%}
+{% extends "core/base.html" %} {% load static %} {% block content %}
+<script type="text/javascript">
+function docReady(fn) {
+    if (
+        document.readyState === "complete" ||
+        document.readyState === "interactive"
+    ) {
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+var dynamicColor = function() {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return "rgb(" + r + "," + g + "," + b + ")";
+};
+
+</script>
+<div class="row">
+    <div class="col-md pb-2">
+        <div class="card">
+            <div class="card-header p-2">
+                <h5 class="m-0">Type Of Projects</h5>
+            </div>
+            <div class="card-body">
+                {% include 'dashboard/charts/project-type.html' %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md pb-2">
+        <div class="card">
+            <div class="card-header p-2">
+                <h5 class="m-0">Project Status/Stages</h5>
+            </div>
+            <div class="card-body">
+                {% include 'dashboard/charts/project-status.html' %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md pb-2">
+        <div class="card">
+            <div class="card-header p-2">
+                <h5 class="m-0">Supplier Projects</h5>
+            </div>
+            <div class="card-body">
+                {% include 'dashboard/charts/project-supplier.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md">
+        <div class="card">
+            <div class="card-header p-2">
+                <h5 class="m-0">Projects Per Region</h5>
+            </div>
+            <div class="card-body">
+                {% include 'dashboard/charts/project-region.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content%} {% block my_script %}
+<script type="text/javascript" src="{%static 'core/chartjs/chart.bundle.js'%}"></script>
+<script type="text/javascript" src="{%static 'core/chartjs/datalabels.js'%}"></script>
+<script type="text/javascript">
+// Chart.plugins.unregister(ChartDataLabels);
+
+</script>
+{% endblock %}
