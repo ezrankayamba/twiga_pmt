@@ -7,9 +7,10 @@
                 <legend>Project</legend>
                 <div class="d-flex justify-content-between">
                     <p>
-                        {% if form.latitude.value and form.longitude.value %}
-                        GPS Cordinates: {{form.instance}} {% else %} No GPS
-                        Location Captured {% endif %}
+                        GPS:
+                        <span id="coordinates"
+                            >{{form.instance.get_coordinates}}</span
+                        >
                     </p>
                     <button
                         type="button"
@@ -35,6 +36,11 @@
             loc.coords.longitude;
         document.querySelector("input[name=latitude]").value =
             loc.coords.latitude;
+        document.querySelector(
+            "#coordinates"
+        ).textContent = `(${loc.coords.longitude.toFixed(
+            4
+        )}, ${loc.coords.latitude.toFixed(4)})`;
     };
     document.querySelector("#captureGPS").addEventListener("click", e => {
         console.log("Capture location");
