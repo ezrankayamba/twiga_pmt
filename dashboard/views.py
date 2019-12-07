@@ -53,6 +53,66 @@ def get_data_project_region(request):
 
 
 @login_required
+def get_data_project_region_plus(request):
+    list = prj_models.Project.objects.values('region__name', 'district__name').order_by('region__name', 'district__name').annotate(count=Count('id'))
+    r_dict = {}
+    d_dict = {}
+    my_dict = {}
+    data = []
+    labels = []
+    region_name = None
+    r_count = 0
+    for item in list:
+        if item['region__name'] != region_name:  # switch region
+            if region_name:
+                r_dict[region_name] = {
+                    'count': r_count,
+                    'districts': d_dict
+                }
+            d_dict = {}
+            r_count = 0
+            region_name = item['region__name']
+        count = item['count']
+        d_dict[item['district__name']] = count
+        r_count += count
+    r_dict[region_name] = {
+        'count': r_count,
+        'districts': d_dict
+    }
+
+    regions = s_models.Region.objects.all()
+    r_full_dict = {}
+    for r in regions:
+        labels.append(r.name)
+        d_full_dict = {}
+        if r.name in r_dict:
+            tmp_r = r_dict[r.name]
+            data.append(tmp_r['count'])
+            for d in r.districts.all():
+                if d.name in tmp_r['districts']:
+                    d_full_dict[d.name] = tmp_r['districts'][d.name]
+                else:
+                    d_full_dict[d.name] = 0
+            r_full_dict[r.name] = {
+                'count': tmp_r['count'],
+                'districts': d_full_dict
+            }
+        else:
+            for d in r.districts.all():
+                d_full_dict[d.name] = 0
+            r_full_dict[r.name] = {
+                'count': 0,
+                'districts': d_full_dict
+            }
+            data.append(0)
+    return JsonResponse({
+        'data': data,
+        'labels': labels,
+        'full': r_full_dict
+    })
+
+
+@login_required
 def get_data_project_supplier(request):
     list = prj_models.ProjectSupplier.objects.values('supplier__name').annotate(count=Count('project'))
     data = []
