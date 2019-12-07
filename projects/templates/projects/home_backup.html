@@ -1,0 +1,62 @@
+{% extends "core/base.html" %} {% load humanize %}{% block content %}
+<div class="row pb-2">
+    <div class="col-md">
+        <h5>List of projects</h5>
+    </div>
+    <div class="col-md">
+        <a
+            role="button"
+            class="btn btn-primary btn-sm float-md-right"
+            href="{% url 'projects-create' %}"
+        >
+            Add New Project
+        </a>
+    </div>
+</div>
+<div class="row small">
+    <div class="col table-responsive-sm">
+        <table class="table table-sm table-striped">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Authority</th>
+                <th scope="col">Consultant</th>
+                <th scope="col"><span class="nowrap">Start Date</span></th>
+                <th scope="col">Location</th>
+                <th scope="col">Status</th>
+                <th scope="col"><span class="nowrap">Duration (Yrs)</span></th>
+                <th scope="col"><span class="nowrap">Remaining (Yrs)</span></th>
+                <th scope="col"><span class="nowrap">Quantity (Tons)</span></th>
+                <th scope="col"><span class="nowrap">Supplied (Tons)</span></th>
+                <th scope="col"></th>
+            </tr>
+            {% for prj in projects %}
+            <tr>
+                <td scope="row">{{prj.id}}</td>
+                <td>{{prj.name}}</td>
+                <td>{{prj.type}}</td>
+                <td>{{prj.authority}}</td>
+                <td>{{prj.consultant}}</td>
+                <td>{{prj.start_date}}</td>
+                <td>{{prj.get_location}}</td>
+                <td>{{prj.get_status}}</td>
+                <td>{{prj.duration }}</td>
+                <td>{{prj.get_time_remaining|floatformat:2 }}</td>
+                <td>{{prj.quantity_demanded|floatformat:2 }}</td>
+                <td>{{prj.quantity_supplied|floatformat:2 }}</td>
+                <td>
+                    <a
+                        role="button"
+                        class="btn btn-link btn-sm"
+                        href="{% url 'projects-detail' prj.id %}"
+                        >Details</a
+                    >
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% for prj in projects %} {% endfor %}
+</div>
+{% endblock content%}

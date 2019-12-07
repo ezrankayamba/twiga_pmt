@@ -6,11 +6,14 @@ from django.shortcuts import get_object_or_404
 from . import models
 from . import forms
 from django.urls import reverse
+from . import filters
 
 
 @login_required
 def home(request):
-    return render(request, 'projects/home.html', {})
+    projects = models.Project.objects.all()
+    prj_filter = filters.ProjectFilter(request.POST, queryset=projects)
+    return render(request, 'projects/home.html', {'filter': prj_filter})
 
 
 class ProjectListView(LoginRequiredMixin, generic.ListView):

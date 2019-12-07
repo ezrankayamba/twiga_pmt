@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'django.contrib.humanize',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

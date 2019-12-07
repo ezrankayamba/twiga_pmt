@@ -1,4 +1,5 @@
-{% extends "core/base.html" %} {% load humanize %}{% block content %}
+{% extends "core/base.html" %} {% load humanize %} {% load crispy_forms_tags %}
+{% block content %}
 <div class="row pb-2">
     <div class="col-md">
         <h5>List of projects</h5>
@@ -15,23 +16,39 @@
 </div>
 <div class="row small">
     <div class="col table-responsive-sm">
-        <table class="table table-sm table-striped">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Type</th>
-                <th scope="col">Authority</th>
-                <th scope="col">Consultant</th>
-                <th scope="col"><span class="nowrap">Start Date</span></th>
-                <th scope="col">Location</th>
-                <th scope="col">Status</th>
-                <th scope="col"><span class="nowrap">Duration (Yrs)</span></th>
-                <th scope="col"><span class="nowrap">Remaining (Yrs)</span></th>
-                <th scope="col"><span class="nowrap">Quantity (Tons)</span></th>
-                <th scope="col"><span class="nowrap">Supplied (Tons)</span></th>
-                <th scope="col"></th>
-            </tr>
-            {% for prj in projects %}
+        <form method="post" class="form-inline mb-2" id="filter-form">
+            {% csrf_token %} {{ filter.form|crispy }}
+            <button type="submit" class="btn btn-sm btn-outline-info">
+                <a class="fa fa-filter"></a> Search
+            </button>
+        </form>
+        <table class="table table-sm table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Authority</th>
+                    <th scope="col">Consultant</th>
+                    <th scope="col"><span class="nowrap">Start Date</span></th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">
+                        <span class="nowrap">Duration (Yrs)</span>
+                    </th>
+                    <th scope="col">
+                        <span class="nowrap">Remaining (Yrs)</span>
+                    </th>
+                    <th scope="col">
+                        <span class="nowrap">Quantity (Tons)</span>
+                    </th>
+                    <th scope="col">
+                        <span class="nowrap">Supplied (Tons)</span>
+                    </th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            {% for prj in filter.qs %}
             <tr>
                 <td scope="row">{{prj.id}}</td>
                 <td>{{prj.name}}</td>
@@ -50,8 +67,8 @@
                         role="button"
                         class="btn btn-link btn-sm"
                         href="{% url 'projects-detail' prj.id %}"
-                        >Details</a
-                    >
+                        ><i class="fa fa-eye"></i
+                    ></a>
                 </td>
             </tr>
             {% endfor %}
@@ -59,4 +76,36 @@
     </div>
     {% for prj in projects %} {% endfor %}
 </div>
+<script type="text/javascript">
+    (function() {
+        let getEl = (selector, prnt) => {
+            return prnt.querySelector(selector);
+        };
+        let addCls = (el, cls) => {
+            cls.split(" ").forEach(cl => {
+                el.classList.add(cl);
+            });
+        };
+        let form = document.querySelector("#filter-form");
+        form.querySelectorAll(".form-group").forEach(grp => {
+            addCls(grp, "input-group input-group-sm mr-3");
+            // addCls(getEl("label", grp), "pr-2 col-form-label-sm");
+            let label = getEl("label", grp);
+            let div = document.createElement("div");
+            let span = document.createElement("span");
+            addCls(div, "input-group-prepend");
+            addCls(span, "input-group-text");
+            span.textContent = label.textContent;
+            grp.removeChild(label);
+            div.appendChild(span);
+            let inputDiv = getEl("div", grp);
+            console.log(inputDiv);
+            let crtr = getEl(".form-control", inputDiv);
+            grp.removeChild(inputDiv);
+            grp.appendChild(div);
+            console.log(crtr);
+            grp.appendChild(crtr);
+        });
+    })();
+</script>
 {% endblock content%}
