@@ -8,6 +8,7 @@ from . import models
 def project_created(sender, instance, created, **kwargs):
     prj = instance
     if created:
+        print('Creating audit for - create')
         models.ProjectAudit.objects.create(
             project=prj,
             remarks=prj.remarks,
@@ -17,6 +18,7 @@ def project_created(sender, instance, created, **kwargs):
             other='Created',
             logged_by=prj.created_by)
     else:
+        print('Creating audit for - update')
         models.ProjectAudit.objects.create(
             project=prj,
             remarks=prj.remarks,
