@@ -12,13 +12,18 @@
                             >{{form.instance.get_coordinates}}</span
                         >
                     </p>
-                    <button
-                        type="button"
-                        class="btn btn-sm btn-outline-secondary"
-                        id="captureGPS"
-                    >
-                        <a class="fa fa-search-location"></a> Refresh
-                    </button>
+                    <div class="button-group">
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            id="captureGPS"
+                        >
+                            <a class="fa fa-search-location"></a> Capture GPS
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#mapModel">
+                          <i class="fa fa-map-marked-alt"></i> Map
+                        </button>
+                    </div>
                 </div>
                 {{ form|crispy }}
             </fieldset>
@@ -30,6 +35,7 @@
         </form>
     </div>
 </div>
+{%include 'projects/map-model.html'%}
 <script type="text/javascript">
     let setLocation = loc => {
         document.querySelector("input[name=longitude]").value =
@@ -50,3 +56,6 @@
     });
 </script>
 {% include 'projects/form_scripts.html' %} {% endblock content%}
+{% block my_script%}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ7WXCqy5-cyHTyho_XLgBDHJZe4n-nAw&callback=initMap" async defer></script>
+{%endblock%}

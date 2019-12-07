@@ -1,0 +1,54 @@
+<!-- Modal -->
+<div class="modal fade" id="mapModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select location from Map</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="map" style="width: 100%; height: 24rem;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var map; //Will contain map object.
+  var marker = false;
+
+  function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: -6.7924, lng: 39.2083},
+        zoom: 8
+      });
+      google.maps.event.addListener(map, 'click', function(event) {
+        var clickedLocation = event.latLng;
+        if(marker === false){
+            marker = new google.maps.Marker({
+                position: clickedLocation,
+                map: map,
+                draggable: true //make it draggable
+            });
+            google.maps.event.addListener(marker, 'dragend', function(event){
+                markerLocation();
+            });
+        } else{
+            marker.setPosition(clickedLocation);
+        }
+        markerLocation();
+    });
+  }
+  function markerLocation(){
+      var loc = marker.getPosition();
+      document.querySelector("input[name=longitude]").value = loc.lng();
+      document.querySelector("input[name=latitude]").value = loc.lat();
+      document.querySelector( "#coordinates").textContent = `(${loc.lng().toFixed(4)}, ${loc.lat().toFixed(4)})`;
+  }
+</script>

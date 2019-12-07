@@ -19,6 +19,11 @@ def home(request):
 
 
 @login_required
+def map(request):
+    return render(request, 'dashboard/map.html', {})
+
+
+@login_required
 def get_data_project_type(request):
     list = prj_models.Project.objects.values('type__name').annotate(count=Count('id'))
     data = []
