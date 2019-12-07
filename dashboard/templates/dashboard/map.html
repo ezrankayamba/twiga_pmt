@@ -1,18 +1,36 @@
 {% extends "core/base.html" %} {% load static %} {% block content %}
 <div class="row">
     <div class="col-md">
-        <h6>My Map here</h6>
-        <div id="map" style="width: 100%; height: 36rem;"></div>
+        <h6>Projects Map</h6>
+        <div id="map" style="width: 100%; height: 36rem;" data-url="{%url 'data-project-list'%}"></div>
     </div>
 </div>
 <script>
       var map;
+      let mapEl=document.getElementById('map')
       function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -6.7924, lng: 39.2083},
-          zoom: 8
+        map = new google.maps.Map(mapEl, {
+          center: {lat: -6.1920, lng: 35.7699},
+          zoom: 6
         });
       }
+      let url=mapEl.dataset.url
+      fetch(url)
+        .then(res=>res.json())
+        .then(res=>{
+          let json=JSON.parse(res)
+          console.log(json)
+          json.forEach(p=>{
+            console.log(p.fields.longitude, p.fields.latitude)
+            let latLng={lat: parseFloat(p.fields.latitude), lng: parseFloat(p.fields.longitude)}
+            console.log(latLng)
+            marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                draggable: false
+            });
+          })
+        })
 </script>
 {% endblock content%}
 {% block my_script%}

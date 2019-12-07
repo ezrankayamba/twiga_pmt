@@ -38,6 +38,12 @@ def get_data_project_type(request):
 
 
 @login_required
+def get_data_project_list(request):
+    list = prj_models.Project.objects.all()
+    return JsonResponse(serialize('json', list), safe=False)
+
+
+@login_required
 def get_data_project_region(request):
     list = prj_models.Project.objects.values('region__name').annotate(count=Count('id'))
     my_dict = {}
