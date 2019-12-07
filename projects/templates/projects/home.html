@@ -27,23 +27,21 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Location</th>
                     <th scope="col">Type</th>
                     <th scope="col">Authority</th>
+                    <th scope="col">Contractor(s)</th>
                     <th scope="col">Consultant</th>
-                    <th scope="col"><span class="nowrap">Start Date</span></th>
-                    <th scope="col">Location</th>
                     <th scope="col">Status</th>
                     <th scope="col">
-                        <span class="nowrap">Duration (Yrs)</span>
+                        <span class="nowrap">Duration(Yrs)</span>
+                    </th>
+                    <th scope="col">Financer(s)</th>
+                    <th scope="col">
+                        <span class="nowrap">Quantity(Tons)</span>
                     </th>
                     <th scope="col">
-                        <span class="nowrap">Remaining (Yrs)</span>
-                    </th>
-                    <th scope="col">
-                        <span class="nowrap">Quantity (Tons)</span>
-                    </th>
-                    <th scope="col">
-                        <span class="nowrap">Supplied (Tons)</span>
+                        <span class="nowrap">Supplied(Tons)</span>
                     </th>
                     <th scope="col"></th>
                 </tr>
@@ -52,14 +50,31 @@
             <tr>
                 <td scope="row">{{prj.id}}</td>
                 <td>{{prj.name}}</td>
+                <td>{{prj.get_location}}</td>
                 <td>{{prj.type}}</td>
                 <td>{{prj.authority}}</td>
+                <td>
+                    {%for c in prj.contractors.all %}
+                    <p class="text-muted">
+                        <i class="fa fa-check text-muted"></i>
+                        {{c.contractor.name}}
+                    </p>
+                    {%empty%}
+                    <span class="text-warning">Not set</span>
+                    {%endfor%}
+                </td>
                 <td>{{prj.consultant}}</td>
-                <td>{{prj.start_date}}</td>
-                <td>{{prj.get_location}}</td>
                 <td>{{prj.get_status}}</td>
                 <td>{{prj.duration }}</td>
-                <td>{{prj.get_time_remaining|floatformat:2 }}</td>
+                <td>
+                    {%for f in prj.financers.all %}
+                    <p class="text-muted">
+                        <i class="fa fa-check text-muted"></i>
+                        {{f.financer.name}}
+                    </p>
+                    {%empty%}<span class="text-warning">Not set</span>
+                    {%endfor%}
+                </td>
                 <td>{{prj.quantity_demanded|floatformat:2 }}</td>
                 <td>{{prj.quantity_supplied|floatformat:2 }}</td>
                 <td>

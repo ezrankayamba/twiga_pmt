@@ -29,6 +29,7 @@ class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = forms.ProjectCreateForm
 
     def form_valid(self, form):
+        form.instance.created_by = self.request.user
         return super().form_valid(form)
 
 
@@ -37,6 +38,7 @@ class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = forms.ProjectUpdateForm
 
     def form_valid(self, form):
+        form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
 
