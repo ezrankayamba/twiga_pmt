@@ -6,7 +6,7 @@ from setups import models as s_models
 class ProjectCreateForm(ModelForm):
     class Meta:
         model = models.Project
-        fields = ['name', 'type', 'start_date', 'region', 'district', 'town', 'duration', 'authority', 'consultant', 'quantity_demanded', 'quantity_supplied', 'remarks', 'latitude', 'longitude']
+        fields = ['name', 'type', 'size', 'start_date', 'region', 'district', 'town', 'duration', 'authority', 'quantity_demanded', 'quantity_supplied', 'remarks', 'latitude', 'longitude']
         widgets = {
             'remarks': Textarea(attrs={'rows': 2}),
             'start_date': DateInput(attrs={'class': 'datepicker', 'type': 'date'}),
@@ -18,7 +18,7 @@ class ProjectCreateForm(ModelForm):
 class ProjectUpdateForm(ModelForm):
     class Meta:
         model = models.Project
-        fields = ['name', 'type', 'start_date', 'status', 'region', 'district', 'town', 'duration', 'authority', 'consultant', 'quantity_demanded', 'quantity_supplied', 'remarks', 'latitude', 'longitude']
+        fields = ['name', 'type', 'size', 'start_date', 'status', 'region', 'district', 'town', 'duration', 'authority', 'quantity_demanded', 'quantity_supplied', 'remarks', 'latitude', 'longitude']
         widgets = {
             'remarks': Textarea(attrs={'rows': 2}),
             'start_date': DateInput(attrs={'class': 'datepicker', 'type': 'date'}),

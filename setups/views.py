@@ -103,6 +103,26 @@ class DistrictCreateView(generic.CreateView):
         return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_district");</script>')
 
 
+class SizeCreateView(generic.CreateView):
+    model = models.Size
+    template_name = 'setups/popups/size_form.html'
+    fields = ['code', 'name']
+
+    def form_valid(self, form):
+        instance = form.save()
+        return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_size");</script>')
+
+
+class StatusCreateView(generic.CreateView):
+    model = models.Status
+    template_name = 'setups/popups/status_form.html'
+    fields = ['code', 'name']
+
+    def form_valid(self, form):
+        instance = form.save()
+        return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_status");</script>')
+
+
 class TypeUpdateView(generic.UpdateView):
     model = models.Type
     fields = ['name']

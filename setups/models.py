@@ -1,6 +1,22 @@
 from django.db import models
 
 
+class Size(models.Model):
+    code = models.CharField(max_length=4, unique=True)
+    name = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+
+class Status(models.Model):
+    code = models.CharField(max_length=4, unique=True)
+    name = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+
 class Type(models.Model):
     name = models.CharField(max_length=40, unique=True)
 

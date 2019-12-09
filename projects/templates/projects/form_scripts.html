@@ -32,36 +32,46 @@ let refreshOnRegion = (el, cb) => {
     let h = (window.innerHeight * 3) / 4;
     let baseUrl = window.location.origin;
     let regionSel = undefined;
-    [{ name: "type", url: '{% url "setups-type-create" %}' }, { name: "region", url: '{% url "setups-region-create" %}' }, { name: "district", url: '{% url "setups-district-create" %}' }, { name: "authority", url: '{% url "setups-authority-create" %}' }, { name: "consultant", url: '{% url "setups-consultant-create" %}' }].forEach(fld => {
+    [
+        { name: "type", url: '{% url "setups-type-create" %}' },
+        { name: "region", url: '{% url "setups-region-create" %}' },
+        { name: "district", url: '{% url "setups-district-create" %}' },
+        { name: "authority", url: '{% url "setups-authority-create" %}' },
+        { name: "status", url: '{% url "setups-status-create" %}' },
+        { name: "size", url: '{% url "setups-size-create" %}' }
+    ].forEach(fld => {
         let name = fld.name;
+        console.log(fld, name)
         let container = document.querySelector(`#div_id_${name}`);
-        let sel = container.querySelector("select");
-        let btn = document.createElement("button");
-        btn.innerHTML = `<i class="fa fa-plus"></i>`;
-        btn.classList.add("btn");
-        btn.classList.add("btn-link");
-        btn.classList.add("text-secondary");
-        btn.classList.add("pr-0");
-        btn.classList.add("pl-1");
-        btn.dataset.url = fld.url;
-        btn.type = "button";
-        btn.classList.add("add-other");
-        btn.title = "Add other";
-        if (name === "district") {
-            btn.disabled = document.querySelector("#id_region").value ? false : true;
-            btn.id = "btn_select_district";
-        }
-        sel.parentNode.insertBefore(btn, sel.nextSibling);
-        sel.parentElement.classList.add("d-flex");
-        if (name === 'region') {
-            regionSel = sel;
-        }
-        if (name === 'district') {
-            let tmp = sel.value;
-            console.log('Value: ', tmp);
-            refreshOnRegion(regionSel, () => {
-                sel.value = tmp;
-            });
+        if (container){
+            let sel = container.querySelector("select");
+            let btn = document.createElement("button");
+            btn.innerHTML = `<i class="fa fa-plus"></i>`;
+            btn.classList.add("btn");
+            btn.classList.add("btn-link");
+            btn.classList.add("text-secondary");
+            btn.classList.add("pr-0");
+            btn.classList.add("pl-1");
+            btn.dataset.url = fld.url;
+            btn.type = "button";
+            btn.classList.add("add-other");
+            btn.title = "Add other";
+            if (name === "district") {
+                btn.disabled = document.querySelector("#id_region").value ? false : true;
+                btn.id = "btn_select_district";
+            }
+            sel.parentNode.insertBefore(btn, sel.nextSibling);
+            sel.parentElement.classList.add("d-flex");
+            if (name === 'region') {
+                regionSel = sel;
+            }
+            if (name === 'district') {
+                let tmp = sel.value;
+                // console.log('Value: ', tmp);
+                refreshOnRegion(regionSel, () => {
+                    sel.value = tmp;
+                });
+            }
         }
     });
 

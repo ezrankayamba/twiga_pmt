@@ -12,4 +12,6 @@ urlpatterns = [
     path('supplier/create', views.SupplierCreateView.as_view(), name='setups-supplier-create'),
     path('financer/create', views.FinancerCreateView.as_view(), name='setups-financer-create'),
     path('contractor/create', views.ContractorCreateView.as_view(), name='setups-contractor-create'),
+    path('status/create', views.StatusCreateView.as_view(), name='setups-status-create'),
+    path('size/create', views.SizeCreateView.as_view(), name='setups-size-create'),
 ]

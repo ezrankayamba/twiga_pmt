@@ -7,20 +7,24 @@ import decimal
 from django.contrib.auth.models import User
 
 
-PROJECT_STATUS_LIST = (('INT', "Initiated"), ('ONG', "Ongoing"), ('CMP', "Completed"))
+# PROJECT_STATUS_LIST = (('INT', "Initiated"), ('ONG', "Ongoing"), ('CMP', "Completed"), ('STP', "Stopped"))
+
+
+def initial_status():
+    return s_models.Status.objects.get(code='INT')
 
 
 class Project(models.Model):
     name = models.CharField(max_length=255, unique=True)
     start_date = models.DateField(null=True)
     type = models.ForeignKey(to=s_models.Type, related_name="projects", on_delete=models.PROTECT)
-    status = models.CharField(max_length=10, default='INT', choices=PROJECT_STATUS_LIST)
+    status = models.ForeignKey(to=s_models.Status, related_name="projects", on_delete=models.PROTECT, default=initial_status, null=True)
+    size = models.ForeignKey(to=s_models.Size, related_name="projects", on_delete=models.PROTECT, null=True)
     region = models.ForeignKey(to=s_models.Region, related_name="projects", on_delete=models.PROTECT, null=True)
     district = models.ForeignKey(to=s_models.District, related_name="projects", on_delete=models.PROTECT, null=True)
     town = models.CharField(max_length=40, null=True)
     duration = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Duration (Years)'))
     authority = models.ForeignKey(to=s_models.Authority, related_name="projects", on_delete=models.PROTECT, null=True)
-    consultant = models.ForeignKey(to=s_models.Consultant, related_name="projects", on_delete=models.PROTECT, null=True)
     remarks = models.CharField(max_length=1000, null=True, blank=True)
     quantity_demanded = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=('Quantity Demanded (Tons)'))
     quantity_supplied = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=('Quantity Supplied (Tons)'))
@@ -30,12 +34,6 @@ class Project(models.Model):
     date_updated = models.DateTimeField(auto_now=True, null=True)
     created_by = models.ForeignKey(to=User, related_name="created_projects", on_delete=models.PROTECT, null=True)
     updated_by = models.ForeignKey(to=User, related_name="updated_projects", on_delete=models.PROTECT, null=True)
-
-    def get_status(self):
-        for en in PROJECT_STATUS_LIST:
-            if(en[0] == self.status):
-                return en[1]
-        return 'Unknown'
 
     def get_coordinates(self):
         if self.latitude == None or self.longitude == None:
@@ -61,9 +59,12 @@ class Project(models.Model):
 
 
 class ProjectContractor(models.Model):
-    project = models.ForeignKey(to=Project, related_name="contractors", on_delete=models.PROTECT)
+    project = models.ForeignKey(to=Project, related_name="contractors", on_delete=models.CASCADE)
     contractor = models.ForeignKey(to=s_models.Contractor, related_name="projects", on_delete=models.PROTECT)
     sub_contractor = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = [['project', 'contractor']]
 
     def __str__(self):
         return self.contractor.name
@@ -73,18 +74,36 @@ class ProjectContractor(models.Model):
 
 
 class ProjectFinancer(models.Model):
-    project = models.ForeignKey(to=Project, related_name="financers", on_delete=models.PROTECT)
+    project = models.ForeignKey(to=Project, related_name="financers", on_delete=models.CASCADE)
     financer = models.ForeignKey(to=s_models.Financer, related_name="projects", on_delete=models.PROTECT)
+
+    class Meta:
+        unique_together = [['project', 'financer']]
+
+    def get_absolute_url(self):
+        return reverse('projects-detail', kwargs={'pk': self.project.id})
+
+
+class ProjectConsultant(models.Model):
+    project = models.ForeignKey(to=Project, related_name="consultants", on_delete=models.CASCADE)
+    consultant = models.ForeignKey(to=s_models.Consultant, related_name="projects", on_delete=models.PROTECT)
+
+    class Meta:
+        unique_together = [['project', 'consultant']]
 
     def get_absolute_url(self):
         return reverse('projects-detail', kwargs={'pk': self.project.id})
 
 
 class ProjectSupplier(models.Model):
-    project = models.ForeignKey(to=Project, related_name="suppliers", on_delete=models.PROTECT)
+    project = models.ForeignKey(to=Project, related_name="suppliers", on_delete=models.CASCADE)
     supplier = models.ForeignKey(to=s_models.Supplier, related_name="projects", on_delete=models.PROTECT)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Price(TZS)'))
     quantity = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=('Quantity(Tons)'))
+    under = models.ForeignKey(to=s_models.Supplier, related_name="distributors", on_delete=models.PROTECT, null=True, blank=True)
+
+    class Meta:
+        unique_together = [['project', 'supplier']]
 
     def __str__(self):
         return self.supplier.name

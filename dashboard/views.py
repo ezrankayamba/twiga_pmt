@@ -139,16 +139,16 @@ def get_data_project_supplier(request):
 
 @login_required
 def get_data_project_status(request):
-    list = prj_models.Project.objects.values('status').annotate(count=Count('id'))
+    list = prj_models.Project.objects.values('status__id').annotate(count=Count('id'))
     my_dict = {}
     data = []
     labels = []
     for item in list:
-        my_dict[item['status']] = item['count']
-    for s in prj_models.PROJECT_STATUS_LIST:
-        labels.append(s[1])
-        if s[0] in my_dict:
-            data.append(my_dict[s[0]])
+        my_dict[item['status__id']] = item['count']
+    for s in s_models.Status.objects.all():
+        labels.append(s.name)
+        if s.id in my_dict:
+            data.append(my_dict[s.id])
         else:
             data.append(0)
     return JsonResponse({

@@ -10,6 +10,7 @@ from . import filters
 from .resources import ProjectResource
 from django.http import HttpResponse
 from datetime import datetime
+from . import exports
 
 
 @login_required
@@ -110,9 +111,39 @@ class ProjectFinancerUpdateView(LoginRequiredMixin, generic.UpdateView):
         return super(ProjectFinancerUpdateView, self).form_valid(form)
 
 
+class ProjectConsultantCreateView(LoginRequiredMixin, generic.CreateView):
+    model = models.ProjectConsultant
+    fields = ['consultant']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['setup_url'] = reverse('setups-consultant-create')
+        return context
+
+    def form_valid(self, form):
+        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
+        form.instance.project = project
+        return super(ProjectConsultantCreateView, self).form_valid(form)
+
+
+class ProjectConsultantUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = models.ProjectConsultant
+    fields = ['consultant']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['setup_url'] = reverse('setups-consultant-create')
+        return context
+
+    def form_valid(self, form):
+        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
+        form.instance.project = project
+        return super(ProjectConsultantUpdateView, self).form_valid(form)
+
+
 class ProjectSupplierCreateView(LoginRequiredMixin, generic.CreateView):
     model = models.ProjectSupplier
-    fields = ['supplier', 'price', 'quantity']
+    fields = ['supplier', 'price', 'quantity', 'under']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -128,7 +159,7 @@ class ProjectSupplierCreateView(LoginRequiredMixin, generic.CreateView):
 
 class ProjectSupplierUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = models.ProjectSupplier
-    fields = ['supplier', 'price', 'quantity']
+    fields = ['supplier', 'price', 'quantity', 'under']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -143,9 +174,9 @@ class ProjectSupplierUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 def export_projects(request):
-    resource = ProjectResource(request.user)
-    dataset = resource.export()
-    response = HttpResponse(dataset.csv, content_type='text/csv')
     export_id = datetime.now().strftime("%Y%m%d%H%M%S")
-    response['Content-Disposition'] = f'attachment; filename="{export_id}_Projects.csv"'
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = f'attachment; filename="{export_id}_Projects.xlsx"'
+    xlsx_data = exports.projects_report(request)
+    response.write(xlsx_data)
     return response
