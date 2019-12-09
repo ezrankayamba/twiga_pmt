@@ -50,6 +50,12 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = models.Project
     context_object_name = 'prj'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        project = get_object_or_404(models.Project, id=self.kwargs['pk'])
+        context['audit_list'] = models.ProjectAudit.objects.filter(project=project).all()[:3]
+        return context
+
 
 class ProjectContractorCreateView(LoginRequiredMixin, generic.CreateView):
     model = models.ProjectContractor
@@ -171,6 +177,23 @@ class ProjectSupplierUpdateView(LoginRequiredMixin, generic.UpdateView):
         project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
         form.instance.project = project
         return super(ProjectSupplierUpdateView, self).form_valid(form)
+
+
+class ProjectAuditCreateView(LoginRequiredMixin, generic.CreateView):
+    model = models.ProjectAudit
+    form_class = forms.ProjectAuditCreateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def form_valid(self, form):
+        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
+        form.instance.project = project
+        form.instance.manual = True
+        form.instance.logged_by = self.request.user
+        form.instance.other = 'Manual Audit'
+        return super(ProjectAuditCreateView, self).form_valid(form)
 
 
 def export_projects(request):

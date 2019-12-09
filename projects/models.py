@@ -115,12 +115,16 @@ class ProjectSupplier(models.Model):
 class ProjectAudit(models.Model):
     project = models.ForeignKey(to=Project, related_name="audits", on_delete=models.CASCADE)
     remarks = models.CharField(max_length=1000, null=True, blank=True)
-    demanded = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    supplied = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    balance = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    demanded = models.DecimalField(decimal_places=2, max_digits=10, default=0, null=True)
+    supplied = models.DecimalField(decimal_places=2, max_digits=10, default=0, null=True)
+    balance = models.DecimalField(decimal_places=2, max_digits=10, default=0, null=True)
     other = models.CharField(max_length=1000, null=True, blank=True)
     logged_by = models.ForeignKey(to=User, related_name="audits", on_delete=models.CASCADE, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
+    manual = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-date_created']
+
+    def get_absolute_url(self):
+        return reverse('projects-detail', kwargs={'pk': self.project.id})

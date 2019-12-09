@@ -12,20 +12,40 @@
 </div>
 <div id="audit" class="collapse show" data-parent="#details">
     <div class="card-body p-2">
-        {%for audit in prj.audits.all%}
-        <div class="mb-2 text-muted small">
-            <p class="mb-0">
-                <b
-                    ><span>{{audit.other}}</span> on
-                    <span>{{audit.date_created}}</span> by
-                    <span>{{audit.logged_by}}</span></b
+        <div class="row bg-light pt-2 pb-2">
+            <div class="col">
+                <a
+                    href="{%url 'projects-audit-create' prj.id %}"
+                    role="button"
+                    class="btn btn-sm btn-outline-primary"
+                    >Add manual audit</a
                 >
-            </p>
-            <p class="mb-0">
-                {{audit.supplied}} Tons supplied out of {{audit.demanded}}
-            </p>
-            <p class="mb-0">Balance: {{audit.balance}} Tons</p>
+            </div>
         </div>
-        {%endfor%}
+        <div class="row">
+            <div class="col audit-container">
+                {%for audit in prj.audits.all%}
+                <div class="mb-2 text-muted small">
+                    <p class="mb-0">
+                        <b
+                            ><span>{{audit.other}}</span> on
+                            <span>{{audit.date_created}}</span> by
+                            <span>{{audit.logged_by}}</span></b
+                        >
+                    </p>
+                    {%if audit.manual %}
+                    <p class="mb-0">
+                        {{audit.remarks}}
+                    </p>
+                    {%else%}
+                    <p class="mb-0">
+                        {{audit.supplied}} Tons supplied out of {{audit.demanded}}
+                    </p>
+                    <p class="mb-0">Balance: {{audit.balance}} Tons</p>
+                    {%endif%}
+                </div>
+                {%endfor%}
+            </div>
+        </div>
     </div>
 </div>

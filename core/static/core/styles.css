@@ -127,3 +127,7 @@ body,
         width: 600px;
     }
 }
+.audit-container{
+    max-height: 10rem;
+    overflow-y: scroll;
+}

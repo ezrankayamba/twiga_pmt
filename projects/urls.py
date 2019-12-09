@@ -16,5 +16,6 @@ urlpatterns = [
     path('<project_id>/supplier/create', views.ProjectSupplierCreateView.as_view(), name='projects-supplier-create'),
     path('<project_id>/supplier/update/<pk>', views.ProjectSupplierUpdateView.as_view(), name='projects-supplier-update'),
     path('<project_id>/consultant/create', views.ProjectConsultantCreateView.as_view(), name='projects-consultant-create'),
+    path('<project_id>/audit/create', views.ProjectAuditCreateView.as_view(), name='projects-audit-create'),
     path('<project_id>/consultant/update/<pk>', views.ProjectConsultantUpdateView.as_view(), name='projects-consultant-update'),
 ]

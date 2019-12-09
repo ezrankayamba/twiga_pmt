@@ -25,3 +25,12 @@ class ProjectUpdateForm(ModelForm):
             'latitude': HiddenInput(),
             'longitude': HiddenInput(),
         }
+
+
+class ProjectAuditCreateForm(ModelForm):
+    class Meta:
+        model = models.ProjectAudit
+        fields = ['remarks']
+        widgets = {
+            'remarks': Textarea(attrs={'rows': 3}),
+        }
