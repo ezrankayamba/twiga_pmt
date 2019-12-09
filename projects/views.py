@@ -7,6 +7,9 @@ from . import models
 from . import forms
 from django.urls import reverse
 from . import filters
+from .resources import ProjectResource
+from django.http import HttpResponse
+from datetime import datetime
 
 
 @login_required
@@ -137,3 +140,12 @@ class ProjectSupplierUpdateView(LoginRequiredMixin, generic.UpdateView):
         project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
         form.instance.project = project
         return super(ProjectSupplierUpdateView, self).form_valid(form)
+
+
+def export_projects(request):
+    resource = ProjectResource(request.user)
+    dataset = resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    export_id = datetime.now().strftime("%Y%m%d%H%M%S")
+    response['Content-Disposition'] = f'attachment; filename="{export_id}_Projects.csv"'
+    return response

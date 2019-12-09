@@ -5,13 +5,11 @@
         <h5>List of projects</h5>
     </div>
     <div class="col-md">
-        <a
-            role="button"
-            class="btn btn-primary btn-sm float-md-right"
-            href="{% url 'projects-create' %}"
-        >
-            Add New Project
-        </a>
+        <div class="button-group float-md-right">
+          <a href="{% url 'projects-create' %}" class="btn btn-sm btn-outline-secondary"><span class="mr-2 oi oi-spreadsheet"></span>Import</a>
+          <a href="{% url 'projects-export' %}" class="btn btn-sm btn-outline-primary"><span class="mr-2 oi oi-spreadsheet"></span>Export</a>
+          <a class="btn btn-primary btn-sm " href="{% url 'projects-create' %}">Add New Project</a>
+        </div>
     </div>
 </div>
 <div class="row small">
@@ -121,6 +119,14 @@
             console.log(crtr);
             grp.appendChild(crtr);
         });
+        form.querySelectorAll('.selectmultiple').forEach(sel=>{
+            sel.classList.remove('selectmultiple')
+            sel.removeAttribute('multiple')
+            let tmp=document.createElement('div')
+            tmp.innerHTML='<option value="" selected="">---------</option>'.trim()
+            console.log(tmp)
+            sel.insertBefore(tmp.firstChild, sel.firstChild)
+        })
     })();
 </script>
 {% endblock content%}

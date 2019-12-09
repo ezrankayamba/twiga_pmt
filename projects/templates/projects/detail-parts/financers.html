@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="row">
-            {%for prj_fin in prj.project_financers.all%}
+            {%for prj_fin in prj.financers.all%}
             <div class="col-md pb-3">
                 <p class="mb-1">
                     {{prj_fin.financer.name}}

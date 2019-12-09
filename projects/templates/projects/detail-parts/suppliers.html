@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="row">
-            {%for prj_sup in prj.project_suppliers.all%}
+            {%for prj_sup in prj.suppliers.all%}
             <div class="col-md pb-3">
                 <p class="mb-1">
                     {{prj_sup.supplier.name}}
