@@ -22,7 +22,7 @@ class Command(BaseCommand):
                     print(f'Column names are {", ".join(row)}')
                     line_count += 1
                 else:
-                    region_name = row[0]
-                    district_name = row[1]
+                    region_name = strip(row[0])
+                    district_name = strip(row[1])
                     region, r_created = models.Region.objects.get_or_create(name=region_name)
                     district, d_created = models.District.objects.get_or_create(name=district_name, region=region)
