@@ -6,9 +6,19 @@
     </div>
     <div class="col-md">
         <div class="button-group float-md-right">
-          <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fa fa-file-excel"></i> Import</a>
-          <a href="{% url 'projects-export' %}" class="btn btn-sm btn-outline-primary"><i class="fa fa-file-excel"></i> Export</a>
-          <a class="btn btn-primary btn-sm " href="{% url 'projects-create' %}"><i class="fa fa-plus"></i> New Project</a>
+            <a href="#" class="btn btn-sm btn-outline-secondary"
+                ><i class="fa fa-file-excel"></i> Import</a
+            >
+            <a
+                href="{% url 'projects-export' %}"
+                class="btn btn-sm btn-outline-primary"
+                ><i class="fa fa-file-excel"></i> Export</a
+            >
+            <a
+                class="btn btn-primary btn-sm "
+                href="{% url 'projects-create' %}"
+                ><i class="fa fa-plus"></i> New Project</a
+            >
         </div>
     </div>
 </div>
@@ -22,7 +32,10 @@
                         {{ filter.form|crispy }}
                     </div>
                     <div class="pr-2">
-                        <button type="submit" class="btn btn-sm btn-outline-info mt-2 float-md-right">
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-outline-info mt-2 float-md-right"
+                        >
                             <a class="fa fa-filter"></a> Search
                         </button>
                     </div>
@@ -37,6 +50,7 @@
                     <th scope="col">Location</th>
                     <th scope="col">Type</th>
                     <th scope="col">Size</th>
+                    <th scope="col">StartDate</th>
                     <th scope="col">Authority</th>
                     <th scope="col">Contractors</th>
                     <th scope="col">Consultants</th>
@@ -61,6 +75,7 @@
                 <td>{{prj.get_location}}</td>
                 <td>{{prj.type}}</td>
                 <td>{{prj.size}}</td>
+                <td>{{prj.start_date}}</td>
                 <td>{{prj.authority}}</td>
                 <td>
                     {%for c in prj.contractors.all %}

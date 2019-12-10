@@ -22,13 +22,10 @@
         </p>
         {%endif%}
         <p class="mb-1 text-muted">
-            <i class="fa fa-phone"></i
-            ><a
-                role="button"
-                href="tel:{{prj.authority.phone}}"
-                class="btn btn-sm text-muted"
-                >{{prj.authority.phone}}</a
-            >
+            <i class="fa fa-phone"></i> {{prj.authority.phone}}
+        </p>
+        <p class="mb-1 text-muted">
+            <i class="fa fa-at"></i> {{prj.authority.email}}
         </p>
         {%else%}
         <a
