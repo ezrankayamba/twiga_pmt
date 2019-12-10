@@ -155,3 +155,23 @@ def get_data_project_status(request):
         'data': data,
         'labels': labels
     })
+
+
+@login_required
+def get_data_project_size(request):
+    list = prj_models.Project.objects.values('size__id').annotate(count=Count('id'))
+    my_dict = {}
+    data = []
+    labels = []
+    for item in list:
+        my_dict[item['size__id']] = item['count']
+    for s in s_models.Size.objects.all():
+        labels.append(s.name)
+        if s.id in my_dict:
+            data.append(my_dict[s.id])
+        else:
+            data.append(0)
+    return JsonResponse({
+        'data': data,
+        'labels': labels
+    })
