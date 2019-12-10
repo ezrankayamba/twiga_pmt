@@ -32,7 +32,7 @@ def projects_report(request):
     workbook = xlsxwriter.Workbook(output)
 
     main = workbook.add_worksheet("Projects")
-    headers = ['Name', 'Type', 'Start Date', 'Status', 'Region', 'District', 'Town', 'Duration(Yrs)', 'Authority', 'Qty Demanded(Tons)', 'Qty Supplied(Tons)']
+    headers = ['Name', 'Type', 'Size', 'Start Date', 'Status', 'Region', 'District', 'Town', 'Duration(Yrs)', 'Authority', 'Qty Demanded(Tons)', 'Qty Supplied(Tons)']
     rows = []
     c_consult = 0
     c_contrac = 0
@@ -55,8 +55,9 @@ def projects_report(request):
         row = []
         row.append(prj.name)
         row.append(prj.type.name)
+        row.append(prj.size.name)
         row.append(prj.start_date.strftime("%d/%m/%Y"))
-        row.append(prj.get_status())
+        row.append(prj.status.name)
         row.append(prj.region.name)
         row.append(prj.district.name)
         row.append(prj.town)
