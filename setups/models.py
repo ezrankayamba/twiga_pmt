@@ -16,6 +16,9 @@ class Status(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "Statuses"
+
 
 class Type(models.Model):
     name = models.CharField(max_length=40, unique=True)
@@ -46,6 +49,9 @@ class Authority(models.Model):
     phone = models.CharField(max_length=40, null=True, blank=True)
     email = models.CharField(max_length=40, null=True, blank=True)
     location = models.CharField(max_length=40, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Authorities"
 
     def __str__(self):
         return self.name
