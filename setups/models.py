@@ -1,5 +1,7 @@
 from django.db import models
 
+SETUPS_LIST = ['authority', 'consultant', 'contractor', 'financer', 'supplier', 'size', 'status', 'region', 'district', 'type']
+
 
 class Size(models.Model):
     code = models.CharField(max_length=4, unique=True)

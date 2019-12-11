@@ -1,79 +1,92 @@
 {% extends "core/base.html" %} {% block content %}
 <div class="row pb-3">
-    <div class="col-md-4 d-flex">
-        <div class="card">
-            <h5 class="card-header">Authorities</h5>
-            <div class="card-body">
-                <p class="card-text">
-                    Each project is related to one government authority.
-                    Register and manage authorities from here
-                </p>
-            </div>
-            <div class="card-footer text-muted">
-                <a href="#" class="btn btn-sm btn-outline-secondary">Manage</a>
-            </div>
-        </div>
+    <div class="col-md-6">
+        <ul class="list-group mt-2">
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                <a href="{%url 'setups-authority-list'%}">Authorities</a>
+                <span class="badge badge-primary badge-pill"
+                    >{{authority_count}}</span
+                >
+            </li>
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                Consultants
+                <span class="badge badge-primary badge-pill"
+                    >{{consultant_count}}</span
+                >
+            </li>
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                Contractors
+                <span class="badge badge-primary badge-pill"
+                    >{{contractor_count}}</span
+                >
+            </li>
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                Financers
+                <span class="badge badge-primary badge-pill"
+                    >{{financer_count}}</span
+                >
+            </li>
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                Suppliers/Distributors
+                <span class="badge badge-primary badge-pill"
+                    >{{supplier_count}}</span
+                >
+            </li>
+        </ul>
     </div>
-    <div class="col-md-4 d-flex">
-        <div class="card">
-            <h5 class="card-header">Contractors</h5>
-            <div class="card-body">
-                <p class="card-text">
-                    Each project is assigned to one or more contractors. A
-                    contractor can be as main or sub contractor. Register and
-                    manage contractors f3om here
-                </p>
-            </div>
-            <div class="card-footer text-muted">
-                <a href="#" class="btn btn-sm btn-outline-secondary">Manage</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 d-flex">
-        <div class="card">
-            <h5 class="card-header">Financiers</h5>
-            <div class="card-body">
-                <p class="card-text">
-                    Each project financed by one or more financiers. Register
-                    and manage financiers from here
-                </p>
-            </div>
-            <div class="card-footer text-muted">
-                <a href="#" class="btn btn-sm btn-outline-secondary">Manage</a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4 d-flex">
-        <div class="card">
-            <h5 class="card-header">Consultants</h5>
-            <div class="card-body">
-                <p class="card-text">
-                    Each project assigned to one or more consultants. Register
-                    and manage consultants from here
-                </p>
-            </div>
-            <div class="card-footer text-muted">
-                <a href="#" class="btn btn-sm btn-outline-secondary">Manage</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 d-flex">
-        <div class="card">
-            <h5 class="card-header">Locations</h5>
-            <div class="card-body">
-                <p class="card-text">
-                    Each project is executed in a certain location. Location is
-                    described in terms of Region, manicipal and town. Also GPS
-                    location is captured at the site. Register and manage
-                    consultants from here
-                </p>
-            </div>
-            <div class="card-footer text-muted">
-                <a href="#" class="btn btn-sm btn-outline-secondary">Manage</a>
-            </div>
-        </div>
+    <div class="col-md-6">
+        <ul class="list-group mt-2">
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                Types
+                <span class="badge badge-primary badge-pill"
+                    >{{type_count}}</span
+                >
+            </li>
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                Sizes
+                <span class="badge badge-primary badge-pill"
+                    >{{size_count}}</span
+                >
+            </li>
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                Statuses
+                <span class="badge badge-primary badge-pill"
+                    >{{status_count}}</span
+                >
+            </li>
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                Regions
+                <span class="badge badge-primary badge-pill"
+                    >{{region_count}}</span
+                >
+            </li>
+            <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+            >
+                Districts
+                <span class="badge badge-primary badge-pill"
+                    >{{district_count}}</span
+                >
+            </li>
+        </ul>
     </div>
 </div>
 {% endblock content%}

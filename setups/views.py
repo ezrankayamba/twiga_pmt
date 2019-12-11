@@ -6,11 +6,16 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from . import models
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 
 
 @login_required
 def home(request):
-    return render(request, 'setups/home.html', {})
+    ctx = {}
+    for model in models.SETUPS_LIST:
+        Cls = eval(f'models.{model.capitalize()}')
+        ctx[f'{model}_count'] = Cls.objects.count()
+    return render(request, 'setups/home.html', ctx)
 
 
 @csrf_exempt
@@ -126,3 +131,48 @@ class StatusCreateView(generic.CreateView):
 class TypeUpdateView(generic.UpdateView):
     model = models.Type
     fields = ['name']
+
+
+class SetupGenericCreateView(generic.CreateView):
+    template_name = 'setups/setup_form.html'
+
+    def __init__(self, *args, **kwargs):
+        super(SetupGenericCreateView, self).__init__(*args, **kwargs)
+        name = self.model.__name__.lower()
+        if name in ['size', 'status']:
+            self.fields = ['code', 'name']
+        elif name in ['district']:
+            self.fields = ['name', 'region']
+        elif name in ['region', 'type']:
+            self.fields = ['name']
+        else:
+            self.fields = ['name', 'contact_person', 'position', 'phone', 'email']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model.__name__
+        return context
+
+
+class SetupGenericUpdateView(generic.UpdateView):
+
+    def __init__(self, *args, **kwargs):
+        super(SetupGenericUpdateView, self).__init__(*args, **kwargs)
+        name = self.model.__name__.lower()
+        self.success_url = reverse(f'setups-{name}-list')
+
+        if name in ['size', 'status']:
+            self.fields = ['code', 'name']
+        elif name in ['district']:
+            self.fields = ['name', 'region']
+        elif name in ['region', 'type']:
+            self.fields = ['name']
+        else:
+            self.fields = ['name', 'contact_person', 'position', 'phone', 'email', 'location']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model.__name__
+        context['count'] = self.model.objects.all().count()
+        print(self.model.objects.all())
+        return context

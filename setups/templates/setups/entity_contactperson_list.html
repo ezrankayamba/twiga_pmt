@@ -1,0 +1,53 @@
+{% extends "core/base.html" %}{% load crispy_forms_tags %} {% block content %}
+<div class="row pb-2">
+    <div class="col-md">
+        <h5>Authority List</h5>
+    </div>
+    <div class="col-md">
+        <div class="button-group float-md-right">
+            <a
+                class="btn btn-primary btn-sm "
+                href="{% url 'setups-authority-create' %}"
+                ><i class="fa fa-plus"></i> New Authority</a
+            >
+        </div>
+    </div>
+</div>
+<div class="row pb-3 small">
+    <div class="col-md">
+        <table class="table table-sm table-hover table-bordered">
+            <thead class="bg-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Contact Person</th>
+                    <th>Position</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Location</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for e in object_list%}
+                <tr>
+                    <td>{{e.name}}</td>
+                    <td>{{e.contact_person}}</td>
+                    <td>{{e.position}}</td>
+                    <td>{{e.phone}}</td>
+                    <td>{{e.email}}</td>
+                    <td>{{e.location}}</td>
+                    <td>
+                        <a
+                            role="button"
+                            class="btn btn-sm"
+                            href="{%url 'setups-authority-update' e.id%}"
+                            ><i class="fa fa-edit"></i> Edit</a
+                        >
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content%}
