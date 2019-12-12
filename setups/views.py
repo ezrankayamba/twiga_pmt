@@ -133,12 +133,23 @@ class TypeUpdateView(generic.UpdateView):
     fields = ['name']
 
 
+class SetupGenericListView(generic.ListView):
+    # template_name = 'setups/setup_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model.__name__
+        print('context', context)
+        return context
+
+
 class SetupGenericCreateView(generic.CreateView):
     template_name = 'setups/setup_form.html'
 
     def __init__(self, *args, **kwargs):
         super(SetupGenericCreateView, self).__init__(*args, **kwargs)
         name = self.model.__name__.lower()
+        self.success_url = reverse(f'setups-{name}-list')
         if name in ['size', 'status']:
             self.fields = ['code', 'name']
         elif name in ['district']:
@@ -146,7 +157,7 @@ class SetupGenericCreateView(generic.CreateView):
         elif name in ['region', 'type']:
             self.fields = ['name']
         else:
-            self.fields = ['name', 'contact_person', 'position', 'phone', 'email']
+            self.fields = ['name', 'contact_person', 'position', 'phone', 'email', 'location']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -155,6 +166,7 @@ class SetupGenericCreateView(generic.CreateView):
 
 
 class SetupGenericUpdateView(generic.UpdateView):
+    template_name = 'setups/setup_form.html'
 
     def __init__(self, *args, **kwargs):
         super(SetupGenericUpdateView, self).__init__(*args, **kwargs)
@@ -175,4 +187,17 @@ class SetupGenericUpdateView(generic.UpdateView):
         context['model_name'] = self.model.__name__
         context['count'] = self.model.objects.all().count()
         print(self.model.objects.all())
+        return context
+
+
+class SetupGenericDeleteView(generic.DeleteView):
+
+    def __init__(self, *args, **kwargs):
+        super(SetupGenericDeleteView, self).__init__(*args, **kwargs)
+        name = self.model.__name__.lower()
+        self.success_url = reverse(f'setups-{name}-list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model.__name__
         return context

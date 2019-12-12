@@ -3,12 +3,14 @@
     <div class="col-md-6 offset-md-3">
         <form method="POST">
             {% csrf_token %}
-            <fieldset class="form-group">
+            <fieldset class="form-group small">
                 <legend>Setup: {{model_name}}</legend>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Save</button>
+                <button class="btn btn-outline-info btn-block" type="submit">
+                    Save
+                </button>
             </div>
         </form>
     </div>

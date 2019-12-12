@@ -127,7 +127,13 @@ body,
         width: 600px;
     }
 }
-.audit-container{
+
+.audit-container {
     max-height: 10rem;
     overflow-y: scroll;
+}
+
+.td-width-auto {
+    width: 1px;
+    white-space: nowrap;
 }

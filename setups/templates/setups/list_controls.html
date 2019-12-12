@@ -1,0 +1,15 @@
+<form method="POST" action="{%url delete_url e.id%}">
+    {% csrf_token %}
+    <button
+        class="btn btn-sm btn-outline-danger"
+        href="{%url delete_url e.id%}"
+    >
+        <i class="fa fa-trash-alt"></i> Delete
+    </button>
+    <a
+        role="button"
+        class="btn btn-sm btn-outline-secondary"
+        href="{%url update_url e.id%}"
+        ><i class="fa fa-edit"></i> Edit</a
+    >
+</form>

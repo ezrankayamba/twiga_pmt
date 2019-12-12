@@ -16,16 +16,16 @@
         <table class="table table-sm table-hover table-bordered">
             <thead class="bg-light">
                 <tr>
+                    <th>Code</th>
                     <th>Name</th>
-                    <th>Region</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 {%for e in object_list%}
                 <tr>
+                    <td>{{e.code}}</td>
                     <td>{{e.name}}</td>
-                    <td>{{e.region}}</td>
                     <td class="td-width-auto">
                         {%include 'setups/list_controls.html'%}
                     </td>
