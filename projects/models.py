@@ -5,9 +5,7 @@ from datetime import datetime, date
 from datetime import timedelta
 import decimal
 from django.contrib.auth.models import User
-
-
-# PROJECT_STATUS_LIST = (('INT', "Initiated"), ('ONG', "Ongoing"), ('CMP', "Completed"), ('STP', "Stopped"))
+from PIL import Image
 
 
 def initial_status():
@@ -56,6 +54,23 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return reverse('projects-detail', kwargs={'pk': self.pk})
+
+
+class ProjectImage(models.Model):
+    project = models.ForeignKey(to=Project, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='project_pics')
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.project.name} - {self.image.name}'
+
+    def save(self, *args, **kwargs):
+        super(ProjectImage, self).save(*args, **kwargs)
+        img = Image.open(self.image.path)
+        if img.height > 400 or img.width > 600:
+            output_size = (400, 600)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
 
 class ProjectContractor(models.Model):

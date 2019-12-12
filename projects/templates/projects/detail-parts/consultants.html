@@ -38,15 +38,21 @@
                 <p class="mb-1 text-muted">
                     <i class="fa fa-at"></i> {{prj_cons.consultant.email}}
                 </p>
-                <a class="btn btn-sm btn-outline-danger" href="#" role="button"
-                    ><i class="fa fa-trash-alt"></i> Delete</a
+                <form
+                    method="POST"
+                    action="{%url 'projects-consultant-delete' prj_cons.id%}"
                 >
-                <a
-                    class="btn btn-sm btn-outline-secondary"
-                    href="{%url 'projects-consultant-update' prj.id prj_cons.id%}"
-                    role="button"
-                    ><i class="fa fa-edit"></i> Edit</a
-                >
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-outline-danger">
+                        <i class="fa fa-trash-alt"></i> Delete
+                    </button>
+                    <a
+                        class="btn btn-sm btn-outline-secondary"
+                        href="{%url 'projects-consultant-update' prj.id prj_cons.id%}"
+                        role="button"
+                        ><i class="fa fa-edit"></i> Edit</a
+                    >
+                </form>
             </div>
             {%empty%}
             <div class="col">

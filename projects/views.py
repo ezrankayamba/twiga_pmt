@@ -5,12 +5,13 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 from . import models
 from . import forms
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from . import filters
 from .resources import ProjectResource
 from django.http import HttpResponse
 from datetime import datetime
 from . import exports
+import re
 
 
 @login_required
@@ -49,12 +50,6 @@ class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
 class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = models.Project
     context_object_name = 'prj'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        project = get_object_or_404(models.Project, id=self.kwargs['pk'])
-        context['audit_list'] = models.ProjectAudit.objects.filter(project=project).all()[:3]
-        return context
 
 
 class ProjectContractorCreateView(LoginRequiredMixin, generic.CreateView):
@@ -194,6 +189,72 @@ class ProjectAuditCreateView(LoginRequiredMixin, generic.CreateView):
         form.instance.logged_by = self.request.user
         form.instance.other = 'Manual Audit'
         return super(ProjectAuditCreateView, self).form_valid(form)
+
+
+class SetupGenericCreateView(generic.CreateView):
+    template_name = 'projects/setup_form.html'
+
+    def get_success_url(self):
+        return self.object.ger_absolute_url()
+
+    def __init__(self, *args, **kwargs):
+        super(SetupGenericCreateView, self).__init__(*args, **kwargs)
+        name = self.model.__name__.lower()
+
+        if name in ['projectcontractor']:
+            self.fields = ['contractor', 'sub_contractor']
+        elif name in ['projectsupplier']:
+            self.fields = ['supplier', 'price', 'quantity', 'under']
+        else:
+            self.fields = [name.replace('project', '')]
+
+    def form_valid(self, form):
+        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
+        form.instance.project = project
+        return super(SetupGenericCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model.__name__.replace('Project', '')
+        context['count'] = self.model.objects.all().count()
+        print(self.model.objects.all())
+        return context
+
+
+class SetupGenericUpdateView(generic.UpdateView):
+    template_name = 'projects/setup_form.html'
+
+    def get_success_url(self):
+        return self.object.ger_absolute_url()
+
+    def __init__(self, *args, **kwargs):
+        super(SetupGenericUpdateView, self).__init__(*args, **kwargs)
+        name = self.model.__name__.lower()
+
+        if name in ['projectcontractor']:
+            self.fields = ['contractor', 'sub_contractor']
+        elif name in ['projectsupplier']:
+            self.fields = ['supplier', 'price', 'quantity', 'under']
+        else:
+            self.fields = [name.replace('project', '')]
+
+    def form_valid(self, form):
+        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
+        form.instance.project = project
+        return super(SetupGenericUpdateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model.__name__.replace('Project', '')
+        context['count'] = self.model.objects.all().count()
+        print(self.model.objects.all())
+        return context
+
+
+class ProjectSetupGenericDeleteView(generic.DeleteView):
+    def get_success_url(self):
+        project = self.object.project
+        return reverse_lazy('projects-detail', kwargs={'pk': project.id})
 
 
 def export_projects(request):
