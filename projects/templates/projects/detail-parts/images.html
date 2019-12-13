@@ -1,0 +1,61 @@
+<div class="card-header p-0">
+    <a
+        class="btn p-2 btn-block text-left"
+        role="button"
+        data-toggle="collapse"
+        data-target="#image"
+        aria-expanded="false"
+        aria-controls="image"
+    >
+        Images
+    </a>
+</div>
+<div id="image" class="collapse" data-parent="#details">
+    <div class="card-body p-2">
+        <div class="row bg-light pt-2 pb-2">
+            <div class="col">
+                <a
+                    href="{%url 'projects-image-create' prj.id %}"
+                    role="button"
+                    class="btn btn-sm btn-outline-primary"
+                    >Add image</a
+                >
+            </div>
+        </div>
+        <div class="row">
+            {%for prj_img in prj.images.all%}
+            <div class="col-md-4 mt-2">
+                <div class="card">
+                    <div class="card-body p-1">
+                        <h5 class="card-title">{{prj_img.title}}</h5>
+                        <img
+                            class="img-thumbnail project-image border-none"
+                            src="{{prj_img.image.url}}"
+                        />
+                        <form
+                            method="POST"
+                            action="{%url 'projects-image-delete' prj_img.id%}"
+                            class="pt-1"
+                        >
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fa fa-trash-alt"></i> Delete
+                            </button>
+                            <a
+                                class="btn btn-sm btn-outline-secondary"
+                                href="{%url 'projects-image-update' prj.id prj_img.id%}"
+                                role="button"
+                                ><i class="fa fa-edit"></i> Edit</a
+                            >
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {%empty%}
+            <div class="col">
+                <p>No image added</p>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>

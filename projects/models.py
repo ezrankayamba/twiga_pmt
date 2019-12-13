@@ -58,7 +58,7 @@ class Project(models.Model):
 
 class ProjectImage(models.Model):
     project = models.ForeignKey(to=Project, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to='project_pics')
+    image = models.ImageField(upload_to='project_pics')
     title = models.CharField(max_length=100)
 
     def __str__(self):
@@ -67,10 +67,14 @@ class ProjectImage(models.Model):
     def save(self, *args, **kwargs):
         super(ProjectImage, self).save(*args, **kwargs)
         img = Image.open(self.image.path)
-        if img.height > 400 or img.width > 600:
-            output_size = (400, 600)
+        print('Image', self.image.path)
+        if img.height > 480 or img.width > 640:
+            output_size = (640, 480)
             img.thumbnail(output_size)
             img.save(self.image.path)
+
+    def get_absolute_url(self):
+        return reverse('projects-detail', kwargs={'pk': self.project.id})
 
 
 class ProjectContractor(models.Model):

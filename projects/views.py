@@ -11,7 +11,6 @@ from .resources import ProjectResource
 from django.http import HttpResponse
 from datetime import datetime
 from . import exports
-import re
 
 
 @login_required
@@ -52,128 +51,6 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     context_object_name = 'prj'
 
 
-class ProjectContractorCreateView(LoginRequiredMixin, generic.CreateView):
-    model = models.ProjectContractor
-    fields = ['contractor', 'sub_contractor']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['setup_url'] = reverse('setups-contractor-create')
-        return context
-
-    def form_valid(self, form):
-        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
-        form.instance.project = project
-        return super(ProjectContractorCreateView, self).form_valid(form)
-
-
-class ProjectContractorUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = models.ProjectContractor
-    fields = ['contractor', 'sub_contractor']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['setup_url'] = reverse('setups-contractor-create')
-        return context
-
-    def form_valid(self, form):
-        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
-        form.instance.project = project
-        return super(ProjectContractorUpdateView, self).form_valid(form)
-
-
-class ProjectFinancerCreateView(LoginRequiredMixin, generic.CreateView):
-    model = models.ProjectFinancer
-    fields = ['financer']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['setup_url'] = reverse('setups-financer-create')
-        return context
-
-    def form_valid(self, form):
-        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
-        form.instance.project = project
-        return super(ProjectFinancerCreateView, self).form_valid(form)
-
-
-class ProjectFinancerUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = models.ProjectFinancer
-    fields = ['financer']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['setup_url'] = reverse('setups-financer-create')
-        return context
-
-    def form_valid(self, form):
-        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
-        form.instance.project = project
-        return super(ProjectFinancerUpdateView, self).form_valid(form)
-
-
-class ProjectConsultantCreateView(LoginRequiredMixin, generic.CreateView):
-    model = models.ProjectConsultant
-    fields = ['consultant']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['setup_url'] = reverse('setups-consultant-create')
-        return context
-
-    def form_valid(self, form):
-        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
-        form.instance.project = project
-        return super(ProjectConsultantCreateView, self).form_valid(form)
-
-
-class ProjectConsultantUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = models.ProjectConsultant
-    fields = ['consultant']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['setup_url'] = reverse('setups-consultant-create')
-        return context
-
-    def form_valid(self, form):
-        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
-        form.instance.project = project
-        return super(ProjectConsultantUpdateView, self).form_valid(form)
-
-
-class ProjectSupplierCreateView(LoginRequiredMixin, generic.CreateView):
-    model = models.ProjectSupplier
-    fields = ['supplier', 'price', 'quantity', 'under']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['setup_url'] = reverse('setups-supplier-create')
-        print('Url: ', context['setup_url'])
-        return context
-
-    def form_valid(self, form):
-        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
-        form.instance.project = project
-        return super(ProjectSupplierCreateView, self).form_valid(form)
-
-
-class ProjectSupplierUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = models.ProjectSupplier
-    fields = ['supplier', 'price', 'quantity', 'under']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['setup_url'] = reverse('setups-supplier-create')
-        print('Url: ', context['setup_url'])
-        return context
-
-    def form_valid(self, form):
-        project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
-        form.instance.project = project
-        return super(ProjectSupplierUpdateView, self).form_valid(form)
-
-
 class ProjectAuditCreateView(LoginRequiredMixin, generic.CreateView):
     model = models.ProjectAudit
     form_class = forms.ProjectAuditCreateForm
@@ -195,7 +72,7 @@ class SetupGenericCreateView(generic.CreateView):
     template_name = 'projects/setup_form.html'
 
     def get_success_url(self):
-        return self.object.ger_absolute_url()
+        return self.object.get_absolute_url()
 
     def __init__(self, *args, **kwargs):
         super(SetupGenericCreateView, self).__init__(*args, **kwargs)
@@ -205,6 +82,8 @@ class SetupGenericCreateView(generic.CreateView):
             self.fields = ['contractor', 'sub_contractor']
         elif name in ['projectsupplier']:
             self.fields = ['supplier', 'price', 'quantity', 'under']
+        elif name in ['projectimage']:
+            self.fields = ['image', 'title']
         else:
             self.fields = [name.replace('project', '')]
 
@@ -215,9 +94,11 @@ class SetupGenericCreateView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model_name'] = self.model.__name__.replace('Project', '')
+        name = self.model.__name__.replace('Project', '')
+        context['model_name'] = name
         context['count'] = self.model.objects.all().count()
-        print(self.model.objects.all())
+        if name.lower() != 'image':
+            context['setup_url'] = reverse(f'popup-setups-{name.lower()}-create')
         return context
 
 
@@ -225,7 +106,7 @@ class SetupGenericUpdateView(generic.UpdateView):
     template_name = 'projects/setup_form.html'
 
     def get_success_url(self):
-        return self.object.ger_absolute_url()
+        return self.object.get_absolute_url()
 
     def __init__(self, *args, **kwargs):
         super(SetupGenericUpdateView, self).__init__(*args, **kwargs)
@@ -235,19 +116,24 @@ class SetupGenericUpdateView(generic.UpdateView):
             self.fields = ['contractor', 'sub_contractor']
         elif name in ['projectsupplier']:
             self.fields = ['supplier', 'price', 'quantity', 'under']
+        elif name in ['projectimage']:
+            self.fields = ['image', 'title']
         else:
             self.fields = [name.replace('project', '')]
 
     def form_valid(self, form):
         project = get_object_or_404(models.Project, id=self.kwargs['project_id'])
         form.instance.project = project
+        print('Instance: ', form.instance)
         return super(SetupGenericUpdateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model_name'] = self.model.__name__.replace('Project', '')
+        name = self.model.__name__.replace('Project', '')
+        context['model_name'] = name
         context['count'] = self.model.objects.all().count()
-        print(self.model.objects.all())
+        if name.lower() != 'image':
+            context['setup_url'] = reverse(f'popup-setups-{name.lower()}-create')
         return context
 
 

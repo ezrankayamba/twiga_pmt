@@ -2,7 +2,7 @@
 (function() {
     let w = window.innerWidth / 2;
     let h = (window.innerHeight * 3) / 4;
-    let baseUrl = window.location.origin;
+    // let baseUrl = window.location.origin;
     let fld = document.querySelector('.select');
     if (fld) {
         let name = fld.name;
@@ -34,7 +34,7 @@
     list.forEach(btn => {
         btn.addEventListener("click", e => {
             let url = btn.dataset.url;
-            url = baseUrl + url;
+            // url = baseUrl + url;
             if (btn.id === "btn_select_district") {
                 url = `${url}?region=${
                         document.querySelector("#id_region").value

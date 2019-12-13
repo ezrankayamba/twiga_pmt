@@ -5,17 +5,17 @@ from django.views.generic import ListView
 
 urlpatterns = [
     path('', views.home, name='setups-home'),
-    path('type/create', views.TypeCreateView.as_view(), name='setups-type-create'),
-    path('authority/create', views.AuthorityCreateView.as_view(), name='setups-authority-create'),
-    path('consultant/create', views.ConsultantCreateView.as_view(), name='setups-consultant-create'),
-    path('region/create', views.RegionCreateView.as_view(), name='setups-region-create'),
-    path('district/create', views.DistrictCreateView.as_view(), name='setups-district-create'),
-    path('region/districts', views.load_districts, name='setups-load-districts'),
-    path('supplier/create', views.SupplierCreateView.as_view(), name='setups-supplier-create'),
-    path('financer/create', views.FinancerCreateView.as_view(), name='setups-financer-create'),
-    path('contractor/create', views.ContractorCreateView.as_view(), name='setups-contractor-create'),
-    path('status/create', views.StatusCreateView.as_view(), name='setups-status-create'),
-    path('size/create', views.SizeCreateView.as_view(), name='setups-size-create'),
+    path('popup/type/create', views.TypeCreateView.as_view(), name='popup-setups-type-create'),
+    path('popup/authority/create', views.AuthorityCreateView.as_view(), name='popup-setups-authority-create'),
+    path('popup/consultant/create', views.ConsultantCreateView.as_view(), name='popup-setups-consultant-create'),
+    path('popup/region/create', views.RegionCreateView.as_view(), name='popup-setups-region-create'),
+    path('popup/district/create', views.DistrictCreateView.as_view(), name='popup-setups-district-create'),
+    path('popup/region/districts', views.load_districts, name='popup-setups-load-districts'),
+    path('popup/supplier/create', views.SupplierCreateView.as_view(), name='popup-setups-supplier-create'),
+    path('popup/financer/create', views.FinancerCreateView.as_view(), name='popup-setups-financer-create'),
+    path('popup/contractor/create', views.ContractorCreateView.as_view(), name='popup-setups-contractor-create'),
+    path('popup/status/create', views.StatusCreateView.as_view(), name='popup-setups-status-create'),
+    path('popup/size/create', views.SizeCreateView.as_view(), name='popup-setups-size-create'),
 ]
 # print(dir(ListView))
 for model in models.SETUPS_LIST:
