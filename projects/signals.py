@@ -50,9 +50,5 @@ def resize_image(sender, instance, created, raw, using, **kwargs):
             image = Image.open(infile)
             image = image.resize(size, Image.ANTIALIAS)
             image.save(instance.image.path, image.format, quality=72)
-
-            # image = Image.open(infile)
-            # image.thumbnail(size, Image.ANTIALIAS)
-            # image.save(infile, image.format, quality=100)
             print(
                 f'Successfully resized 640 X 480 image at: {instance.image.path}')
