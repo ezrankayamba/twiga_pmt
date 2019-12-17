@@ -66,11 +66,12 @@ def resize_image(sender, instance, created, raw, using, **kwargs):
     if instance.image:
         if os.path.isfile(instance.image.path):
             fix_exif(instance.image.path)
-            size = 640, 480
+            size = 640, 640
             print(f'Image file: {instance.image.path}')
             infile = os.path.join(settings.MEDIA_ROOT, instance.image.name)
             image = Image.open(infile)
-            image = image.resize(size, Image.ANTIALIAS)
-            image.save(instance.image.path, image.format, quality=72)
+            # image = image.resize(size, Image.ANTIALIAS)
+            image.thumbnail(size, Image.ANTIALIAS)
+            image.save(instance.image.path, image.format, quality=100)
             print(
-                f'Successfully resized 640 X 480 image at: {instance.image.path}')
+                f'Successfully resized 640 X 640 image at: {instance.image.path}')
