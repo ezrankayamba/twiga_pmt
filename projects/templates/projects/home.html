@@ -42,86 +42,92 @@
                 </div>
             </div>
         </form>
-        <div class="table-responsive-sm">
-            <table class="table table-sm table-hover table-bordered">
-                <thead class="bg-light">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Size</th>
-                        <th scope="col">StartDate</th>
-                        <th scope="col">Authority</th>
-                        <th scope="col">Contractors</th>
-                        <th scope="col">Consultants</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">
-                            <span class="nowrap">Duration(Yrs)</span>
-                        </th>
-                        <th scope="col">Financers</th>
-                        <th scope="col">
-                            <span class="nowrap">Quantity(Tons)</span>
-                        </th>
-                        <th scope="col">
-                            <span class="nowrap">Supplied(Tons)</span>
-                        </th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                {% for prj in filter.qs %}
-                <tr>
-                    <td scope="row">{{prj.id}}</td>
-                    <td>{{prj.name}}</td>
-                    <td>{{prj.get_location}}</td>
-                    <td>{{prj.type}}</td>
-                    <td>{{prj.size}}</td>
-                    <td>{{prj.start_date}}</td>
-                    <td>{{prj.authority}}</td>
-                    <td>
-                        {%for c in prj.contractors.all %}
-                        <p class="text-muted mb-0">
-                            <i class="fa fa-check text-muted"></i>
-                            {{c.contractor.name}}
-                        </p>
-                        {%empty%}
-                        <span class="text-warning">Not set</span>
-                        {%endfor%}
-                    </td>
-                    <td>
-                        {%for c in prj.consultants.all %}
-                        <p class="text-muted mb-0">
-                            <i class="fa fa-check text-muted"></i>
-                            {{c.consultant.name}}
-                        </p>
-                        {%empty%}
-                        <span class="text-warning">Not set</span>
-                        {%endfor%}
-                    </td>
-                    <td>{{prj.status}}</td>
-                    <td>{{prj.duration }}</td>
-                    <td>
-                        {%for f in prj.financers.all %}
-                        <p class="text-muted mb-0">
-                            <i class="fa fa-check text-muted"></i>
-                            {{f.financer.name}}
-                        </p>
-                        {%empty%}<span class="text-warning">Not set</span>
-                        {%endfor%}
-                    </td>
-                    <td>{{prj.quantity_demanded|floatformat:2 }}</td>
-                    <td>{{prj.quantity_supplied|floatformat:2 }}</td>
-                    <td>
-                        <a
-                            role="button"
-                            class="btn btn-link btn-sm"
-                            href="{% url 'projects-detail' prj.id %}"
-                            ><i class="fa fa-eye"></i
-                        ></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+        <div class="container-fluid">
+            <div class="row flex-row flex-nowrap">
+                <div class="table-responsive-sm">
+                    <table class="table table-sm table-hover table-bordered">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">StartDate</th>
+                                <th scope="col">Authority</th>
+                                <th scope="col">Contractors</th>
+                                <th scope="col">Consultants</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">
+                                    <span class="nowrap">Duration(Yrs)</span>
+                                </th>
+                                <th scope="col">Financers</th>
+                                <th scope="col">
+                                    <span class="nowrap">Quantity(Tons)</span>
+                                </th>
+                                <th scope="col">
+                                    <span class="nowrap">Supplied(Tons)</span>
+                                </th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        {% for prj in filter.qs %}
+                        <tr>
+                            <td scope="row">{{prj.id}}</td>
+                            <td>{{prj.name}}</td>
+                            <td>{{prj.get_location}}</td>
+                            <td>{{prj.type}}</td>
+                            <td>{{prj.size}}</td>
+                            <td>{{prj.start_date}}</td>
+                            <td>{{prj.authority}}</td>
+                            <td>
+                                {%for c in prj.contractors.all %}
+                                <p class="text-muted mb-0">
+                                    <i class="fa fa-check text-muted"></i>
+                                    {{c.contractor.name}}
+                                </p>
+                                {%empty%}
+                                <span class="text-warning">Not set</span>
+                                {%endfor%}
+                            </td>
+                            <td>
+                                {%for c in prj.consultants.all %}
+                                <p class="text-muted mb-0">
+                                    <i class="fa fa-check text-muted"></i>
+                                    {{c.consultant.name}}
+                                </p>
+                                {%empty%}
+                                <span class="text-warning">Not set</span>
+                                {%endfor%}
+                            </td>
+                            <td>{{prj.status}}</td>
+                            <td>{{prj.duration }}</td>
+                            <td>
+                                {%for f in prj.financers.all %}
+                                <p class="text-muted mb-0">
+                                    <i class="fa fa-check text-muted"></i>
+                                    {{f.financer.name}}
+                                </p>
+                                {%empty%}<span class="text-warning"
+                                    >Not set</span
+                                >
+                                {%endfor%}
+                            </td>
+                            <td>{{prj.quantity_demanded|floatformat:2 }}</td>
+                            <td>{{prj.quantity_supplied|floatformat:2 }}</td>
+                            <td>
+                                <a
+                                    role="button"
+                                    class="btn btn-link btn-sm"
+                                    href="{% url 'projects-detail' prj.id %}"
+                                    ><i class="fa fa-eye"></i
+                                ></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     {% for prj in projects %} {% endfor %}
