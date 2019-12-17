@@ -14,7 +14,7 @@ def initial_status():
 
 class Project(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    start_date = models.DateField(null=True)
+    start_date = models.DateField(blank=True, null=True)
     type = models.ForeignKey(to=s_models.Type, related_name="projects", on_delete=models.PROTECT)
     status = models.ForeignKey(to=s_models.Status, related_name="projects", on_delete=models.PROTECT, default=initial_status, null=True)
     size = models.ForeignKey(to=s_models.Size, related_name="projects", on_delete=models.PROTECT, null=True)
