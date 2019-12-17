@@ -143,3 +143,11 @@ body,
     height: 300px;
     object-fit: cover;
 }
+
+.x-scrolling {
+    /*white-space: nowrap;*/
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
