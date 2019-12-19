@@ -63,7 +63,7 @@ class Authority(models.Model):
 
 
 class Contractor(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
@@ -75,7 +75,7 @@ class Contractor(models.Model):
 
 
 class Financer(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
@@ -87,7 +87,7 @@ class Financer(models.Model):
 
 
 class Consultant(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
@@ -99,7 +99,7 @@ class Consultant(models.Model):
 
 
 class Supplier(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
