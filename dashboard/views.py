@@ -137,7 +137,7 @@ def get_data_project_supplier(request):
     })
 
 
-@login_required
+# @login_required
 def get_data_project_status(request):
     data = []
     labels = []
