@@ -30,7 +30,7 @@ class Type(models.Model):
 
 
 class Region(models.Model):
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=40, unique=True)
 
     def __str__(self):
         return self.name
@@ -40,12 +40,15 @@ class District(models.Model):
     name = models.CharField(max_length=40)
     region = models.ForeignKey(to=Region, on_delete=models.CASCADE, related_name='districts')
 
+    class Meta:
+        unique_together = [['name', 'region']]
+
     def __str__(self):
         return self.name
 
 
 class Authority(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
@@ -60,7 +63,7 @@ class Authority(models.Model):
 
 
 class Contractor(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
@@ -72,7 +75,7 @@ class Contractor(models.Model):
 
 
 class Financer(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
@@ -84,7 +87,7 @@ class Financer(models.Model):
 
 
 class Consultant(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
@@ -96,7 +99,7 @@ class Consultant(models.Model):
 
 
 class Supplier(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
