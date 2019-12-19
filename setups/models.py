@@ -48,7 +48,7 @@ class District(models.Model):
 
 
 class Authority(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
