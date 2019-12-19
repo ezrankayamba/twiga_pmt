@@ -57,14 +57,14 @@
                         <th scope="col">Consultants</th>
                         <th scope="col">Status</th>
                         <th scope="col">
-                            <span class="nowrap">Duration(Yrs)</span>
+                            <span class="nowrap">Duration</span>
                         </th>
                         <th scope="col">Financers</th>
                         <th scope="col">
-                            <span class="nowrap">Quantity(Tons)</span>
+                            <span class="nowrap">Quantity</span>
                         </th>
                         <th scope="col">
-                            <span class="nowrap">Supplied(Tons)</span>
+                            <span class="nowrap">Supplied</span>
                         </th>
                         <th scope="col"></th>
                     </tr>
@@ -99,7 +99,7 @@
                         {%endfor%}
                     </td>
                     <td>{{prj.status}}</td>
-                    <td>{{prj.duration }}</td>
+                    <td>{{prj.duration }} Years</td>
                     <td>
                         {%for f in prj.financers.all %}
                         <p class="text-muted mb-0">
@@ -109,8 +109,8 @@
                         {%empty%}<span class="text-warning">Not set</span>
                         {%endfor%}
                     </td>
-                    <td>{{prj.quantity_demanded|floatformat:2 }}</td>
-                    <td>{{prj.quantity_supplied|floatformat:2 }}</td>
+                    <td>{{prj.quantity_demanded|floatformat:2 }}T</td>
+                    <td>{{prj.quantity_supplied|floatformat:2 }}T</td>
                     <td>
                         <a
                             role="button"
