@@ -1,27 +1,27 @@
-<div class="card-header p-0">
-    <a
-        class="btn p-2 btn-block text-left"
-        role="button"
-        data-toggle="collapse"
-        data-target="#consultant"
-        aria-expanded="false"
-        aria-controls="consultant"
-    >
-        Consultants
-    </a>
+<div class="card-header p-0 row">
+    <div class="col">
+        <a
+            class="btn p-2 btn-block text-left"
+            role="button"
+            data-toggle="collapse"
+            data-target="#consultant"
+            aria-expanded="false"
+            aria-controls="consultant"
+        >
+            Consultants
+        </a>
+    </div>
+    <div class="col col-md-2 m-1">
+        <a
+            href="{%url 'projects-consultant-create' prj.id %}"
+            role="button"
+            class="btn btn-sm btn-outline-primary float-right"
+            >Add New</a
+        >
+    </div>
 </div>
 <div id="consultant" class="collapse" data-parent="#details">
     <div class="card-body p-2">
-        <div class="row bg-light pt-2 pb-2">
-            <div class="col">
-                <a
-                    href="{%url 'projects-consultant-create' prj.id %}"
-                    role="button"
-                    class="btn btn-sm btn-outline-primary"
-                    >Add Consultant</a
-                >
-            </div>
-        </div>
         <div class="row">
             {%for prj_cons in prj.consultants.all%}
             <div class="col-md pb-3">

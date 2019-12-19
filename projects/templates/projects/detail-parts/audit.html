@@ -1,27 +1,27 @@
-<div class="card-header p-0">
-    <a
-        class="btn p-2 btn-block text-left"
-        role="button"
-        data-toggle="collapse"
-        data-target="#audit"
-        aria-expanded="true"
-        aria-controls="audit"
-    >
-        Audit Trail
-    </a>
+<div class="card-header p-0 row">
+    <div class="col">
+        <a
+            class="btn p-2 btn-block text-left"
+            role="button"
+            data-toggle="collapse"
+            data-target="#audit"
+            aria-expanded="true"
+            aria-controls="audit"
+        >
+            Audit Trail
+        </a>
+    </div>
+    <div class="col col-md-2 m-1">
+        <a
+            href="{%url 'projects-audit-create' prj.id %}"
+            role="button"
+            class="btn btn-sm btn-outline-primary float-right"
+            >Add New</a
+        >
+    </div>
 </div>
 <div id="audit" class="collapse show" data-parent="#details">
     <div class="card-body p-2">
-        <div class="row bg-light pt-2 pb-2">
-            <div class="col">
-                <a
-                    href="{%url 'projects-audit-create' prj.id %}"
-                    role="button"
-                    class="btn btn-sm btn-outline-primary"
-                    >Add manual audit</a
-                >
-            </div>
-        </div>
         <div class="row">
             <div class="col audit-container">
                 {%for audit in prj.audits.all%}
@@ -39,7 +39,8 @@
                     </p>
                     {%else%}
                     <p class="mb-0">
-                        {{audit.supplied}} Tons supplied out of {{audit.demanded}}
+                        {{audit.supplied}} Tons supplied out of
+                        {{audit.demanded}}
                     </p>
                     <p class="mb-0">Balance: {{audit.balance}} Tons</p>
                     {%endif%}
