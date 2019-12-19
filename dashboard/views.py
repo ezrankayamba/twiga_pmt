@@ -25,12 +25,12 @@ def map(request):
 
 @login_required
 def get_data_project_type(request):
-    list = prj_models.Project.objects.values('type__name').annotate(count=Count('id'))
+    list = s_models.Type.objects.all()
     data = []
     labels = []
     for item in list:
-        labels.append(item['type__name'])
-        data.append(item['count'])
+        labels.append(item.name)
+        data.append(item.projects.count())
     return JsonResponse({
         'data': data,
         'labels': labels
@@ -139,18 +139,11 @@ def get_data_project_supplier(request):
 
 @login_required
 def get_data_project_status(request):
-    list = prj_models.Project.objects.values('status__id').annotate(count=Count('id'))
-    my_dict = {}
     data = []
     labels = []
-    for item in list:
-        my_dict[item['status__id']] = item['count']
     for s in s_models.Status.objects.all():
         labels.append(s.name)
-        if s.id in my_dict:
-            data.append(my_dict[s.id])
-        else:
-            data.append(0)
+        data.append(s.projects.count())
     return JsonResponse({
         'data': data,
         'labels': labels
@@ -159,18 +152,11 @@ def get_data_project_status(request):
 
 @login_required
 def get_data_project_size(request):
-    list = prj_models.Project.objects.values('size__id').annotate(count=Count('id'))
-    my_dict = {}
     data = []
     labels = []
-    for item in list:
-        my_dict[item['size__id']] = item['count']
     for s in s_models.Size.objects.all():
         labels.append(s.name)
-        if s.id in my_dict:
-            data.append(my_dict[s.id])
-        else:
-            data.append(0)
+        data.append(s.projects.count())
     return JsonResponse({
         'data': data,
         'labels': labels
