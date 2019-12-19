@@ -21,12 +21,18 @@ docReady(() => {
             }
         },
         legend: {
-            position: "right",
-            align: "middle"
+            display: false
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
         },
     };
     var myPieChart = new Chart(ctx, {
-        type: "pie",
+        type: "bar",
         data: data,
         options: options
     });
