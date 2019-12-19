@@ -6,9 +6,19 @@
     </div>
     <div class="col-md">
         <div class="button-group float-md-right">
-            <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fa fa-file-excel"></i> Import</a>
-            <a href="{% url 'projects-export' %}" class="btn btn-sm btn-outline-primary"><i class="fa fa-file-excel"></i> Export</a>
-            <a class="btn btn-primary btn-sm " href="{% url 'projects-create' %}"><i class="fa fa-plus"></i> New Project</a>
+            <a href="#" class="btn btn-sm btn-outline-secondary"
+                ><i class="fa fa-file-excel"></i> Import</a
+            >
+            <a
+                href="{% url 'projects-export' %}"
+                class="btn btn-sm btn-outline-primary"
+                ><i class="fa fa-file-excel"></i> Export</a
+            >
+            <a
+                class="btn btn-primary btn-sm "
+                href="{% url 'projects-create' %}"
+                ><i class="fa fa-plus"></i> New Project</a
+            >
         </div>
     </div>
 </div>
@@ -22,7 +32,10 @@
                         {{ filter.form|crispy }}
                     </div>
                     <div class="pr-2">
-                        <button type="submit" class="btn btn-sm btn-outline-info mt-2 float-md-right">
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-outline-info mt-2 float-md-right"
+                        >
                             <a class="fa fa-filter"></a> Search
                         </button>
                     </div>
@@ -33,7 +46,6 @@
             <table class="table table-sm table-hover table-bordered">
                 <thead class="bg-light">
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Location</th>
                         <th scope="col">Type</th>
@@ -58,8 +70,7 @@
                 </thead>
                 {% for prj in filter.qs %}
                 <tr>
-                    <td scope="row">{{prj.id}}</td>
-                    <td>{{prj.name}}</td>
+                    <td scope="row">{{prj.name}}</td>
                     <td>{{prj.get_location}}</td>
                     <td>{{prj.type}}</td>
                     <td>{{prj.size}}</td>
@@ -99,7 +110,12 @@
                     <td>{{prj.quantity_demanded|floatformat:2 }} Tons</td>
                     <td>{{prj.quantity_supplied|floatformat:2 }} Tons</td>
                     <td>
-                        <a role="button" class="btn btn-link btn-sm" href="{% url 'projects-detail' prj.id %}"><i class="fa fa-eye"></i></a>
+                        <a
+                            role="button"
+                            class="btn btn-link btn-sm"
+                            href="{% url 'projects-detail' prj.id %}"
+                            ><i class="fa fa-eye"></i
+                        ></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -109,33 +125,32 @@
     {% for prj in projects %} {% endfor %}
 </div>
 <script type="text/javascript">
-(function() {
-    let getEl = (selector, prnt) => {
-        return prnt.querySelector(selector);
-    };
-    let addCls = (el, cls) => {
-        cls.split(" ").forEach(cl => {
-            el.classList.add(cl);
+    (function() {
+        let getEl = (selector, prnt) => {
+            return prnt.querySelector(selector);
+        };
+        let addCls = (el, cls) => {
+            cls.split(" ").forEach(cl => {
+                el.classList.add(cl);
+            });
+        };
+        let form = document.querySelector("#filter-form");
+        form.querySelectorAll(".form-group").forEach(grp => {
+            addCls(grp, "input-group input-group-sm mr-2 mt-2");
+            let label = getEl("label", grp);
+            let div = document.createElement("div");
+            let span = document.createElement("span");
+            addCls(div, "input-group-prepend");
+            addCls(span, "input-group-text");
+            span.textContent = label.textContent;
+            grp.removeChild(label);
+            div.appendChild(span);
+            let inputDiv = getEl("div", grp);
+            let crtr = getEl(".form-control", inputDiv);
+            grp.removeChild(inputDiv);
+            grp.appendChild(div);
+            grp.appendChild(crtr);
         });
-    };
-    let form = document.querySelector("#filter-form");
-    form.querySelectorAll(".form-group").forEach(grp => {
-        addCls(grp, "input-group input-group-sm mr-2 mt-2");
-        let label = getEl("label", grp);
-        let div = document.createElement("div");
-        let span = document.createElement("span");
-        addCls(div, "input-group-prepend");
-        addCls(span, "input-group-text");
-        span.textContent = label.textContent;
-        grp.removeChild(label);
-        div.appendChild(span);
-        let inputDiv = getEl("div", grp);
-        let crtr = getEl(".form-control", inputDiv);
-        grp.removeChild(inputDiv);
-        grp.appendChild(div);
-        grp.appendChild(crtr);
-    });
-})();
-
+    })();
 </script>
 {% endblock content%}

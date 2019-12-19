@@ -33,6 +33,9 @@ class Project(models.Model):
     created_by = models.ForeignKey(to=User, related_name="created_projects", on_delete=models.PROTECT, null=True)
     updated_by = models.ForeignKey(to=User, related_name="updated_projects", on_delete=models.PROTECT, null=True)
 
+    class Meta:
+        ordering = ['-date_created']
+
     def get_coordinates(self):
         if self.latitude == None or self.longitude == None:
             return 'Not set'
