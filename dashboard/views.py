@@ -125,12 +125,11 @@ def get_data_project_region_plus(request):
 
 @login_required
 def get_data_project_supplier(request):
-    list = prj_models.ProjectSupplier.objects.values('supplier__name').annotate(count=Count('project'))
     data = []
     labels = []
-    for item in list:
-        labels.append(item['supplier__name'])
-        data.append(item['count'])
+    for item in prj_models.ProjectSupplier.objects.all():
+        labels.append(item.supplier.name)
+        data.append(item.projects.count())
     return JsonResponse({
         'data': data,
         'labels': labels
