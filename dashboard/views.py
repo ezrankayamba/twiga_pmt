@@ -127,8 +127,8 @@ def get_data_project_region_plus(request):
 def get_data_project_supplier(request):
     data = []
     labels = []
-    for item in prj_models.ProjectSupplier.objects.all():
-        labels.append(item.supplier.name)
+    for item in s_models.Supplier.objects.all():
+        labels.append(item.name)
         data.append(item.projects.count())
     return JsonResponse({
         'data': data,
