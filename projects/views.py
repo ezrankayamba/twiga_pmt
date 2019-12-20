@@ -21,21 +21,6 @@ def home(request):
     return render(request, 'projects/home.html', {'filter': prj_filter})
 
 
-def get_projects_json(request):
-    projects = models.Project.objects.all()
-    data = []
-    for prj in projects:
-        data.append({
-            'id': prj.id,
-            'name': prj.name,
-            'region_id': prj.region_id,
-            'region_name': prj.region.name,
-            'lat': prj.latitude,
-            'lng': prj.longitude
-        })
-    return JsonResponse(data, safe=False)
-
-
 class ProjectListView(LoginRequiredMixin, generic.ListView):
     model = models.Project
     template_name = 'projects/home.html'

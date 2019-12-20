@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.contrib.humanize',
     'django_filters',
+    'oauth2_provider',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -124,8 +126,8 @@ LOGIN_REDIRECT_URL = 'users-profile'
 
 with open('/etc/config.json') as fp:
     config = json.load(fp)
-    # print(config)
 
+# print(config)
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_PORT = 587
@@ -138,3 +140,16 @@ with open('/etc/config.json') as fp:
 SESSION_EXPIRE_SECONDS = 180
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 30
+
+
+OAUTH2_PROVIDER = {
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'projects': 'Access list of projects'}
+}
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}

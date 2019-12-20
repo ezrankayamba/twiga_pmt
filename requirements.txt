@@ -7,6 +7,8 @@ Django==2.2.7
 django-crispy-forms==1.8.1
 django-filter==2.2.0
 django-import-export==2.0
+django-oauth-toolkit==1.2.0
+djangorestframework==3.11.0
 et-xmlfile==1.0.1
 google-api-python-client==1.7.11
 google-auth==1.7.1
