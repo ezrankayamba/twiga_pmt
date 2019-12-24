@@ -1,0 +1,36 @@
+<div class="card-header p-0 row">
+    <div class="col">
+        <a
+            class="btn p-2 btn-block text-left"
+            role="button"
+            data-toggle="collapse"
+            data-target="#authority"
+            aria-expanded="true"
+            aria-controls="authority"
+        >
+            Authority
+        </a>
+    </div>
+</div>
+<div id="authority" class="collapse" data-parent="#details">
+    <div class="card-body p-2">
+        {%if prj.authority%}
+        <p class="mb-1">
+            {{prj.authority.name}}
+        </p>
+        {%if prj.authority.contact_person %}
+        <p class="mb-1 text-muted">
+            {{prj.authority.contact_person}} - {{prj.authority.position}}
+        </p>
+        {%endif%}
+        <p class="mb-1 text-muted">
+            <i class="fa fa-phone"></i> {{prj.authority.phone}}
+        </p>
+        <p class="mb-1 text-muted">
+            <i class="fa fa-at"></i> {{prj.authority.email}}
+        </p>
+        {%else%}
+        <p>No authority set</p>
+        {%endif%}
+    </div>
+</div>

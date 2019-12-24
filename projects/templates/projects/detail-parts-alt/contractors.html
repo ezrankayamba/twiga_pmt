@@ -1,0 +1,45 @@
+<div class="card-header p-0 row">
+    <div class="col">
+        <a
+            class="btn p-2 btn-block text-left"
+            role="button"
+            data-toggle="collapse"
+            data-target="#contractor"
+            aria-expanded="false"
+            aria-controls="contractor"
+        >
+            Contractors
+        </a>
+    </div>
+</div>
+<div id="contractor" class="collapse" data-parent="#details">
+    <div class="card-body p-2">
+        <div class="row">
+            {%for prj_contr in prj.contractors.all%}
+            <div class="col-md pb-3">
+                <p class="mb-1">
+                    {{prj_contr.contractor.name}}
+                </p>
+                <p class="mb-1 text-muted">
+                    {%if prj_contr.sub_contractor %} Sub Contractor {%else%}
+                    Contractor {%endif%}
+                </p>
+                <p class="mb-1 text-muted">
+                    {{prj_contr.contractor.contact_person}} -
+                    {{prj_contr.contractor.position}}
+                </p>
+                <p class="mb-1 text-muted">
+                    <i class="fa fa-phone"></i> {{prj_contr.contractor.phone}}
+                </p>
+                <p class="mb-1 text-muted">
+                    <i class="fa fa-at"></i> {{prj_contr.contractor.email}}
+                </p>
+            </div>
+            {%empty%}
+            <div class="col">
+                <p>No contractor added</p>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>

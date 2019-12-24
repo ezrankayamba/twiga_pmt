@@ -1,0 +1,44 @@
+<div class="card-header p-0 row">
+    <div class="col">
+        <a
+            class="btn p-2 btn-block text-left"
+            role="button"
+            data-toggle="collapse"
+            data-target="#audit"
+            aria-expanded="true"
+            aria-controls="audit"
+        >
+            Audit Trail
+        </a>
+    </div>
+</div>
+<div id="audit" class="collapse show" data-parent="#details">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col audit-container">
+                {%for audit in prj.audits.all%}
+                <div class="mb-2 text-muted small">
+                    <p class="mb-0">
+                        <b
+                            ><span>{{audit.other}}</span> on
+                            <span>{{audit.date_created}}</span> by
+                            <span>{{audit.logged_by}}</span></b
+                        >
+                    </p>
+                    {%if audit.manual %}
+                    <p class="mb-0">
+                        {{audit.remarks}}
+                    </p>
+                    {%else%}
+                    <p class="mb-0">
+                        {{audit.supplied}} Tons supplied out of
+                        {{audit.demanded}}
+                    </p>
+                    <p class="mb-0">Balance: {{audit.balance}} Tons</p>
+                    {%endif%}
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>

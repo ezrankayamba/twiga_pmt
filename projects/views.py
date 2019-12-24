@@ -52,6 +52,12 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     context_object_name = 'prj'
 
 
+class ProjectDetailAlertView(generic.DetailView):
+    model = models.Project
+    context_object_name = 'prj'
+    template_name = 'projects/project_detail_alert.html'
+
+
 class ProjectAuditCreateView(LoginRequiredMixin, generic.CreateView):
     model = models.ProjectAudit
     form_class = forms.ProjectAuditCreateForm

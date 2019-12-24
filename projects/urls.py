@@ -8,6 +8,7 @@ urlpatterns = [
     path('export', views.export_projects, name='projects-export'),
     path('create/', views.ProjectCreateView.as_view(), name='projects-create'),
     path('detail/<pk>', views.ProjectDetailView.as_view(), name='projects-detail'),
+    path('alert/<pk>', views.ProjectDetailAlertView.as_view(), name='projects-detail-alert'),
     path('update/<pk>', views.ProjectUpdateView.as_view(), name='projects-update'),
     path('<project_id>/audit/create', views.ProjectAuditCreateView.as_view(), name='projects-audit-create'),
 ]
