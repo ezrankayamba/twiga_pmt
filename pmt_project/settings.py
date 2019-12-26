@@ -7,7 +7,7 @@ SECRET_KEY = 'kx0s=ez=%w&x7tjytzfd1%cihsuxjspe*j=j!!%%2k!xm6+zh2'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'pmt.nezatech.co.tz','3365a343.ngrok.io']
+ALLOWED_HOSTS = ['localhost', 'pmt.nezatech.co.tz', '3365a343.ngrok.io']
 
 
 # Application definition
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
     'nots.apps.NotsConfig',
+    'popinfo.apps.PopinfoConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -32,6 +33,7 @@ INSTALLED_APPS = [
     'django_filters',
     'oauth2_provider',
     'rest_framework',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +65,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pmt_project.wsgi.application'
+# Channels
+ASGI_APPLICATION = 'pmt_project.routing.application'
+CHANNEL_LAYERS = {
+    "default": {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 # Database

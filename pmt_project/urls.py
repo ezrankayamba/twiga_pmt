@@ -10,6 +10,7 @@ urlpatterns = [
     path('setups/', include('setups.urls')),
     path('users/', include('users.urls')),
     path('api/', include('api.urls')),
+    path('popinfo/', include('popinfo.urls')),
 ]
 
 if settings.DEBUG:
