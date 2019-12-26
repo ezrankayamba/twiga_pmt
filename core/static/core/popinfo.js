@@ -1,6 +1,6 @@
 const host = window.location.host;
 const prot = window.location.protocol;
-const url = (prot === "https" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
+const url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
 const connection = new WebSocket(url);
 (function() {
     let path = window.location.pathname;
