@@ -15,7 +15,13 @@ class LazyEncoder(DjangoJSONEncoder):
 
 @login_required
 def home(request):
-    return render(request, 'dashboard/home.html', {})
+    si = [
+        {'name': 'Projects', 'value': prj_models.Project.objects.count()},
+        {'name': 'Contractors', 'value': s_models.Contractor.objects.count()},
+        {'name': 'Suppliers', 'value': s_models.Supplier.objects.count()},
+        {'name': 'Consultants', 'value': s_models.Consultant.objects.count()},
+    ]
+    return render(request, 'dashboard/home.html', {'summary_items': si})
 
 
 @login_required

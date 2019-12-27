@@ -16,34 +16,34 @@
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">
+                    <a class="nav-link" href="/" title="Dashboard/Home">
                         Home
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'dashboard-map' %}">
+                    <a class="nav-link" href="{% url 'dashboard-map' %}" title="Map of projects">
                         Map
                     </a>
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="{% url 'projects-home' %}">
+                    <a class="nav-link" href="{% url 'projects-home' %}" title="List of projects">
                         Projects
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="{% url 'setups-home' %}">
+                    <a class="nav-link" href="{% url 'setups-home' %}" title="Manage setups">
                         Setups
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users-logout' %}">
+                    <a class="nav-link" href="{% url 'users-logout' %}" title="Logout">
                         Logout
                     </a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users-login' %}">
+                    <a class="nav-link" href="{% url 'users-login' %}" title="Login">
                         Login
                     </a>
                 </li>

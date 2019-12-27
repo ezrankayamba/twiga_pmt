@@ -18,6 +18,13 @@
     };
 </script>
 <div class="row">
+    {%for item in summary_items%}
+    <div class="col-sm col-6">
+        <p class="bg-light p-1 text-center"><span>{{item.name}}: </span><span class="text-primary">{{item.value}}</span></p>
+    </div>
+    {%endfor%}
+</div>
+<div class="row">
     <div class="col-md pb-2">
         <div class="card">
             <div class="card-header p-2">

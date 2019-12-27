@@ -29,12 +29,15 @@ function initMap() {
       let json = JSON.parse(res);
       json.forEach(p => {
         let name = p.fields.name;
+        let id = p.pk;
+        let p_url=`{%url 'projects-detail' 999%}`
+        p_url = p_url.replace('999', id)
         let latLng = {
           lat: parseFloat(p.fields.latitude),
           lng: parseFloat(p.fields.longitude)
         };
 
-        let contentString = `<p class="mb-0 text-success">${name}</p>`;
+        let contentString = `<p class="mb-1 lead text-success">${name}</p><a class="btn btn-outline-secondary btn-sm" href="${p_url}">Open details</a>`;
         let infowindow = new google.maps.InfoWindow({
           content: contentString
         });
@@ -54,6 +57,7 @@ function initMap() {
 }
 
 </script>
+
 {% endblock content%} {% block my_script%}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ7WXCqy5-cyHTyho_XLgBDHJZe4n-nAw&callback=initMap" async defer></script>
 {%endblock%}
