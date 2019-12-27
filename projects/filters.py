@@ -13,4 +13,4 @@ class ProjectFilter(filters.FilterSet):
 
     class Meta:
         model = models.Project
-        fields = ['name', 'type', 'size', 'status', 'region', 'district', 'authority', 'financers__financer', 'contractors__contractor', 'suppliers__supplier', 'consultants__consultant']
+        fields = ['name', 'type', 'size', 'status', 'region', 'district', 'authority', 'financers__financer', 'suppliers__supplier', 'contractors__contractor', 'consultants__consultant']
