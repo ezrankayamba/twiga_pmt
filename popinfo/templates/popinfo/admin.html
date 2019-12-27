@@ -1,12 +1,12 @@
-{% extends "popinfo/base.html" %} {% block content %}
+{% extends "popinfo/base.html" %} {% load humanize %} {% block content %}
 <div class="row">
     {%for sup in suppliers%}
-        <div class="col-md mb-2">
+        <div class="col-md-3 mb-2">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{sup.name}}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Aged: ?</h6>
-                <p class="card-text">This distributor executed his duties for {{sup.projects.count}} and managed to archieve a performance of 60%</p>
+                <h6 class="card-subtitle mb-2 text-muted">Aged: {{sup.age}}</h6>
+                <p class="card-text">This distributor executed his duties for {{sup.projects}} project(s) and managed to archieve a performance of {{sup.performance|floatformat:0}}%</p>
                 <a data-id="{{sup.id}}" role="button" href="#{{sup.id}}" class="btn btn-sm btn-outline-primary d-block btn-broadcast">Broadcast</a>
               </div>
             </div>

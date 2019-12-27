@@ -8,6 +8,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
         <!-- Bootstrap CSS -->
         <link
             rel="stylesheet"
@@ -20,9 +21,9 @@
             href="{% static 'core/styles.css' %}"
         />
         {% if title %}
-        <title>PMT - {{ title }}</title>
+        <title>Project Mapping Tool - {{ title }}</title>
         {% else %}
-        <title>PMT</title>
+        <title>Project Mapping Tool</title>
         {% endif %} {% block local_styles %} {% endblock %}
     </head>
 

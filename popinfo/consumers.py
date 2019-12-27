@@ -24,11 +24,8 @@ class PopInfoConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         data = json.loads(data)
-        # print(data)
         cmd = data['cmd']
-        # print('Command: ' + cmd)
         if cmd == 'broadcast':
-            # print('Do a broadcast!')
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
@@ -45,9 +42,7 @@ class PopInfoConsumer(WebsocketConsumer):
         if count_all == 0:
             count_all = 1
         flt = list(filter(lambda x: x.project.status.name == 'Completed', supplier.projects.all()))
-        count_completed = 0
-        if len(flt):
-            count_completed = reduce(lambda x, y: x + y, flt)
+        count_completed = len(flt)
 
         self.send(text_data=json.dumps({
             'message': {
@@ -55,6 +50,6 @@ class PopInfoConsumer(WebsocketConsumer):
                 'name': supplier.name,
                 'age': 28,
                 'projects': count_all,
-                'performance': count_completed / count_all
+                'performance': 100 * count_completed / count_all
             }
         }))
