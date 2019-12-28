@@ -6,6 +6,7 @@ from . import models
 urlpatterns = [
     path('', views.ProjectListView.as_view(), name='projects-home'),
     path('export', views.export_projects, name='projects-export'),
+    path('import', views.import_projects, name='projects-import'),
     path('create/', views.ProjectCreateView.as_view(), name='projects-create'),
     path('detail/<pk>', views.ProjectDetailView.as_view(), name='projects-detail'),
     path('alert/<pk>', views.ProjectDetailAlertView.as_view(), name='projects-detail-alert'),

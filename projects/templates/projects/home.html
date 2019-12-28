@@ -23,7 +23,8 @@
     </div>
     <div class="col-md">
         <div class="button-group float-md-right">
-            <a href="#" class="btn btn-sm btn-outline-secondary"
+            <input type="file" id="file"  class="d-none" />
+            <a href="#" id="btnImport" class="btn btn-sm btn-outline-secondary" title="Columns: &#10;Name&#10;Type&#10;Size&#10;Start Date&#10;Region&#10;District&#10;Town&#10;Duration&#10;Authority&#10;Quantity&#10;Supplied&#10;Remarks"
                 ><i class="fa fa-file-excel"></i> Import</a
             >
             <a
@@ -167,12 +168,41 @@
                     <button name="page" class="btn btn-sm btn-outline-info" value="{{page_obj.paginator.num_pages }}">Last</a>
                   {% endif %}
               </div>
-              <div class="d-none">
+              <div class="d-none filter-on-pagination">
                  {{ filter.form|crispy }}
               </div>
             {% endif %}
-
         </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <!-- Button trigger modal -->
+        <button id="confirmTrigger" type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#confirm">
+          Launch confirm modal
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Confirm Import</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Selected file: <span id="txtFile" class="text-muted"></span></p>
+                <p>Are you sure you want to upload projects in the selected file?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmed" data-url="{%url 'projects-import'%}">Yes, Import</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -202,6 +232,52 @@
             grp.appendChild(div);
             grp.appendChild(crtr);
         });
+        let fltOnPag=document.querySelector(".filter-on-pagination")
+        if(fltOnPag){
+            document.querySelector(".filter-on-pagination").querySelectorAll('.select').forEach(sel=>{
+                sel.id=`${sel.id}_1`
+            })
+            document.querySelector(".filter-on-pagination").querySelectorAll('.textinput').forEach(txt=>{
+                txt.id=`${txt.id}_1`
+            })
+        }
+        let btnImport = document.getElementById("btnImport");
+        let fInput = document.getElementById("file");
+        let confirmTrigger = document.getElementById("confirmTrigger");
+        let confirmed=document.getElementById("confirmed")
+        let file;
+        fInput.addEventListener('change', (e)=>{
+            file = e.target.files[0]
+            console.log("Selected", file)
+            document.getElementById("txtFile").innerHTML=file.name
+            if(file){
+                confirmTrigger.click()
+            }
+        }, false)
+        btnImport.addEventListener('click', ()=>{
+            fInput.click()
+        })
+        console.log(btnImport)
+        let upload = (file, url)=>{
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            xhr.open("POST", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log(xhr.responseText);
+                    location.reload(true)
+                }
+            };
+            fd.append("file", file);
+            fd.append("csrfmiddlewaretoken", document.querySelector("input[name='csrfmiddlewaretoken']").value)
+            xhr.send(fd);
+        }
+
+        confirmed.addEventListener('click',(e)=>{
+            let url=e.target.dataset.url
+            console.log('Confirmed', file, url)
+            upload(file, url)
+        })
     })();
 </script>
 {% endblock content%}

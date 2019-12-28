@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import generic
@@ -11,10 +12,12 @@ from .resources import ProjectResource
 from django.http import HttpResponse
 from datetime import datetime
 from . import exports
+from . import imports
 from django.http import JsonResponse
 from django_filters.views import FilterView
 from django.core.paginator import Paginator
 from datetime import datetime
+import openpyxl
 
 
 @login_required
@@ -185,3 +188,20 @@ def export_projects(request):
     xlsx_data = exports.projects_report(request)
     response.write(xlsx_data)
     return response
+
+
+def import_projects(request):
+    if request.method == "POST":
+        form = forms.UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            excel_file = request.FILES['file']
+            imports.import_projects(excel_file)
+            return JsonResponse({
+                'status': 'success',
+                'file': excel_file.name
+            })
+
+    return JsonResponse({
+        'status': 'fail',
+        'file': 'Form not valid or invalid method'
+    })
