@@ -27,6 +27,12 @@ def setup_sheets(workbook):
     write_setup(s_models.Financer.objects.all(), 'Financers')
 
 
+def date_fmt(date):
+    if date == None:
+        return None
+    return date.strftime("%d/%m/%Y")
+
+
 def projects_report(request):
     output = io.BytesIO()
     workbook = xlsxwriter.Workbook(output)
@@ -56,7 +62,7 @@ def projects_report(request):
         row.append(prj.name)
         row.append(prj.type.name)
         row.append(prj.size.name)
-        row.append(prj.start_date.strftime("%d/%m/%Y"))
+        row.append(date_fmt(prj.start_date))
         row.append(prj.status.name)
         row.append(prj.region.name)
         row.append(prj.district.name)

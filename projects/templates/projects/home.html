@@ -63,6 +63,7 @@
             <table class="table table-sm table-hover table-bordered">
                 <thead class="bg-light">
                     <tr>
+                        <th scope="col">ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Location</th>
                         <th scope="col">Type</th>
@@ -87,7 +88,8 @@
                 </thead>
                 {% for prj in page_obj %}
                 <tr>
-                    <td scope="row" >{{prj.name}}</td>
+                    <td scope="row">{{prj.id}}</td>
+                    <td>{{prj.name}}</td>
                     <td>{{prj.get_location}}</td>
                     <td>{{prj.type}}</td>
                     <td>{{prj.size}}</td>
