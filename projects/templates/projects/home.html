@@ -9,16 +9,17 @@
     }
     @media screen and (min-width: 30rem) {
         form input[name='name'].textinput{
-            min-width: 17rem;
+            min-width: 24.5rem;
         }
         form .select {
-            max-width: 17rem;
+            max-width: 9rem;
+            min-width: 9rem;
         }
     }
 </style>
 <div class="row pb-2">
     <div class="col-md">
-        <h5>List of projects({{filter.qs.count}})</h5>
+        <h5>List of projects({{total_projects}})</h5>
     </div>
     <div class="col-md">
         <div class="button-group float-md-right">
@@ -47,7 +48,7 @@
                     <div class="col-md form-inline p-0" id="filter-form">
                         {{ filter.form|crispy }}
                     </div>
-                    <div class="pr33-2">
+                    <div>
                         <button
                             type="submit"
                             class="btn btn-sm btn-outline-info mt-2 float-md-right"
@@ -84,7 +85,7 @@
                         <th scope="col"></th>
                     </tr>
                 </thead>
-                {% for prj in filter.qs %}
+                {% for prj in page_obj %}
                 <tr>
                     <td scope="row" >{{prj.name}}</td>
                     <td>{{prj.get_location}}</td>
@@ -139,6 +140,38 @@
         </div>
     </div>
     {% for prj in projects %} {% endfor %}
+</div>
+<div class="row">
+    <div class="col">
+        <form method="POST">
+            {% csrf_token %}
+            {% if is_paginated %}
+              <div class="btn-group" role="group" aria-label="Basic example">
+                  {% if page_obj.has_previous %}
+                    <button name="page" class="btn btn-sm btn-outline-info" value="1">First</a>
+                    <button name="page" class="btn btn-sm btn-outline-info" value="{{ page_obj.previous_page_number }}">Previous</a>
+                  {% endif %}
+
+                  {% for num in page_obj.paginator.page_range %}
+                      {% if page_obj.number == num %}
+                        <button name="page" class="btn btn-sm btn-info" value="{{ num }}">{{ num }}</a>
+                      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <button name="page" class="btn btn-sm btn-outline-info" value="{{ num }}">{{ num }}</a>
+                      {% endif %}
+                  {% endfor %}
+
+                  {% if page_obj.has_next %}
+                    <button name="page" class="btn btn-sm btn-outline-info" value="{{ page_obj.next_page_number }}">Next</a>
+                    <button name="page" class="btn btn-sm btn-outline-info" value="{{page_obj.paginator.num_pages }}">Last</a>
+                  {% endif %}
+              </div>
+              <div class="d-none">
+                 {{ filter.form|crispy }}
+              </div>
+            {% endif %}
+
+        </form>
+    </div>
 </div>
 <script type="text/javascript">
     (function() {

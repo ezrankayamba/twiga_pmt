@@ -1,0 +1,153 @@
+html,
+body,
+#root {
+    height: 100%;
+}
+
+.navbar-brand {
+    color: #ffd400 !important;
+    font-weight: bold;
+}
+
+.navbar-brand > span.pmt {
+    color: #cac9c9;
+}
+
+.bg-form-header {
+    background: #ffd400;
+}
+
+.account-img {
+    height: 96px;
+    width: 96px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.account-heading {
+    font-size: 2.5rem;
+}
+
+#navMenu > ul > li.nav-item.dropdown {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#navMenu > ul > li.nav-item.dropdown:actove {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul {
+    background: #2b7070;
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul > li {
+    border-bottom: 1px solid #777;
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul > li:last-child {
+    border-bottom: none;
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul > li:hover > a {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#navMenu > ul > li.nav-item.dropdown.show > ul > li > a {
+    padding: 0.1rem 0.4rem;
+    display: block;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#root {
+    min-height: 100%;
+}
+
+#wrap {
+    min-height: 100%;
+}
+
+#main {
+    overflow: auto;
+    padding-bottom: 64px;
+    /* this needs to be bigger than footer height*/
+}
+
+.footer {
+    position: relative;
+    margin-top: -64px;
+    /* negative value of footer height */
+    min-height: 64px;
+    clear: both;
+    padding-top: 1rem;
+}
+
+.app-bg-dark {
+    background: #17252a;
+}
+
+.app-bg-primary {
+    background: #2b7a78;
+}
+
+.app-bg-secondary {
+    background: #3aafa9;
+}
+
+.app-bg-light {
+    background: #cac9c9;
+}
+
+.app-bg-white {
+    background: #feffff;
+}
+
+.hide {
+    display: none;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 768px) {
+    .chart-wrapper {
+        position: relative;
+        overflow-x: scroll;
+    }
+
+    .chart-wrapper > canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+    }
+
+    .chart-area-wrapper {
+        width: 600px;
+    }
+}
+
+.audit-container {
+    max-height: 10rem;
+    overflow-y: scroll;
+}
+
+.td-width-auto {
+    width: 1px;
+    white-space: nowrap;
+}
+
+.project-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.x-scrolling {
+    /*white-space: nowrap;*/
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}

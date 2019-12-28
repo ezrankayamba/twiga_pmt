@@ -12,6 +12,9 @@ from django.http import HttpResponse
 from datetime import datetime
 from . import exports
 from django.http import JsonResponse
+from django_filters.views import FilterView
+from django.core.paginator import Paginator
+from datetime import datetime
 
 
 @login_required
@@ -21,12 +24,37 @@ def home(request):
     return render(request, 'projects/home.html', {'filter': prj_filter})
 
 
-class ProjectListView(LoginRequiredMixin, generic.ListView):
+class ProjectListView(LoginRequiredMixin, FilterView):
     model = models.Project
+    filterset_class = filters.ProjectFilter
     template_name = 'projects/home.html'
     context_object_name = 'projects'
     ordering = ['-name']
-    paginate_by = 10
+    paginate_by = 8
+
+    def get_queryset(self):
+        self.projects = models.Project.objects.all()
+        self.prj_filter = filters.ProjectFilter(self.request.POST, queryset=self.projects)
+        qs = self.prj_filter.qs
+        return qs
+
+    def get_context_data(self, **kwargs):
+        qs = self.get_queryset()
+        kwargs['total_projects'] = qs.count()
+        ctx = super(ProjectListView, self).get_context_data(**kwargs)
+        return ctx
+
+    def post(self, request, *args, **kwargs):
+        qs = self.get_queryset()
+        paginator = Paginator(qs, self.paginate_by)
+        qs2 = paginator.get_page(request.POST.get('page', 1))
+        return render(request, self.template_name, {
+            'filter': self.prj_filter,
+            'projects': qs2,
+            'is_paginated': qs.count() > self.paginate_by,
+            'total_projects': qs.count(),
+            'page_obj': qs2
+        })
 
 
 class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
