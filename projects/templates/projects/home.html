@@ -151,21 +151,21 @@
             {% if is_paginated %}
               <div class="btn-group" role="group" aria-label="Basic example">
                   {% if page_obj.has_previous %}
-                    <button name="page" class="btn btn-sm btn-outline-info" value="1">First</a>
-                    <button name="page" class="btn btn-sm btn-outline-info" value="{{ page_obj.previous_page_number }}">Previous</a>
+                    <button name="page" class="btn btn-sm btn-outline-info" value="1">First</button>
+                    <button name="page" class="btn btn-sm btn-outline-info" value="{{ page_obj.previous_page_number }}">Previous</button>
                   {% endif %}
 
                   {% for num in page_obj.paginator.page_range %}
                       {% if page_obj.number == num %}
-                        <button name="page" class="btn btn-sm btn-info" value="{{ num }}">{{ num }}</a>
+                        <button name="page" class="btn btn-sm btn-info" value="{{ num }}">{{ num }}</button>
                       {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <button name="page" class="btn btn-sm btn-outline-info" value="{{ num }}">{{ num }}</a>
+                        <button name="page" class="btn btn-sm btn-outline-info" value="{{ num }}">{{ num }}</button>
                       {% endif %}
                   {% endfor %}
 
                   {% if page_obj.has_next %}
-                    <button name="page" class="btn btn-sm btn-outline-info" value="{{ page_obj.next_page_number }}">Next</a>
-                    <button name="page" class="btn btn-sm btn-outline-info" value="{{page_obj.paginator.num_pages }}">Last</a>
+                    <button name="page" class="btn btn-sm btn-outline-info" value="{{ page_obj.next_page_number }}">Next</button>
+                    <button name="page" class="btn btn-sm btn-outline-info" value="{{page_obj.paginator.num_pages }}">Last</button>
                   {% endif %}
               </div>
               <div class="d-none filter-on-pagination">
@@ -206,78 +206,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    (function() {
-        let getEl = (selector, prnt) => {
-            return prnt.querySelector(selector);
-        };
-        let addCls = (el, cls) => {
-            cls.split(" ").forEach(cl => {
-                el.classList.add(cl);
-            });
-        };
-        let form = document.querySelector("#filter-form");
-        form.querySelectorAll(".form-group").forEach(grp => {
-            addCls(grp, "input-group input-group-sm mr-2 mt-2");
-            let label = getEl("label", grp);
-            let div = document.createElement("div");
-            let span = document.createElement("span");
-            addCls(div, "input-group-prepend");
-            addCls(span, "input-group-text");
-            span.textContent = label.textContent;
-            grp.removeChild(label);
-            div.appendChild(span);
-            let inputDiv = getEl("div", grp);
-            let crtr = getEl(".form-control", inputDiv);
-            grp.removeChild(inputDiv);
-            grp.appendChild(div);
-            grp.appendChild(crtr);
-        });
-        let fltOnPag=document.querySelector(".filter-on-pagination")
-        if(fltOnPag){
-            document.querySelector(".filter-on-pagination").querySelectorAll('.select').forEach(sel=>{
-                sel.id=`${sel.id}_1`
-            })
-            document.querySelector(".filter-on-pagination").querySelectorAll('.textinput').forEach(txt=>{
-                txt.id=`${txt.id}_1`
-            })
-        }
-        let btnImport = document.getElementById("btnImport");
-        let fInput = document.getElementById("file");
-        let confirmTrigger = document.getElementById("confirmTrigger");
-        let confirmed=document.getElementById("confirmed")
-        let file;
-        fInput.addEventListener('change', (e)=>{
-            file = e.target.files[0]
-            console.log("Selected", file)
-            document.getElementById("txtFile").innerHTML=file.name
-            if(file){
-                confirmTrigger.click()
-            }
-        }, false)
-        btnImport.addEventListener('click', ()=>{
-            fInput.click()
-        })
-        console.log(btnImport)
-        let upload = (file, url)=>{
-            var xhr = new XMLHttpRequest();
-            var fd = new FormData();
-            xhr.open("POST", url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    console.log(xhr.responseText);
-                    location.reload(true)
-                }
-            };
-            fd.append("file", file);
-            fd.append("csrfmiddlewaretoken", document.querySelector("input[name='csrfmiddlewaretoken']").value)
-            xhr.send(fd);
-        }
-
-        confirmed.addEventListener('click',(e)=>{
-            let url=e.target.dataset.url
-            console.log('Confirmed', file, url)
-            upload(file, url)
-        })
-    })();
+    docReady(function(){
+        filter_form_rerender();
+    });
 </script>
 {% endblock content%}

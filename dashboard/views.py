@@ -46,7 +46,24 @@ def get_data_project_type(request):
 @login_required
 def get_data_project_list(request):
     list = prj_models.Project.objects.all()
-    return JsonResponse(serialize('json', list), safe=False)
+    res = []
+    for p in list:
+        main = []
+        for c in p.contractors.filter(sub_contractor=False):
+            main.append(c.contractor.name)
+        print(main)
+        res.append({
+            'id': p.id,
+            'name': p.name,
+            'lat': p.latitude,
+            'lng': p.longitude,
+            'qty': f'{p.quantity_demanded:,}',
+            'supplied': f'{p.quantity_supplied:,}',
+            'authority': p.authority.name,
+            'contractors': main,
+            'url': p.get_absolute_url()
+        })
+    return JsonResponse({'data': res})
 
 
 @login_required

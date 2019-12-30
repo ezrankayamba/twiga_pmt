@@ -5,58 +5,6 @@
     <div id="map" style="width: 100%; height: 36rem;" data-url="{%url 'data-project-list'%}"></div>
   </div>
 </div>
-<script>
-var map;
-let mapEl = document.getElementById("map");
-let url = mapEl.dataset.url;
-
-function initMap() {
-  map = new google.maps.Map(mapEl, {
-    center: { lat: -6.192, lng: 35.7699 },
-    zoom: 6
-  });
-
-  let infoWindows = []
-  let closeOpen = () => {
-    infoWindows.forEach(w => {
-      w.close()
-    })
-  }
-
-  fetch(url)
-    .then(res => res.json())
-    .then(res => {
-      let json = JSON.parse(res);
-      json.forEach(p => {
-        let name = p.fields.name;
-        let id = p.pk;
-        let p_url=`{%url 'projects-detail' 999%}`
-        p_url = p_url.replace('999', id)
-        let latLng = {
-          lat: parseFloat(p.fields.latitude),
-          lng: parseFloat(p.fields.longitude)
-        };
-
-        let contentString = `<p class="mb-1 lead text-success">${name}</p><a class="btn btn-outline-secondary btn-sm" href="${p_url}">Open details</a>`;
-        let infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
-        infoWindows.push(infowindow)
-
-        let marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          draggable: false
-        });
-        marker.addListener("click", function() {
-          closeOpen()
-          infowindow.open(map, marker);
-        });
-      });
-    });
-}
-
-</script>
 
 {% endblock content%} {% block my_script%}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ7WXCqy5-cyHTyho_XLgBDHJZe4n-nAw&callback=initMap" async defer></script>

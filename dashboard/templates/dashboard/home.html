@@ -1,22 +1,4 @@
 {% extends "core/base.html" %} {% load static %} {% block content %}
-<script type="text/javascript">
-    function docReady(fn) {
-        if (
-            document.readyState === "complete" ||
-            document.readyState === "interactive"
-        ) {
-            setTimeout(fn, 1);
-        } else {
-            document.addEventListener("DOMContentLoaded", fn);
-        }
-    }
-    var dynamicColor = function() {
-        var r = Math.floor(Math.random() * 255);
-        var g = Math.floor(Math.random() * 255);
-        var b = Math.floor(Math.random() * 255);
-        return "rgb(" + r + "," + g + "," + b + ")";
-    };
-</script>
 <div class="row">
     {%for item in summary_items%}
     <div class="col-sm col-6">

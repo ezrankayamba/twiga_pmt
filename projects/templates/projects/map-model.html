@@ -20,35 +20,13 @@
 </div>
 
 <script type="text/javascript">
-  var map; //Will contain map object.
-  var marker = false;
 
-  function initMap() {
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: -6.1920, lng: 35.7699},
-        zoom: 6
-      });
-      google.maps.event.addListener(map, 'click', function(event) {
-        var clickedLocation = event.latLng;
-        if(marker === false){
-            marker = new google.maps.Marker({
-                position: clickedLocation,
-                map: map,
-                draggable: true //make it draggable
-            });
-            google.maps.event.addListener(marker, 'dragend', function(event){
-                markerLocation();
-            });
-        } else{
-            marker.setPosition(clickedLocation);
-        }
-        markerLocation();
-    });
-  }
-  function markerLocation(){
-      var loc = marker.getPosition();
-      document.querySelector("input[name=longitude]").value = loc.lng();
-      document.querySelector("input[name=latitude]").value = loc.lat();
-      document.querySelector( "#coordinates").textContent = `(${loc.lng().toFixed(4)}, ${loc.lat().toFixed(4)})`;
-  }
+
+
+  // function markerLocation(){
+  //     var loc = marker.getPosition();
+  //     document.querySelector("input[name=longitude]").value = loc.lng();
+  //     document.querySelector("input[name=latitude]").value = loc.lat();
+  //     document.querySelector( "#coordinates").textContent = `(${loc.lng().toFixed(4)}, ${loc.lat().toFixed(4)})`;
+  // }
 </script>

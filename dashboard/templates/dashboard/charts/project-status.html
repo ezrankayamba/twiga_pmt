@@ -1,50 +1,7 @@
 <canvas data-url="{%url 'data-project-status'%}" id="projectStatus"></canvas>
 <script>
-docReady(() => {
-    let chartEl = document.getElementById("projectStatus");
-    var ctx = chartEl.getContext("2d");
-    let data = {
-        datasets: [{
-            data: []
-        }],
-        labels: []
-    };
-    let options = {
-        plugins: {
-            datalabels: {
-                formatter: function(value, context) {
-                    return context.chart.data.datasets[0][
-                        context.dataIndex
-                    ];
-                },
-                color: "#f1f1f1"
-            }
-        },
-        legend: {
-            position: "right",
-            align: "middle"
-        },
-    };
-    var myPieChart = new Chart(ctx, {
-        type: "pie",
-        data: data,
-        options: options
-    });
-    fetch(chartEl.dataset.url)
-        .then(res => res.json())
-        .then(res => {
-            console.log(res);
-            myPieChart.data.datasets = [{
-                data: res.data,
-                backgroundColor: res.data.map(dynamicColor)
-            }];
-            myPieChart.data.labels = res.labels;
-            myPieChart.update();
-            console.log(myPieChart);
-        })
-        .catch(err => {
-            console.error(err);
-        });
+docReady(function(){
+    dashboard_loadstatuses();
 });
 
 </script>

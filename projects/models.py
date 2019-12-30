@@ -94,6 +94,9 @@ class ProjectContractor(models.Model):
     def get_absolute_url(self):
         return reverse('projects-detail', kwargs={'pk': self.project.id})
 
+    def is_main(self):
+        return not self.sub_contractor
+
 
 class ProjectFinancer(models.Model):
     project = models.ForeignKey(to=Project, related_name="financers", on_delete=models.CASCADE)

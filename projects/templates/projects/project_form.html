@@ -18,10 +18,10 @@
                             class="btn btn-sm btn-outline-secondary"
                             id="captureGPS"
                         >
-                            <a class="fa fa-search-location"></a> Capture GPS
+                            <i class="fa fa-search-plus"></i> Capture GPS
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#mapModel">
-                          <i class="fa fa-map-marked-alt"></i> Map
+                          <i class="fa fa-map-marker-alt"></i> Map
                         </button>
                     </div>
                 </div>
@@ -32,30 +32,27 @@
                     Save
                 </button>
             </div>
+
+            <div class="d-none" id="urls">
+                <input type="hidden" class="popup-setups-load-districts" value="{%url 'popup-setups-load-districts'%}" />
+                <input type="hidden" class="popup-setups-type-create" value="{%url 'popup-setups-type-create'%}" />
+                <input type="hidden" class="popup-setups-region-create" value="{%url 'popup-setups-region-create'%}"/>
+                <input type="hidden" class="popup-setups-district-create" value="{%url 'popup-setups-district-create'%}"/>
+                <input type="hidden" class="popup-setups-authority-create" value="{%url 'popup-setups-authority-create'%}"/>
+                <input type="hidden" class="popup-setups-status-create" value="{%url 'popup-setups-status-create'%}"/>
+                <input type="hidden" class="popup-setups-size-create" value="{%url 'popup-setups-size-create'%}"/>
+            </div>
         </form>
     </div>
 </div>
+
 {%include 'projects/map-model.html'%}
 <script type="text/javascript">
-    let setLocation = loc => {
-        document.querySelector("input[name=longitude]").value =
-            loc.coords.longitude;
-        document.querySelector("input[name=latitude]").value =
-            loc.coords.latitude;
-        document.querySelector(
-            "#coordinates"
-        ).textContent = `(${loc.coords.longitude.toFixed(
-            4
-        )}, ${loc.coords.latitude.toFixed(4)})`;
-    };
-    document.querySelector("#captureGPS").addEventListener("click", e => {
-        console.log("Capture location");
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(setLocation);
-        }
+    docReady(function(){
+        form_capture_GPS();
     });
 </script>
 {% include 'projects/form_scripts.html' %} {% endblock content%}
 {% block my_script%}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ7WXCqy5-cyHTyho_XLgBDHJZe4n-nAw&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ7WXCqy5-cyHTyho_XLgBDHJZe4n-nAw&callback=initMapOnForm" async defer></script>
 {%endblock%}
