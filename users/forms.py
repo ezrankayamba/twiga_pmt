@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile
+from .models import Profile, Role
 from django.core.validators import RegexValidator
 
 
@@ -11,6 +11,22 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+
+class UserCreateForm(forms.ModelForm):
+    role = forms.ChoiceField(choices=map(lambda x: (x.id, x.name), Role.objects.all()))
+    username = forms.CharField(label="Username")
+    email = forms.CharField(label="Email")
+
+    class Meta:
+        model = User
+        fields = ['role', 'username', 'email']
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['role']
 
 
 class UserUpdateForm(forms.ModelForm):

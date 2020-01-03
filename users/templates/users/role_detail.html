@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md">
+        <h5>Role: {{object.name}}</h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form method="POST" action="{%url 'role-privileges-update' %}">
+            {% csrf_token %}
+            <input type="hidden" name="role_id" value="{{object.id}}" />
+            <div class="row">
+                <div class="col-md">
+                    <p>Privileges</p>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-sm btn-outline-primary float-right">Update Privileges</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="table-responsive-sm x-scrolling small">
+                        <table class="table table-sm table-hover table-bordered">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th scope="col">Allow</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                            </thead>
+                            {%for item in privileges%}
+                            <tr>
+                                <td scope="row"><input type="checkbox" name="on" value="{{item.privilege.0}}" {%if item.on%}checked{%endif%} /></td>
+                                <td>{{item.privilege.0}}</td>
+                                <td>{{item.privilege.1}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content%}

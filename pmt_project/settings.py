@@ -134,7 +134,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 LOGIN_URL = 'users-login'
-LOGIN_REDIRECT_URL = 'users-profile'
+LOGIN_REDIRECT_URL = 'dashboard-home'
 
 with open('/etc/config.json') as fp:
     config = json.load(fp)

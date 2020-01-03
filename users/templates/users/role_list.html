@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="row pb-2">
+    <div class="col-md">
+        <h5>List of roles</h5>
+    </div>
+    <div class="col-md">
+        <div class="button-group float-md-right">
+            <a
+                class="btn btn-primary btn-sm "
+                href="{%url 'role-create'%}"
+                ><i class="fa fa-plus"></i> New Role</a
+            >
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="table-responsive-sm x-scrolling small">
+            <table class="table table-sm table-hover table-bordered">
+                <thead class="bg-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                {% for obj in object_list %}
+                <tr>
+                    <td scope="row">{{obj.id}}</td>
+                    <td>{{obj.name}}</td>
+                    <td>{{obj.descriptin}}</td>
+                    <td><a
+                            role="button"
+                            class="btn btn-link btn-sm p-0"
+                            href="{% url 'role-detail' obj.id %}"
+                            ><i class="fa fa-eye"></i
+                        ></a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content%}

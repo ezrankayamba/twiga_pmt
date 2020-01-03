@@ -10,7 +10,7 @@ from nots import gmail
 def notify_created(user):
     sub = 'Successful regitstraion'
     html_content = render_to_string('users/created_user_mail.html', {'user': user})
-    sender = 'Events Portal<nezatech.notifications@gmail.com>'
+    sender = 'PMT<nezatech.notifications@gmail.com>'
     to = user.email
     service = gmail.init_service()
     message = gmail.create_message(sender, to, sub, html_content)
