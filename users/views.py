@@ -121,6 +121,6 @@ class UserCreateView(LoginRequiredMixin, CreateView):
         print(data)
         user = User.objects.create_user(username=data['username'], email=data['email'], password=Config.objects.get(name='INITIAL_PASSWORD').value)
         p = user.profile
-        p.role = models.Role.objects.get(pk=int(data['role']))
+        p.role = data['role']
         p.save()
         return redirect('users-list')
