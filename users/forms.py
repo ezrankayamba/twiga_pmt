@@ -14,7 +14,7 @@ class UserRegisterForm(UserCreationForm):
 
 
 class UserCreateForm(forms.ModelForm):
-    role = forms.ChoiceField(choices=map(lambda x: (x.id, x.name), Role.objects.all()))
+    role = forms.ModelChoiceField(queryset=Role.objects.all())
     username = forms.CharField(label="Username")
     email = forms.CharField(label="Email")
 
