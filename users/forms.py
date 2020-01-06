@@ -30,11 +30,19 @@ class UserProfileForm(forms.ModelForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
+    role = forms.ModelChoiceField(queryset=Role.objects.all())
+    email = forms.CharField(label="Email")
 
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['role', 'email']
+
+# class UserUpdateForm(forms.ModelForm):
+#     email = forms.EmailField()
+
+#     class Meta:
+#         model = User
+#         fields = ['username', 'email']
 
 
 class ProfileUpdateForm(forms.ModelForm):

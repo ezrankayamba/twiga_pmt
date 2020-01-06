@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, PasswordChangeForm, UserProfileForm, UserCreateForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from core.models import Config
@@ -120,6 +120,25 @@ class UserCreateView(LoginRequiredMixin, CreateView):
         data = form.cleaned_data
         print(data)
         user = User.objects.create_user(username=data['username'], email=data['email'], password=Config.objects.get(name='INITIAL_PASSWORD').value)
+        p = user.profile
+        p.role = data['role']
+        p.save()
+        return redirect('users-list')
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'users/update_user_form.html'
+    form_class = UserUpdateForm
+    model = User
+
+    def get_initial(self):
+        return {'role': self.get_object().profile.role}
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        user = self.get_object()
+        user.email = data['email']
+        user.save()
         p = user.profile
         p.role = data['role']
         p.save()

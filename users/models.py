@@ -20,6 +20,9 @@ class RolePrivilege(models.Model):
     role = models.ForeignKey(to=Role, related_name='privileges', on_delete=models.CASCADE)
     privilege = models.CharField(max_length=40, choices=choices.PRIVILEGE_CHOICES)
 
+    def __str__(self):
+        return self.privilege
+
     class Meta:
         unique_together = [['role', 'privilege']]
 

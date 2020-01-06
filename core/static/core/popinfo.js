@@ -3,13 +3,13 @@
 var host = window.location.host;
 var prot = window.location.protocol;
 var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
-var connection = new WebSocket(url);
 
 (function () {
   var path = window.location.pathname;
   console.log("App started!", path);
 
   if (path === "/popinfo/admin") {
+    var connection = new WebSocket(url);
     console.log("Admin page");
 
     connection.onopen = function () {
@@ -31,7 +31,8 @@ var connection = new WebSocket(url);
         connection.send(JSON.stringify(data));
       });
     }
-  } else {
+  } else if (path === "/popinfo") {
+    var connection = new WebSocket(url);
     console.log("Other users");
 
     connection.onopen = function () {

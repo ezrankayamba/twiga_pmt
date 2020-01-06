@@ -15,17 +15,19 @@
         </button>
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                {%for menu in request.allowed_menus%}
                 <li class="nav-item">
-                    <a class="nav-link" href="/" title="Dashboard/Home">
-                        Dashboard
+                    <a class="nav-link" href="{%url menu.url_name%}" title="{{menu.name}}">
+                        {{menu.name}}
                     </a>
                 </li>
-                <li class="nav-item">
+                {%endfor%}
+               <!--  <li class="nav-item">
                     <a class="nav-link" href="{% url 'dashboard-map' %}" title="Map of projects">
                         Map
                     </a>
                 </li>
-                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="{% url 'projects-home' %}" title="List of projects">
                         Projects
@@ -45,7 +47,7 @@
                     <a class="nav-link" href="{% url 'users-list' %}" title="Manage users">
                         Users
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'users-logout' %}" title="Logout">
                         Logout
@@ -54,7 +56,7 @@
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'users-login' %}" title="Login">
-                        Login
+                        You are not logged in, please Login
                     </a>
                 </li>
                 {% endif %}
