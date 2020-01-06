@@ -1,19 +1,86 @@
 {% extends "popinfo/base.html" %} {% load humanize %} {% block content %}
+<style type="text/css">
+  span.title-label{
+    width: 1.3rem;
+    height: 1.4rem;
+    /*background: #013220;*/
+    display: inline-block;
+    position: relative;
+    margin-right: -20px;
+    left: -20px;
+    top: 5px;
+  }
+  ul.facts-list{
+    list-style-type: square;
+  }
+</style>
 <div class="row">
-    {%for sup in suppliers%}
-        <div class="col-md-3 mb-2">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">{{sup.name}}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Aged: {{sup.age}}</h6>
-                <p class="card-text">This distributor executed his duties for {{sup.projects}} project(s) and managed to archieve a performance of {{sup.performance|floatformat:0}}%</p>
-                <a data-id="{{sup.id}}" role="button" href="#{{sup.id}}" class="btn btn-sm btn-outline-primary d-block btn-broadcast">Broadcast</a>
-              </div>
+    {%for win in award_session.win_set.all%}
+        <div class="col-md-6 d-flex align-items-stretch">
+          <div class="card mb-3 w-100">
+            <div class="card-header bg-transparent">
+              <span class="title-label app-bg-primary"></span><h6 class="d-inline pl-2 app-primary">{{win.title}}</h6>
             </div>
+            <div class="card-body">
+              <h6 class="pl-2">{{win.winner}}</h6>
+              <ul class="facts-list">
+                {%for f in win.fact_set.all%}
+                    <li class="card-mutted text-muted">{{f.name}}</li>
+                {%endfor%}
+              </ul>
+            </div>
+            <div class="card-footer bg-transparent">
+              <a data-id="{{win.id}}" role="button" href="#{{win.id}}" class="btn btn-sm btn-outline-secondary btn-broadcast ml-md-4 mr-md-4">Broadcast</a>
+            </div>
+          </div>
         </div>
     {%endfor%}
+    <div class="col-md-3 mb-2">
+        <div class="card h-100 w-100">
+          <div class="card-body">
+            <input type="file" id="file"  class="d-none" />
+            {% csrf_token %}
+            <button id="btnImport" class="btn btn-outline-primary btn-block h-100">Replace Awards</button>
+          </div>
+        </div>
+    </div>
 </div>
-<script type="text/javascript">
+<div class="row">
+    <div class="col">
+        <!-- Button trigger modal -->
+        <button id="confirmTrigger" type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#confirm">
+          Launch confirm modal
+        </button>
 
-</script>
+        <!-- Modal -->
+        <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Confirm Import</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Selected file: <span id="txtFile" class="text-muted"></span></p>
+                <p>Are you sure you want to upload projects in the selected file?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmed" data-url="{%url 'popinfo-replace-awards'%}">Yes, Import</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
 {% endblock content%}
+{% block my_script %}
+<script type="text/javascript">
+    docReady(function(){
+        handleUploadJs();
+    });
+</script>
+{% endblock %}

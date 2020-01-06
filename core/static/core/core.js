@@ -607,6 +607,50 @@ var form_capture_GPS = function form_capture_GPS() {
   });
 };
 
+var handleUploadJs = function handleUploadJs() {
+  var btnImport = document.getElementById("btnImport");
+  var fInput = document.getElementById("file");
+  var confirmTrigger = document.getElementById("confirmTrigger");
+  var confirmed = document.getElementById("confirmed");
+  var file;
+  fInput.addEventListener('change', function (e) {
+    file = e.target.files[0];
+    console.log("Selected", file);
+    document.getElementById("txtFile").innerHTML = file.name;
+
+    if (file) {
+      confirmTrigger.click();
+    }
+  }, false);
+  btnImport.addEventListener('click', function () {
+    fInput.click();
+  });
+  console.log(btnImport);
+
+  var upload = function upload(file, url) {
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData();
+    xhr.open("POST", url, true);
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        console.log(xhr.responseText);
+        location.reload(true);
+      }
+    };
+
+    fd.append("file", file);
+    fd.append("csrfmiddlewaretoken", document.querySelector("input[name='csrfmiddlewaretoken']").value);
+    xhr.send(fd);
+  };
+
+  confirmed.addEventListener('click', function (e) {
+    var url = e.target.dataset.url;
+    console.log('Confirmed', file, url);
+    upload(file, url);
+  });
+};
+
 var filter_form_rerender = function filter_form_rerender() {
   (function () {
     var getEl = function getEl(selector, prnt) {
@@ -658,46 +702,6 @@ var filter_form_rerender = function filter_form_rerender() {
       }
     }
 
-    var btnImport = document.getElementById("btnImport");
-    var fInput = document.getElementById("file");
-    var confirmTrigger = document.getElementById("confirmTrigger");
-    var confirmed = document.getElementById("confirmed");
-    var file;
-    fInput.addEventListener('change', function (e) {
-      file = e.target.files[0];
-      console.log("Selected", file);
-      document.getElementById("txtFile").innerHTML = file.name;
-
-      if (file) {
-        confirmTrigger.click();
-      }
-    }, false);
-    btnImport.addEventListener('click', function () {
-      fInput.click();
-    });
-    console.log(btnImport);
-
-    var upload = function upload(file, url) {
-      var xhr = new XMLHttpRequest();
-      var fd = new FormData();
-      xhr.open("POST", url, true);
-
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-          console.log(xhr.responseText);
-          location.reload(true);
-        }
-      };
-
-      fd.append("file", file);
-      fd.append("csrfmiddlewaretoken", document.querySelector("input[name='csrfmiddlewaretoken']").value);
-      xhr.send(fd);
-    };
-
-    confirmed.addEventListener('click', function (e) {
-      var url = e.target.dataset.url;
-      console.log('Confirmed', file, url);
-      upload(file, url);
-    });
+    handleUploadJs();
   })();
 };

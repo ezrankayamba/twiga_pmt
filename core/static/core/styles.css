@@ -89,6 +89,9 @@ body,
 .app-bg-primary {
     background: #2b7a78;
 }
+.app-primary {
+    color: #2b7a78;
+}
 
 .app-bg-secondary {
     background: #3aafa9;

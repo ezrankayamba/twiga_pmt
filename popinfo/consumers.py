@@ -1,7 +1,7 @@
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 import json
-from setups import models as s_models
+from . import models
 from functools import reduce
 # from functools import filter
 
@@ -36,20 +36,14 @@ class PopInfoConsumer(WebsocketConsumer):
 
     def notify_message(self, event):
         message = event['message']
-        supplier = s_models.Supplier.objects.get(pk=message['id'])
-        print(supplier)
-        count_all = supplier.projects.count()
-        if count_all == 0:
-            count_all = 1
-        flt = list(filter(lambda x: x.project.status.name == 'Completed', supplier.projects.all()))
-        count_completed = len(flt)
+        win = models.Win.objects.get(pk=message['id'])
+        print(win)
 
         self.send(text_data=json.dumps({
             'message': {
-                'id': supplier.id,
-                'name': supplier.name,
-                'age': 28,
-                'projects': count_all,
-                'performance': 100 * count_completed / count_all
+                'id': win.id,
+                'title': win.title,
+                'winner': win.winner,
+                'facts': list(map(lambda x: x.name, win.fact_set.all()))
             }
         }))

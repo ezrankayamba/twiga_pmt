@@ -1,10 +1,16 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from setups import models as s_models
+# from setups import models as s_models
 from django.http import HttpResponse
 import os
-# import numpy as np
+from . import forms
 from PIL import Image
+from datetime import datetime
+import qrcode
+import tempfile
+from django.http import JsonResponse
+from . import imports
+from . import models
 
 
 def home(request):
@@ -13,24 +19,8 @@ def home(request):
 
 @login_required
 def admin(request):
-    suppliers = []
-    for supplier in s_models.Supplier.objects.all():
-        count_all = supplier.projects.count()
-        if count_all == 0:
-            count_all = 1
-        flt = list(filter(lambda x: x.project.status.name == 'Completed', supplier.projects.all()))
-        count_completed = len(flt)
-
-        suppliers.append({
-            'id': supplier.id,
-            'name': supplier.name,
-            'age': 28,
-            'projects': count_all,
-            'performance': 100 * count_completed / count_all
-        })
-
     context = {
-        'suppliers': suppliers
+        'award_session': models.AwardSession.objects.first()
     }
     return render(request, 'popinfo/admin.html', context=context)
 
@@ -59,3 +49,41 @@ def tna_info(request):
     image_data = open(os.path.join(path, out_file), "rb").read()
     response = HttpResponse(image_data, content_type="image/jpeg")
     return response
+
+
+def generate_qr(request):
+    if request.method == 'POST':
+        form = forms.QRForm(request.POST)
+        if form.is_valid():
+            img_id = datetime.now().strftime("%Y%m%d%H%M%S")
+            path = './core/static/core/images/qr'
+            with tempfile.TemporaryFile() as fp:
+                out_file = f'QR_{img_id}.png'
+                text = form.cleaned_data['text']
+                image_data = qrcode.make(text)
+                image_data.save(os.path.join(path, out_file))
+                image_data = open(os.path.join(path, out_file), "rb").read()
+                response = HttpResponse(image_data, content_type="image/png")
+                response['Content-Disposition'] = f'attachment; filename={out_file}'
+                os.remove(os.path.join(path, out_file))
+                return response
+    else:
+        form = forms.QRForm()
+    return render(request, 'popinfo/generate_qr_form.html', {'form': form})
+
+
+def replace_awards(request):
+    if request.method == "POST":
+        form = forms.UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            imports.import_n_replace(file)
+            return JsonResponse({
+                'status': 'success',
+                'file': file.name
+            })
+
+    return JsonResponse({
+        'status': 'fail',
+        'file': 'Form not valid or invalid method'
+    })

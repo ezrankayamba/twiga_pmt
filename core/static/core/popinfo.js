@@ -5,7 +5,7 @@ var prot = window.location.protocol;
 var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
 
 (function () {
-  var path = window.location.pathname;
+  var path = window.location.pathname.replace(/\/+$/, "");
   console.log("App started!", path);
 
   if (path === "/popinfo/admin") {
@@ -49,9 +49,25 @@ var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
         document.querySelector("." + cls).innerHTML = value;
       };
 
-      setValue("card-title", data.name);
-      setValue("card-subtitle", "Aged: " + data.age);
-      setValue("card-text", "This distributor executed his duties for " + data.projects + " project(s) and managed to archieve a performance of " + data.performance + "%");
+      setValue("title", data.title);
+      setValue("winner", data.winner); // setValue("card-text", "This distributor executed his duties for " + data.projects + " project(s) and managed to archieve a performance of " + data.performance + "%");
+
+      var ul = document.querySelector(".facts-list");
+      ul.innerHTML = "";
+      data.facts.forEach(function (f) {
+        var li = document.createElement("li");
+        li.classList.add('card-mutted');
+        li.classList.add('text-mutted');
+        li.innerHTML = f;
+        ul.appendChild(li);
+      });
+      navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+
+      if ("vibrate" in navigator) {
+        navigator.vibrate(1000);
+      } else {
+        console.log('Vibration  not supported');
+      }
     };
 
     connection.onerror = function (error) {

@@ -631,6 +631,45 @@ let form_capture_GPS = () => {
         }
     });
 }
+let handleUploadJs = ()=>{
+    let btnImport = document.getElementById("btnImport");
+    let fInput = document.getElementById("file");
+    let confirmTrigger = document.getElementById("confirmTrigger");
+    let confirmed=document.getElementById("confirmed");
+    let file;
+    fInput.addEventListener('change', (e) => {
+        file = e.target.files[0];
+        console.log("Selected", file);
+        document.getElementById("txtFile").innerHTML=file.name;
+        if(file){
+            confirmTrigger.click();
+        }
+    }, false);
+    btnImport.addEventListener('click', () => {
+        fInput.click();
+    })
+    console.log(btnImport)
+    let upload = (file, url) => {
+        var xhr = new XMLHttpRequest();
+        var fd = new FormData();
+        xhr.open("POST", url, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(xhr.responseText);
+                location.reload(true)
+            }
+        };
+        fd.append("file", file);
+        fd.append("csrfmiddlewaretoken", document.querySelector("input[name='csrfmiddlewaretoken']").value)
+        xhr.send(fd);
+    }
+
+    confirmed.addEventListener('click',(e) => {
+        let url=e.target.dataset.url
+        console.log('Confirmed', file, url)
+        upload(file, url)
+    })
+}
 let filter_form_rerender = () => {
      (function() {
         let getEl = (selector, prnt) => {
@@ -675,42 +714,6 @@ let filter_form_rerender = () => {
                 txt.id=`${txt.id}_1`
             }
         }
-        let btnImport = document.getElementById("btnImport");
-        let fInput = document.getElementById("file");
-        let confirmTrigger = document.getElementById("confirmTrigger");
-        let confirmed=document.getElementById("confirmed");
-        let file;
-        fInput.addEventListener('change', (e) => {
-            file = e.target.files[0];
-            console.log("Selected", file);
-            document.getElementById("txtFile").innerHTML=file.name;
-            if(file){
-                confirmTrigger.click();
-            }
-        }, false);
-        btnImport.addEventListener('click', () => {
-            fInput.click();
-        })
-        console.log(btnImport)
-        let upload = (file, url) => {
-            var xhr = new XMLHttpRequest();
-            var fd = new FormData();
-            xhr.open("POST", url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    console.log(xhr.responseText);
-                    location.reload(true)
-                }
-            };
-            fd.append("file", file);
-            fd.append("csrfmiddlewaretoken", document.querySelector("input[name='csrfmiddlewaretoken']").value)
-            xhr.send(fd);
-        }
-
-        confirmed.addEventListener('click',(e) => {
-            let url=e.target.dataset.url
-            console.log('Confirmed', file, url)
-            upload(file, url)
-        })
+        handleUploadJs()
     })();
 }
