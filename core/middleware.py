@@ -12,7 +12,7 @@ class MenuAuthorizationMiddleware:
 
     def __call__(self, request):
         self.path = request.path
-        if not self.path.startswith('/static') and not request.user.is_anonymous:
+        if not self.path.startswith('/static') and not request.user.is_anonymous and request.user.profile.role:
             privileges = []
             for p in request.user.profile.role.privileges.all():
                 privileges.append(p.privilege)
