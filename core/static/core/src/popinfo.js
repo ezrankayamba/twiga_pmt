@@ -35,6 +35,10 @@ var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
         }, 200)
       });
     }
+     connection.onmessage = (e)=>{
+        var data = JSON.parse(e.data).message;
+        console.log(data);
+     }
   } else if (path === "/popinfo"){
     var connection = new WebSocket(url);
     console.log("Other users");

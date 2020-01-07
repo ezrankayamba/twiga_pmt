@@ -34,6 +34,11 @@ var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
         }, 200);
       });
     }
+
+    connection.onmessage = function (e) {
+      var data = JSON.parse(e.data).message;
+      console.log(data);
+    };
   } else if (path === "/popinfo") {
     var connection = new WebSocket(url);
     console.log("Other users");
@@ -53,8 +58,7 @@ var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
       };
 
       setValue("title", data.title);
-      setValue("winner", data.winner); // setValue("card-text", "This distributor executed his duties for " + data.projects + " project(s) and managed to archieve a performance of " + data.performance + "%");
-
+      setValue("winner", data.winner);
       var ul = document.querySelector(".facts-list");
       ul.innerHTML = "";
       data.facts.forEach(function (f) {
