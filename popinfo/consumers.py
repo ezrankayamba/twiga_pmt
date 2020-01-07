@@ -33,6 +33,9 @@ class PopInfoConsumer(WebsocketConsumer):
                     'message': {'id': data['id']}
                 }
             )
+            win = models.Win.objects.get(pk=data['id'])
+            win.announced = True
+            win.save()
 
     def notify_message(self, event):
         message = event['message']

@@ -30,6 +30,9 @@ var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
         });
         console.log(data);
         connection.send(JSON.stringify(data));
+        setInterval(()=>{
+          location.reload(true)
+        }, 200)
       });
     }
   } else if (path === "/popinfo"){
@@ -52,7 +55,6 @@ var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
 
       setValue("title", data.title);
       setValue("winner", data.winner);
-      // setValue("card-text", "This distributor executed his duties for " + data.projects + " project(s) and managed to archieve a performance of " + data.performance + "%");
       let ul=document.querySelector(".facts-list");
       ul.innerHTML=""
       data.facts.forEach((f)=>{

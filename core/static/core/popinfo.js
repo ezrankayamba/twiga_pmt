@@ -29,6 +29,9 @@ var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
         });
         console.log(data);
         connection.send(JSON.stringify(data));
+        setInterval(function () {
+          location.reload(true);
+        }, 200);
       });
     }
   } else if (path === "/popinfo") {

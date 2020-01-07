@@ -29,8 +29,12 @@
                 {%endfor%}
               </ul>
             </div>
-            <div class="card-footer bg-transparent">
+            <div class="card-footer bg-transparent check-circle">
+              {%if win.announced%}
+              <a data-id="{{win.id}}" role="button" href="#{{win.id}}" class="btn btn-sm btn-outline-secondary btn-broadcast ml-md-4 mr-md-4"><i class="fa fa-check-circle"></i> Broadcast</a>
+              {%else%}
               <a data-id="{{win.id}}" role="button" href="#{{win.id}}" class="btn btn-sm btn-outline-secondary btn-broadcast ml-md-4 mr-md-4">Broadcast</a>
+              {%endif%}
             </div>
           </div>
         </div>

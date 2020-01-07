@@ -10,6 +10,7 @@ class Win(models.Model):
     title = models.CharField(max_length=100)
     winner = models.CharField(max_length=100)
     award_session = models.ForeignKey(to=AwardSession, on_delete=models.CASCADE)
+    announced = models.BooleanField(default=False)
 
 
 class Fact(models.Model):
