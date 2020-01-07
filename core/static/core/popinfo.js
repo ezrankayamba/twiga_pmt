@@ -29,15 +29,13 @@ var url = (prot === "https:" ? "wss" : "ws") + "://" + host + "/popinfo/ws/";
         });
         console.log(data);
         connection.send(JSON.stringify(data));
-        setInterval(function () {
-          location.reload(true);
-        }, 200);
       });
     }
 
     connection.onmessage = function (e) {
       var data = JSON.parse(e.data).message;
       console.log(data);
+      location.reload(true);
     };
   } else if (path === "/popinfo") {
     var connection = new WebSocket(url);
