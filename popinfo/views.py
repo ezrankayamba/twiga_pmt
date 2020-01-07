@@ -56,16 +56,15 @@ def generate_qr(request):
         form = forms.QRForm(request.POST)
         if form.is_valid():
             img_id = datetime.now().strftime("%Y%m%d%H%M%S")
-            path = './core/static/core/images/qr'
             with tempfile.TemporaryFile() as fp:
                 out_file = f'QR_{img_id}.png'
                 text = form.cleaned_data['text']
                 image_data = qrcode.make(text)
-                image_data.save(os.path.join(path, out_file))
-                image_data = open(os.path.join(path, out_file), "rb").read()
+                image_data.save(out_file)
+                image_data = open(out_file, "rb").read()
                 response = HttpResponse(image_data, content_type="image/png")
                 response['Content-Disposition'] = f'attachment; filename={out_file}'
-                os.remove(os.path.join(path, out_file))
+                os.remove(out_file)
                 return response
     else:
         form = forms.QRForm()
