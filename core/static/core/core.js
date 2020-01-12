@@ -650,7 +650,7 @@ var form_capture_GPS = function form_capture_GPS() {
         document.querySelector("input[name=latitude]").value = loc.coords.latitude;
         document.querySelector("#coordinates").textContent = "(" + loc.coords.longitude.toFixed(4) + "," + loc.coords.latitude.toFixed(4) + ")";
       }, function (err) {
-        console.log("OnError");
+        console.log("OnError: ", GeolocationPositionError.code, GeolocationPositionError.message);
         console.log(err);
       }, options);
     } else {
