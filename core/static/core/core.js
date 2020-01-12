@@ -637,6 +637,12 @@ var form_capture_GPS = function form_capture_GPS() {
 
     if (navigator.geolocation) {
       console.log("GPS Supported2");
+      var options = {
+        timeout: 10000,
+        //10 seconds timeout
+        maximumAge: 60000 //1 minute ago
+
+      };
       navigator.geolocation.getCurrentPosition(function (loc) {
         console.log("OnLocation");
         console.log(loc);
@@ -646,7 +652,7 @@ var form_capture_GPS = function form_capture_GPS() {
       }, function (err) {
         console.log("OnError");
         console.log(err);
-      });
+      }, options);
     } else {
       console.error("No GPS Capture Support!");
       alert("No GPS Capture Support!");

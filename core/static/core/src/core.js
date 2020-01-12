@@ -509,6 +509,7 @@ let load_form_js = (urls) => {
 
         for (let i = 0; i < list.length; i++) {
             let btn = list[i];
+            //data-toggle="modal" data-target="#mapModel"
             btn.dataset.toggle='modal';
             btn.dataset.target='#setup-model';
             btn.addEventListener("click", e => {
@@ -550,7 +551,7 @@ let load_form_js = (urls) => {
                             let name = params[0][2]
                             let elId = params[0][3]
                             console.log(id, name, elId)
-                            closePopup(id, name, elId);
+                            closePopup(id, name, elId)
                         })
                         .catch((err)=>{
                             consol.log(err)
@@ -562,6 +563,43 @@ let load_form_js = (urls) => {
     })();
 
 
+    function popupCenter(url, title, w, h) {
+        var dualScreenLeft =
+            window.screenLeft != undefined ? window.screenLeft : window.screenX;
+        var dualScreenTop =
+            window.screenTop != undefined ? window.screenTop : window.screenY;
+
+        var width = window.innerWidth ?
+            window.innerWidth :
+            document.documentElement.clientWidth ?
+            document.documentElement.clientWidth :
+            screen.width;
+        var height = window.innerHeight ?
+            window.innerHeight :
+            document.documentElement.clientHeight ?
+            document.documentElement.clientHeight :
+            screen.height;
+
+        var systemZoom = width / window.screen.availWidth;
+        var left = (width - w) / 2 / systemZoom + dualScreenLeft;
+        var top = (height - h) / 2 / systemZoom + dualScreenTop;
+        top = (top * 3) / 10;
+        popupWindow = window.open(
+            url,
+            title,
+            "resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes,width=" +
+            w / systemZoom +
+            ", height=" +
+            h / systemZoom +
+            ", top=" +
+            top +
+            ", left=" +
+            left
+        );
+
+        if (window.focus) popupWindow.focus();
+    }
+}
 let closePopup = (newID, newRepr, id) => {
     let x = document.querySelector(id);
     let option = document.createElement("option");
@@ -618,9 +656,8 @@ let form_capture_GPS = () => {
         if (navigator.geolocation) {
             console.log("GPS Supported2");
             let options = {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
+                timeout: 10000, //10 seconds timeout
+                maximumAge: 60000 //1 minute ago
             };
             navigator.geolocation.getCurrentPosition(function(loc){
                 console.log("OnLocation");
