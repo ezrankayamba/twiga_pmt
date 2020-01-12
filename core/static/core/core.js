@@ -1,5 +1,13 @@
 "use strict";
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function docReady(fn) {
   if (document.readyState === "complete" || document.readyState === "interactive") {
     setTimeout(fn, 1);
@@ -417,7 +425,7 @@ var refreshOnRegion = function refreshOnRegion(el, cb) {
 };
 
 var load_form_js = function load_form_js(urls) {
-  console.log(urls);
+  // console.log(urls)
   loadDistrUrl = urls.querySelector(".popup-setups-load-districts").value;
 
   (function () {
@@ -452,8 +460,8 @@ var load_form_js = function load_form_js(urls) {
       name: "size",
       url: urls.querySelector(".popup-setups-size-create").value
     }].forEach(function (fld) {
-      var name = fld.name;
-      console.log(fld, name);
+      var name = fld.name; // console.log(fld, name)
+
       var container = document.querySelector("#div_id_".concat(name));
 
       if (container) {
@@ -493,7 +501,10 @@ var load_form_js = function load_form_js(urls) {
     var list = document.querySelectorAll(".add-other");
 
     var _loop = function _loop(i) {
-      var btn = list[i];
+      var btn = list[i]; //data-toggle="modal" data-target="#mapModel"
+
+      btn.dataset.toggle = 'modal';
+      btn.dataset.target = '#setup-model';
       btn.addEventListener("click", function (e) {
         var url = btn.dataset.url;
         url = baseUrl + url;
@@ -502,8 +513,45 @@ var load_form_js = function load_form_js(urls) {
           url = "".concat(url, "?region=").concat(document.querySelector("#id_region").value);
         }
 
-        console.log(url);
-        popupCenter(url, "popUpWindow", w, h);
+        console.log(url); // popupCenter(url, "popUpWindow", w, h);
+
+        fetch(url).then(function (res) {
+          return res.text();
+        }).then(function (html) {
+          // console.log(html)
+          var form = document.getElementById('setup-model-form');
+          form.innerHTML = html;
+          var btnSubmit = document.getElementById('btn-model-submit');
+
+          btnSubmit.onclick = function () {
+            var data = new FormData(form.querySelector('form'));
+            var object = {};
+            data.forEach(function (value, key) {
+              object[key] = value;
+            });
+            var json = JSON.stringify(object);
+            console.log('Submit: ', url, json);
+            fetch(url, {
+              method: 'post',
+              body: data
+            }).then(function (res) {
+              return res.text();
+            }).then(function (text) {
+              console.log(text);
+              var regex = /closePopup\((\d+), "([\w ]+)", "(#[\w]+)"\);/g;
+
+              var params = _toConsumableArray(text.matchAll(regex));
+
+              var id = parseInt(params[0][1]);
+              var name = params[0][2];
+              var elId = params[0][3];
+              console.log(id, name, elId);
+              closePopup(id, name, elId);
+            }).catch(function (err) {
+              consol.log(err);
+            });
+          };
+        });
       });
     };
 
@@ -539,8 +587,7 @@ var closePopup = function closePopup(newID, newRepr, id) {
     refreshOnRegion(x);
   }
 
-  console.log(newID, newRepr, id);
-  popupWindow.close();
+  console.log(newID, newRepr, id); // popupWindow.close();
 };
 
 var initMapOnForm = function initMapOnForm() {

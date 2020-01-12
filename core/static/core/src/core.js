@@ -446,7 +446,7 @@ let refreshOnRegion = (el, cb) => {
         });
 };
 let load_form_js = (urls) => {
-    console.log(urls)
+    // console.log(urls)
     loadDistrUrl = urls.querySelector(".popup-setups-load-districts").value;
 
     (function() {
@@ -472,7 +472,7 @@ let load_form_js = (urls) => {
             { name: "size", url: urls.querySelector(".popup-setups-size-create").value}
         ].forEach(fld => {
             let name = fld.name;
-            console.log(fld, name)
+            // console.log(fld, name)
             let container = document.querySelector(`#div_id_${name}`);
             if (container) {
                 let sel = container.querySelector("select");
@@ -506,8 +506,11 @@ let load_form_js = (urls) => {
         });
 
         let list = document.querySelectorAll(".add-other");
+
         for (let i = 0; i < list.length; i++) {
             let btn = list[i];
+            btn.dataset.toggle='modal';
+            btn.dataset.target='#setup-model';
             btn.addEventListener("click", e => {
                 let url = btn.dataset.url;
                 url = baseUrl + url;
@@ -517,49 +520,48 @@ let load_form_js = (urls) => {
                         }`;
                 }
                 console.log(url);
-                popupCenter(url, "popUpWindow", w, h);
+                // popupCenter(url, "popUpWindow", w, h);
+                fetch(url)
+                .then((res)=>res.text())
+                .then((html)=>{
+                    // console.log(html)
+                    let form = document.getElementById('setup-model-form');
+                    form.innerHTML = html;
+
+                    let btnSubmit = document.getElementById('btn-model-submit');
+                    btnSubmit.onclick=()=>{
+                        let data = new FormData(form.querySelector('form'));
+                        var object = {};
+                        data.forEach(function(value, key){
+                            object[key] = value;
+                        });
+                        var json = JSON.stringify(object);
+                        console.log('Submit: ', url, json);
+                        fetch(url, {
+                            method: 'post',
+                            body: data,
+                        })
+                        .then((res)=>res.text())
+                        .then((text)=>{
+                            console.log(text);
+                            let regex = /closePopup\((\d+), "([\w ]+)", "(#[\w]+)"\);/g
+                            let params = [...text.matchAll(regex)];
+                            let id = parseInt(params[0][1])
+                            let name = params[0][2]
+                            let elId = params[0][3]
+                            console.log(id, name, elId)
+                            closePopup(id, name, elId);
+                        })
+                        .catch((err)=>{
+                            consol.log(err)
+                        });
+                    }
+                })
             });
         }
     })();
 
 
-    function popupCenter(url, title, w, h) {
-        var dualScreenLeft =
-            window.screenLeft != undefined ? window.screenLeft : window.screenX;
-        var dualScreenTop =
-            window.screenTop != undefined ? window.screenTop : window.screenY;
-
-        var width = window.innerWidth ?
-            window.innerWidth :
-            document.documentElement.clientWidth ?
-            document.documentElement.clientWidth :
-            screen.width;
-        var height = window.innerHeight ?
-            window.innerHeight :
-            document.documentElement.clientHeight ?
-            document.documentElement.clientHeight :
-            screen.height;
-
-        var systemZoom = width / window.screen.availWidth;
-        var left = (width - w) / 2 / systemZoom + dualScreenLeft;
-        var top = (height - h) / 2 / systemZoom + dualScreenTop;
-        top = (top * 3) / 10;
-        popupWindow = window.open(
-            url,
-            title,
-            "resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes,width=" +
-            w / systemZoom +
-            ", height=" +
-            h / systemZoom +
-            ", top=" +
-            top +
-            ", left=" +
-            left
-        );
-
-        if (window.focus) popupWindow.focus();
-    }
-}
 let closePopup = (newID, newRepr, id) => {
     let x = document.querySelector(id);
     let option = document.createElement("option");
@@ -574,7 +576,7 @@ let closePopup = (newID, newRepr, id) => {
     }
 
     console.log(newID, newRepr, id);
-    popupWindow.close();
+    // popupWindow.close();
 }
 
 let initMapOnForm = () => {

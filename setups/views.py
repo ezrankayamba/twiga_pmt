@@ -28,8 +28,14 @@ def load_districts(request):
 
 class TypeCreateView(generic.CreateView):
     model = models.Type
-    template_name = 'setups/popups/type_form.html'
+    # template_name = 'setups/popups/type_form.html'
+    template_name = 'setups/popups/setup_form.html'
     fields = ['name']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = Book.objects.all()
+        return context
 
     def form_valid(self, form):
         instance = form.save()
@@ -141,6 +147,36 @@ class SetupGenericListView(generic.ListView):
         context['model_name'] = self.model.__name__
         print('context', context)
         return context
+
+
+class SetupPopupGenericCreateView(generic.CreateView):
+    template_name = 'setups/popups/setup_form.html'
+
+    def __init__(self, *args, **kwargs):
+        super(SetupPopupGenericCreateView, self).__init__(*args, **kwargs)
+        name = self.model.__name__.lower()
+        # self.success_url = reverse(f'setups-{name}-list')
+        if name in ['size', 'status']:
+            self.fields = ['code', 'name']
+        elif name in ['district']:
+            self.fields = ['name']
+        elif name in ['region', 'type']:
+            self.fields = ['name']
+        else:
+            self.fields = ['name', 'contact_person', 'position', 'phone', 'email', 'location']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.model.__name__
+        return context
+
+    def form_valid(self, form):
+        name = self.model.__name__.lower()
+        if name in ['district']:
+            region = get_object_or_404(models.Region, id=self.request.GET.get('region'))
+            form.instance.region = region
+        instance = form.save()
+        return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_{name}");</script>')
 
 
 class SetupGenericCreateView(generic.CreateView):
