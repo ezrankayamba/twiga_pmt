@@ -638,7 +638,7 @@ var form_capture_GPS = function form_capture_GPS() {
     if (navigator.geolocation) {
       console.log("GPS Supported2");
       var options = {
-        timeout: 10000,
+        timeout: 60000,
         //10 seconds timeout
         maximumAge: 60000 //1 minute ago
 
