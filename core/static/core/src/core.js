@@ -656,8 +656,8 @@ let form_capture_GPS = () => {
         if (navigator.geolocation) {
             console.log("GPS Supported2");
             let options = {
-                // timeout: 60000, //10 seconds timeout
-                maximumAge: 60000 //1 minute ago
+                timeout: 60000, //2 minutes timeout
+                maximumAge: 180000 //3 minutes ago
             };
             navigator.geolocation.getCurrentPosition(function(loc){
                 console.log("OnLocation");
