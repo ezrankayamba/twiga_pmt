@@ -13,4 +13,38 @@
         </form>
     </div>
 </div>
+<!-- Modal -->
+<div
+    class="modal fade"
+    id="setup-model"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="setup-model-label"
+    aria-hidden="true"
+>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="setup-model-form" style="width: 100%;"></div>
+            </div>
+            <div class="modal-footer p-2 pl-3 pr-3">
+                <button
+                    type="button"
+                    class="btn btn-sm btn-secondary"
+                    data-dismiss="modal"
+                >
+                    Close
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    data-dismiss="modal"
+                    id="btn-model-submit"
+                >
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {%include 'projects/form_setup_link_js.html'%} {% endblock content%}

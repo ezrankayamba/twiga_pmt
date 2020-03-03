@@ -424,6 +424,62 @@ var refreshOnRegion = function refreshOnRegion(el, cb) {
   });
 };
 
+function addOtherPopupHandler(baseUrl, btn) {
+  //data-toggle="modal" data-target="#mapModel"
+  btn.dataset.toggle = "modal";
+  btn.dataset.target = "#setup-model";
+  btn.addEventListener("click", function (e) {
+    var url = btn.dataset.url;
+    url = baseUrl + url;
+
+    if (btn.id === "btn_select_district") {
+      url = "".concat(url, "?region=").concat(document.querySelector("#id_region").value);
+    }
+
+    console.log(url); // popupCenter(url, "popUpWindow", w, h);
+
+    fetch(url).then(function (res) {
+      return res.text();
+    }).then(function (html) {
+      // console.log(html)
+      var form = document.getElementById("setup-model-form");
+      form.innerHTML = html;
+      var btnSubmit = document.getElementById("btn-model-submit");
+
+      btnSubmit.onclick = function () {
+        var data = new FormData(form.querySelector("form"));
+        var object = {};
+        data.forEach(function (value, key) {
+          object[key] = value;
+        });
+        var json = JSON.stringify(object);
+        console.log("Submit: ", url, json);
+        fetch(url, {
+          method: "post",
+          body: data
+        }).then(function (res) {
+          return res.text();
+        }).then(function (text) {
+          console.log(text);
+          var regex = /closePopup\((\d+), "([\w ]+)", "(#[\w]+)"\);/g;
+
+          var params = _toConsumableArray(text.matchAll(regex));
+
+          var id = parseInt(params[0][1]);
+          var name = params[0][2]; // let elId = params[0][3];
+
+          var elId = btn.parentElement.querySelector(".select").id;
+          elId = "#".concat(elId);
+          console.log(id, name, elId);
+          closePopup(id, name, elId);
+        }).catch(function (err) {
+          console.log(err);
+        });
+      };
+    });
+  });
+}
+
 var load_form_js = function load_form_js(urls) {
   // console.log(urls)
   loadDistrUrl = urls.querySelector(".popup-setups-load-districts").value;
@@ -434,7 +490,7 @@ var load_form_js = function load_form_js(urls) {
       console.log(e);
       var el = e.target;
       refreshOnRegion(el, function () {
-        console.log('Loaded successfully');
+        console.log("Loaded successfully");
       });
     });
     var w = window.innerWidth / 2;
@@ -486,11 +542,11 @@ var load_form_js = function load_form_js(urls) {
         sel.parentNode.insertBefore(btn, sel.nextSibling);
         sel.parentElement.classList.add("d-flex");
 
-        if (name === 'region') {
+        if (name === "region") {
           regionSel = sel;
         }
 
-        if (name === 'district') {
+        if (name === "district") {
           var tmp = sel.value;
           refreshOnRegion(regionSel, function () {
             sel.value = tmp;
@@ -500,63 +556,9 @@ var load_form_js = function load_form_js(urls) {
     });
     var list = document.querySelectorAll(".add-other");
 
-    var _loop = function _loop(i) {
-      var btn = list[i]; //data-toggle="modal" data-target="#mapModel"
-
-      btn.dataset.toggle = 'modal';
-      btn.dataset.target = '#setup-model';
-      btn.addEventListener("click", function (e) {
-        var url = btn.dataset.url;
-        url = baseUrl + url;
-
-        if (btn.id === "btn_select_district") {
-          url = "".concat(url, "?region=").concat(document.querySelector("#id_region").value);
-        }
-
-        console.log(url); // popupCenter(url, "popUpWindow", w, h);
-
-        fetch(url).then(function (res) {
-          return res.text();
-        }).then(function (html) {
-          // console.log(html)
-          var form = document.getElementById('setup-model-form');
-          form.innerHTML = html;
-          var btnSubmit = document.getElementById('btn-model-submit');
-
-          btnSubmit.onclick = function () {
-            var data = new FormData(form.querySelector('form'));
-            var object = {};
-            data.forEach(function (value, key) {
-              object[key] = value;
-            });
-            var json = JSON.stringify(object);
-            console.log('Submit: ', url, json);
-            fetch(url, {
-              method: 'post',
-              body: data
-            }).then(function (res) {
-              return res.text();
-            }).then(function (text) {
-              console.log(text);
-              var regex = /closePopup\((\d+), "([\w ]+)", "(#[\w]+)"\);/g;
-
-              var params = _toConsumableArray(text.matchAll(regex));
-
-              var id = parseInt(params[0][1]);
-              var name = params[0][2];
-              var elId = params[0][3];
-              console.log(id, name, elId);
-              closePopup(id, name, elId);
-            }).catch(function (err) {
-              consol.log(err);
-            });
-          };
-        });
-      });
-    };
-
     for (var i = 0; i < list.length; i++) {
-      _loop(i);
+      var btn = list[i];
+      addOtherPopupHandler(baseUrl, btn);
     }
   })();
 
@@ -583,7 +585,7 @@ var closePopup = function closePopup(newID, newRepr, id) {
   x.add(option);
   console.log("Select: ", x);
 
-  if (x.id === 'id_region') {
+  if (x.id === "id_region") {
     refreshOnRegion(x);
   }
 
@@ -601,14 +603,14 @@ var initMapOnForm = function initMapOnForm() {
   var map; //Will contain map object.
 
   var marker = false;
-  map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById("map"), {
     center: {
-      lat: -6.1920,
+      lat: -6.192,
       lng: 35.7699
     },
     zoom: 6
   });
-  google.maps.event.addListener(map, 'click', function (event) {
+  google.maps.event.addListener(map, "click", function (event) {
     var clickedLocation = event.latLng;
 
     if (marker === false) {
@@ -618,7 +620,7 @@ var initMapOnForm = function initMapOnForm() {
         draggable: true //make it draggable
 
       });
-      google.maps.event.addListener(marker, 'dragend', function (event) {
+      google.maps.event.addListener(marker, "dragend", function (event) {
         markerLocation();
       });
     } else {
@@ -638,8 +640,9 @@ var form_capture_GPS = function form_capture_GPS() {
     if (navigator.geolocation) {
       console.log("GPS Supported2");
       var options = {
-        // timeout: 60000, //10 seconds timeout
-        maximumAge: 60000 //1 minute ago
+        timeout: 60000,
+        //2 minutes timeout
+        maximumAge: 180000 //3 minutes ago
 
       };
       navigator.geolocation.getCurrentPosition(function (loc) {
@@ -665,7 +668,7 @@ var handleUploadJs = function handleUploadJs() {
   var confirmTrigger = document.getElementById("confirmTrigger");
   var confirmed = document.getElementById("confirmed");
   var file;
-  fInput.addEventListener('change', function (e) {
+  fInput.addEventListener("change", function (e) {
     file = e.target.files[0];
     console.log("Selected", file);
     document.getElementById("txtFile").innerHTML = file.name;
@@ -674,7 +677,7 @@ var handleUploadJs = function handleUploadJs() {
       confirmTrigger.click();
     }
   }, false);
-  btnImport.addEventListener('click', function () {
+  btnImport.addEventListener("click", function () {
     fInput.click();
   });
   console.log(btnImport);
@@ -696,9 +699,9 @@ var handleUploadJs = function handleUploadJs() {
     xhr.send(fd);
   };
 
-  confirmed.addEventListener('click', function (e) {
+  confirmed.addEventListener("click", function (e) {
     var url = e.target.dataset.url;
-    console.log('Confirmed', file, url);
+    console.log("Confirmed", file, url);
     upload(file, url);
   });
 };
@@ -739,14 +742,14 @@ var filter_form_rerender = function filter_form_rerender() {
     var fltOnPag = document.querySelector(".filter-on-pagination");
 
     if (fltOnPag) {
-      var selNodes = document.querySelector(".filter-on-pagination").querySelectorAll('.select');
+      var selNodes = document.querySelector(".filter-on-pagination").querySelectorAll(".select");
 
       for (var _i = 0; _i < selNodes.length; _i++) {
         var sel = selNodes[_i];
         sel.id = "".concat(sel.id, "_1");
       }
 
-      var txtNodes = document.querySelector(".filter-on-pagination").querySelectorAll('.textinput');
+      var txtNodes = document.querySelector(".filter-on-pagination").querySelectorAll(".textinput");
 
       for (var _i2 = 0; _i2 < txtNodes.length; _i2++) {
         var txt = txtNodes[_i2];

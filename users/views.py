@@ -10,9 +10,11 @@ from core.models import Config
 from . import models
 from . import choices
 from django.urls import reverse
+from users import mixins, decorators as dec, choices as ch
 
 
 @login_required
+@dec.view_authorized([ch.PRIV_VIEW_USERS])
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -65,12 +67,14 @@ class ChangeMyPasswordView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-class RoleListView(LoginRequiredMixin, ListView):
+class RoleListView(LoginRequiredMixin, mixins.ViewAuthorizedMixin, ListView):
     model = models.Role
+    permissions = [ch.PRIV_VIEW_ROLES]
 
 
-class RoleDetailView(LoginRequiredMixin, DetailView):
+class RoleDetailView(LoginRequiredMixin, mixins.ViewAuthorizedMixin, DetailView):
     model = models.Role
+    permissions = [ch.PRIV_VIEW_ROLES]
 
     def get_context_data(self, **kwargs):
         all_privs = []
@@ -88,12 +92,14 @@ class RoleDetailView(LoginRequiredMixin, DetailView):
         return ctx
 
 
-class RoleCreateView(LoginRequiredMixin, CreateView):
+class RoleCreateView(LoginRequiredMixin, mixins.ViewAuthorizedMixin, CreateView):
     model = models.Role
     fields = '__all__'
+    permissions = [ch.PRIV_VIEW_ROLES]
 
 
 @login_required
+@dec.view_authorized([ch.PRIV_VIEW_ROLES])
 def role_privileges_update(request):
     if request.method == 'POST':
         print(request.POST)
@@ -107,14 +113,16 @@ def role_privileges_update(request):
         return redirect(reverse('role-detail', kwargs={'pk': role_id}))
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class UserListView(LoginRequiredMixin, mixins.ViewAuthorizedMixin, ListView):
     model = models.User
     template_name = 'users/user_list.html'
+    permissions = [ch.PRIV_VIEW_USERS]
 
 
-class UserCreateView(LoginRequiredMixin, CreateView):
+class UserCreateView(LoginRequiredMixin, mixins.ViewAuthorizedMixin, CreateView):
     template_name = 'users/create_user_form.html'
     form_class = UserCreateForm
+    permissions = [ch.PRIV_VIEW_USERS]
 
     def form_valid(self, form):
         data = form.cleaned_data
@@ -126,10 +134,11 @@ class UserCreateView(LoginRequiredMixin, CreateView):
         return redirect('users-list')
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UserUpdateView(LoginRequiredMixin, mixins.ViewAuthorizedMixin, UpdateView):
     template_name = 'users/update_user_form.html'
     form_class = UserUpdateForm
     model = User
+    permissions = [ch.PRIV_VIEW_USERS]
 
     def get_initial(self):
         return {'role': self.get_object().profile.role}

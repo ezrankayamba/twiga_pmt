@@ -1,100 +1,48 @@
 <script type="text/javascript">
-(function() {
+docReady(function() {
+    console.log("Form setups")
     let w = window.innerWidth / 2;
     let h = (window.innerHeight * 3) / 4;
-    // let baseUrl = window.location.origin;
-    let fld = document.querySelector('.select');
-    if (fld) {
-        let name = fld.name;
-        console.log(fld, name)
-        let container = document.querySelector(`#div_id_${name}`);
-        console.log(container);
-        let sel = container.querySelector("select");
-        let btn = document.createElement("button");
-        btn.innerHTML = `<i class="fa fa-plus"></i>`;
-        btn.classList.add("btn");
-        btn.classList.add("btn-link");
-        btn.classList.add("text-secondary");
-        btn.classList.add("pr-0");
-        btn.classList.add("pl-1");
-        btn.dataset.url = "{{ setup_url }}";
-        btn.type = "button";
-        btn.classList.add("add-other");
-        btn.title = "Add other";
-        if (name === "district") {
-            btn.disabled = document.querySelector("#id_region").value ? false : true;
-            btn.id = "btn_select_district";
+    let baseUrl = window.location.origin;
+    let flds = document.querySelectorAll('.select');
+    for (let i = 0; i < flds.length; i++) {
+        let fld = flds[i]
+        if (fld) {
+            let name = fld.name;
+            console.log(fld, name)
+            let container;
+            if (name === 'other') {
+                container = document.querySelector(`#div_id_${name}`);
+            } else {
+                container = document.querySelector(`#div_id_${name}`);
+            }
+            console.log(container);
+            let sel = container.querySelector("select");
+            let btn = document.createElement("button");
+            btn.innerHTML = `<i class="fa fa-plus"></i>`;
+            btn.classList.add("btn");
+            btn.classList.add("btn-link");
+            btn.classList.add("text-secondary");
+            btn.classList.add("pr-0");
+            btn.classList.add("pl-1");
+            btn.dataset.url = "{{ setup_url }}";
+            btn.type = "button";
+            btn.classList.add("add-other");
+            btn.title = "Add other";
+            if (name === "district") {
+                btn.disabled = document.querySelector("#id_region").value ? false : true;
+                btn.id = "btn_select_district";
+            }
+            sel.parentNode.insertBefore(btn, sel.nextSibling);
+            sel.parentElement.classList.add("d-flex");
         }
-        sel.parentNode.insertBefore(btn, sel.nextSibling);
-        sel.parentElement.classList.add("d-flex");
     }
 
     let list = document.querySelectorAll(".add-other");
 
     list.forEach(btn => {
-        btn.addEventListener("click", e => {
-            let url = btn.dataset.url;
-            // url = baseUrl + url;
-            if (btn.id === "btn_select_district") {
-                url = `${url}?region=${
-                        document.querySelector("#id_region").value
-                    }`;
-            }
-            console.log(url);
-            popupCenter(url, "popUpWindow", w, h);
-        });
+        addOtherPopupHandler(baseUrl, btn);
     });
-})();
-
-function closePopup(newID, newRepr, id) {
-    let x = document.querySelector(id);
-    let option = document.createElement("option");
-    option.text = newRepr;
-    option.selected = true;
-    option.value = newID
-    x.add(option);
-
-    console.log("Select: ", x);
-
-    console.log(newID, newRepr, id);
-    popupWindow.close();
-}
-
-function popupCenter(url, title, w, h) {
-    var dualScreenLeft =
-        window.screenLeft != undefined ? window.screenLeft : window.screenX;
-    var dualScreenTop =
-        window.screenTop != undefined ? window.screenTop : window.screenY;
-
-    var width = window.innerWidth ?
-        window.innerWidth :
-        document.documentElement.clientWidth ?
-        document.documentElement.clientWidth :
-        screen.width;
-    var height = window.innerHeight ?
-        window.innerHeight :
-        document.documentElement.clientHeight ?
-        document.documentElement.clientHeight :
-        screen.height;
-
-    var systemZoom = width / window.screen.availWidth;
-    var left = (width - w) / 2 / systemZoom + dualScreenLeft;
-    var top = (height - h) / 2 / systemZoom + dualScreenTop;
-    top = (top * 3) / 4;
-    popupWindow = window.open(
-        url,
-        title,
-        "resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes,width=" +
-        w / systemZoom +
-        ", height=" +
-        h / systemZoom +
-        ", top=" +
-        top +
-        ", left=" +
-        left
-    );
-
-    if (window.focus) popupWindow.focus();
-}
+});
 
 </script>
