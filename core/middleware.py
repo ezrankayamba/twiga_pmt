@@ -8,6 +8,7 @@ class MenuAuthorizationMiddleware:
             {'privilege': 'view.setups', 'name': 'Setups', 'url_name': 'setups-home'},
             {'privilege': 'view.users', 'name': 'Users', 'url_name': 'users-list'},
             {'privilege': 'view.roles', 'name': 'Roles', 'url_name': 'role-list'},
+            {'privilege': 'change.mypassword', 'name': 'Change My Password', 'url_name': 'users-change-password'},
         ]
 
     def __call__(self, request):

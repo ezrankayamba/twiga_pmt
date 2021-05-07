@@ -2,15 +2,8 @@
 <header class="app-bg-primary sticky-top">
     <nav class="container text-light navbar navbar-dark navbar-expand-md">
         <a href="#" class="navbar-brand">Twiga <span class="pmt">PMT</span></a>
-        <button
-            class="navbar-toggler"
-            data-toggle="collapse"
-            data-target="#navMenu"
-            aria-controls="navMenu"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-            id="menu-toggle-btn"
-        >
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navMenu" aria-controls="navMenu"
+            aria-expanded="false" aria-label="Toggle navigation" id="menu-toggle-btn">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navMenu">
@@ -23,31 +16,6 @@
                     </a>
                 </li>
                 {%endfor%}
-               <!--  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'dashboard-map' %}" title="Map of projects">
-                        Map
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="{% url 'projects-home' %}" title="List of projects">
-                        Projects
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="{% url 'setups-home' %}" title="Manage setups">
-                        Setups
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="{% url 'role-list' %}" title="Manage roles">
-                        Roles
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="{% url 'users-list' %}" title="Manage users">
-                        Users
-                    </a>
-                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'users-logout' %}" title="Logout">
                         Logout
