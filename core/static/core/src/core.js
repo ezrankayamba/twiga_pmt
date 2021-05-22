@@ -31,7 +31,7 @@ let dashboard_loadtypes = () => {
     let options = {
         plugins: {
             datalabels: {
-                formatter: function(value, context) {
+                formatter: function (value, context) {
                     return context.chart.data.datasets[0][context.dataIndex];
                 },
                 color: "#f1f1f1"
@@ -93,7 +93,7 @@ let dashboard_loadstatuses = () => {
     let options = {
         plugins: {
             datalabels: {
-                formatter: function(value, context) {
+                formatter: function (value, context) {
                     return context.chart.data.datasets[0][context.dataIndex];
                 },
                 color: "#f1f1f1"
@@ -147,7 +147,7 @@ let dashboard_loadsizes = () => {
     let options = {
         plugins: {
             datalabels: {
-                formatter: function(value, context) {
+                formatter: function (value, context) {
                     return context.chart.data.datasets[0][context.dataIndex];
                 },
                 color: "#f1f1f1"
@@ -201,7 +201,7 @@ let dashboard_loadsuppliers = () => {
     let options = {
         plugins: {
             datalabels: {
-                formatter: function(value, context) {
+                formatter: function (value, context) {
                     return context.chart.data.datasets[0][context.dataIndex];
                 },
                 color: "#f1f1f1"
@@ -241,7 +241,7 @@ let dashboard_loadsuppliers = () => {
         });
 };
 
-let dashboard_loadregions = () => {
+let AIzaSyCYdFvjawrEv1Cj66Tj-2aiuG68U5TkWCg = () => {
     let chartEl = document.getElementById("projectRegion");
     var ctx = chartEl.getContext("2d");
     let fullData = [];
@@ -321,7 +321,7 @@ let dashboard_loadregions = () => {
     let options = {
         plugins: {
             datalabels: {
-                formatter: function(value, context) {
+                formatter: function (value, context) {
                     let info = context.chart.data.datasets[0];
                     return info.data[context.dataIndex];
                 },
@@ -342,7 +342,7 @@ let dashboard_loadregions = () => {
         },
         tooltips: {
             enabled: false,
-            custom: function(model) {
+            custom: function (model) {
                 makeToolTip(model, this, fullData);
             }
         },
@@ -429,7 +429,7 @@ let initMap = () => {
                     map: map,
                     draggable: false
                 });
-                marker.addListener("click", function() {
+                marker.addListener("click", function () {
                     closeOpen();
                     infowindow.open(map, marker);
                 });
@@ -447,11 +447,11 @@ let refreshOnRegion = (el, cb) => {
         .then(res => {
             return res.text();
         })
-        .then(function(res) {
+        .then(function (res) {
             document.querySelector("#id_district").innerHTML = res;
             cb();
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log("Request failed", error);
         });
 };
@@ -479,7 +479,7 @@ function addOtherPopupHandler(baseUrl, btn) {
                 btnSubmit.onclick = () => {
                     let data = new FormData(form.querySelector("form"));
                     var object = {};
-                    data.forEach(function(value, key) {
+                    data.forEach(function (value, key) {
                         object[key] = value;
                     });
                     var json = JSON.stringify(object);
@@ -514,7 +514,7 @@ let load_form_js = urls => {
     // console.log(urls)
     loadDistrUrl = urls.querySelector(".popup-setups-load-districts").value;
 
-    (function() {
+    (function () {
         console.log(loadDistrUrl);
         document.querySelector("#id_region").addEventListener("change", e => {
             console.log(e);
@@ -607,13 +607,13 @@ let load_form_js = urls => {
         var width = window.innerWidth
             ? window.innerWidth
             : document.documentElement.clientWidth
-            ? document.documentElement.clientWidth
-            : screen.width;
+                ? document.documentElement.clientWidth
+                : screen.width;
         var height = window.innerHeight
             ? window.innerHeight
             : document.documentElement.clientHeight
-            ? document.documentElement.clientHeight
-            : screen.height;
+                ? document.documentElement.clientHeight
+                : screen.height;
 
         var systemZoom = width / window.screen.availWidth;
         var left = (width - w) / 2 / systemZoom + dualScreenLeft;
@@ -623,13 +623,13 @@ let load_form_js = urls => {
             url,
             title,
             "resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes,width=" +
-                w / systemZoom +
-                ", height=" +
-                h / systemZoom +
-                ", top=" +
-                top +
-                ", left=" +
-                left
+            w / systemZoom +
+            ", height=" +
+            h / systemZoom +
+            ", top=" +
+            top +
+            ", left=" +
+            left
         );
 
         if (window.focus) popupWindow.focus();
@@ -668,7 +668,7 @@ let initMapOnForm = () => {
         center: { lat: -6.192, lng: 35.7699 },
         zoom: 6
     });
-    google.maps.event.addListener(map, "click", function(event) {
+    google.maps.event.addListener(map, "click", function (event) {
         var clickedLocation = event.latLng;
         if (marker === false) {
             marker = new google.maps.Marker({
@@ -676,7 +676,7 @@ let initMapOnForm = () => {
                 map: map,
                 draggable: true //make it draggable
             });
-            google.maps.event.addListener(marker, "dragend", function(event) {
+            google.maps.event.addListener(marker, "dragend", function (event) {
                 markerLocation();
             });
         } else {
@@ -685,11 +685,11 @@ let initMapOnForm = () => {
         markerLocation();
     });
 };
-let setLocation = (loc, err) => {};
+let setLocation = (loc, err) => { };
 let form_capture_GPS = () => {
     document
         .querySelector("#captureGPS")
-        .addEventListener("click", function(e) {
+        .addEventListener("click", function (e) {
             console.log("Capture location");
             if (navigator.geolocation) {
                 console.log("GPS Supported2");
@@ -698,7 +698,7 @@ let form_capture_GPS = () => {
                     maximumAge: 180000 //3 minutes ago
                 };
                 navigator.geolocation.getCurrentPosition(
-                    function(loc) {
+                    function (loc) {
                         console.log("OnLocation");
                         console.log(loc);
                         document.querySelector("input[name=longitude]").value =
@@ -712,7 +712,7 @@ let form_capture_GPS = () => {
                             loc.coords.latitude.toFixed(4) +
                             ")";
                     },
-                    function(err) {
+                    function (err) {
                         console.log("OnError: ", err.code, err.message);
                         console.log(err);
                     },
@@ -750,7 +750,7 @@ let handleUploadJs = () => {
         var xhr = new XMLHttpRequest();
         var fd = new FormData();
         xhr.open("POST", url, true);
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 console.log(xhr.responseText);
                 location.reload(true);
@@ -771,7 +771,7 @@ let handleUploadJs = () => {
     });
 };
 let filter_form_rerender = () => {
-    (function() {
+    (function () {
         let getEl = (selector, prnt) => {
             return prnt.querySelector(selector);
         };

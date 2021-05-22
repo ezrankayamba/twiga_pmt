@@ -10,6 +10,7 @@ class ProjectFilter(filters.FilterSet):
     suppliers__supplier = filters.ModelChoiceFilter(queryset=s_models.Supplier.objects.all(), label="Supplier")
     consultants__consultant = filters.ModelChoiceFilter(queryset=s_models.Consultant.objects.all(), label="Consultant")
     financers__financer = filters.ModelChoiceFilter(queryset=s_models.Financer.objects.all(), label="Financer")
+    authority = filters.ModelChoiceFilter(queryset=s_models.Authority.objects.all(), label="Client")
 
     class Meta:
         model = models.Project

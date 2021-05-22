@@ -2,7 +2,8 @@
 <div class="row">
     {%for item in summary_items%}
     <div class="col-sm col-6">
-        <p class="bg-light p-1 text-center"><span>{{item.name}}: </span><span class="text-primary">{{item.value}}</span></p>
+        <p class="bg-light p-1 text-center"><span>{{item.name}}: </span><span class="text-primary">{{item.value}}</span>
+        </p>
     </div>
     {%endfor%}
 </div>
@@ -42,7 +43,7 @@
     <div class="col-md pb-2">
         <div class="card">
             <div class="card-header p-2">
-                <h5 class="m-0">Supplier Projects</h5>
+                <h5 class="m-0">Brands Supplied</h5>
             </div>
             <div class="card-body">
                 {% include 'dashboard/charts/project-supplier.html' %}
@@ -63,14 +64,8 @@
     </div>
 </div>
 {% endblock content%} {% block my_script %}
-<script
-    type="text/javascript"
-    src="{%static 'core/chartjs/chart.bundle.js'%}"
-></script>
-<script
-    type="text/javascript"
-    src="{%static 'core/chartjs/datalabels.js'%}"
-></script>
+<script type="text/javascript" src="{%static 'core/chartjs/chart.bundle.js'%}"></script>
+<script type="text/javascript" src="{%static 'core/chartjs/datalabels.js'%}"></script>
 <script type="text/javascript">
     // Chart.plugins.unregister(ChartDataLabels);
 </script>

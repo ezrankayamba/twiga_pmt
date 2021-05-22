@@ -4,13 +4,16 @@
     form .input-group-text {
         min-width: 6rem;
     }
+
     form {
         font-size: .50rem;
     }
+
     @media screen and (min-width: 30rem) {
-        form input[name='name'].textinput{
+        form input[name='name'].textinput {
             min-width: 24.5rem;
         }
+
         form .select {
             max-width: 9rem;
             min-width: 9rem;
@@ -23,20 +26,14 @@
     </div>
     <div class="col-md">
         <div class="button-group float-md-right">
-            <input type="file" id="file"  class="d-none" />
-            <a href="#" id="btnImport" class="btn btn-sm btn-outline-secondary" title="Columns: &#10;Name&#10;Type&#10;Size&#10;Start Date&#10;Region&#10;District&#10;Town&#10;Duration&#10;Authority&#10;Quantity&#10;Supplied&#10;Remarks"
-                ><i class="fa fa-file-excel"></i> Import</a
-            >
-            <a
-                href="{% url 'projects-export' %}"
-                class="btn btn-sm btn-outline-primary"
-                ><i class="fa fa-file-excel"></i> Export</a
-            >
-            <a
-                class="btn btn-primary btn-sm "
-                href="{% url 'projects-create' %}"
-                ><i class="fa fa-plus"></i> New Project</a
-            >
+            <input type="file" id="file" class="d-none" />
+            <a href="#" id="btnImport" class="btn btn-sm btn-outline-secondary"
+                title="Columns: &#10;Name&#10;Type&#10;Size&#10;Start Date&#10;Region&#10;District&#10;Town&#10;Duration&#10;Authority&#10;Quantity&#10;Supplied&#10;Remarks"><i
+                    class="fa fa-file-excel"></i> Import</a>
+            <a href="{% url 'projects-export' %}" class="btn btn-sm btn-outline-primary"><i
+                    class="fa fa-file-excel"></i> Export</a>
+            <a class="btn btn-primary btn-sm " href="{% url 'projects-create' %}"><i class="fa fa-plus"></i> New
+                Project</a>
         </div>
     </div>
 </div>
@@ -50,10 +47,7 @@
                         {{ filter.form|crispy }}
                     </div>
                     <div>
-                        <button
-                            type="submit"
-                            class="btn btn-sm btn-outline-info mt-2 float-right"
-                        >
+                        <button type="submit" class="btn btn-sm btn-outline-info mt-2 float-right">
                             <a class="fa fa-filter d-block"></a> Search
                         </button>
                     </div>
@@ -70,7 +64,7 @@
                         <th scope="col">Type</th>
                         <th scope="col">Size</th>
                         <th scope="col">StartDate</th>
-                        <th scope="col">Authority</th>
+                        <th scope="col">Client</th>
                         <th scope="col">Contractors</th>
                         <th scope="col">Consultants</th>
                         <th scope="col">Status</th>
@@ -130,12 +124,8 @@
                     <td>{{prj.quantity_demanded|floatformat:0 }} Tons</td>
                     <td>{{prj.quantity_supplied|floatformat:0 }} Tons</td>
                     <td>
-                        <a
-                            role="button"
-                            class="btn btn-link btn-sm p-0"
-                            href="{% url 'projects-detail' prj.id %}"
-                            ><i class="fa fa-eye"></i
-                        ></a>
+                        <a role="button" class="btn btn-link btn-sm p-0" href="{% url 'projects-detail' prj.id %}"><i
+                                class="fa fa-eye"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -149,28 +139,31 @@
         <form method="POST">
             {% csrf_token %}
             {% if is_paginated %}
-              <div class="btn-group" role="group" aria-label="Basic example">
-                  {% if page_obj.has_previous %}
-                    <button name="page" class="btn btn-sm btn-outline-info" value="1">First</button>
-                    <button name="page" class="btn btn-sm btn-outline-info" value="{{ page_obj.previous_page_number }}">Previous</button>
-                  {% endif %}
+            <div class="btn-group" role="group" aria-label="Basic example">
+                {% if page_obj.has_previous %}
+                <button name="page" class="btn btn-sm btn-outline-info" value="1">First</button>
+                <button name="page" class="btn btn-sm btn-outline-info"
+                    value="{{ page_obj.previous_page_number }}">Previous</button>
+                {% endif %}
 
-                  {% for num in page_obj.paginator.page_range %}
-                      {% if page_obj.number == num %}
-                        <button name="page" class="btn btn-sm btn-info" value="{{ num }}">{{ num }}</button>
-                      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <button name="page" class="btn btn-sm btn-outline-info" value="{{ num }}">{{ num }}</button>
-                      {% endif %}
-                  {% endfor %}
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <button name="page" class="btn btn-sm btn-info" value="{{ num }}">{{ num }}</button>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <button name="page"
+                    class="btn btn-sm btn-outline-info" value="{{ num }}">{{ num }}</button>
+                    {% endif %}
+                    {% endfor %}
 
-                  {% if page_obj.has_next %}
-                    <button name="page" class="btn btn-sm btn-outline-info" value="{{ page_obj.next_page_number }}">Next</button>
-                    <button name="page" class="btn btn-sm btn-outline-info" value="{{page_obj.paginator.num_pages }}">Last</button>
-                  {% endif %}
-              </div>
-              <div class="d-none filter-on-pagination">
-                 {{ filter.form|crispy }}
-              </div>
+                    {% if page_obj.has_next %}
+                    <button name="page" class="btn btn-sm btn-outline-info"
+                        value="{{ page_obj.next_page_number }}">Next</button>
+                    <button name="page" class="btn btn-sm btn-outline-info"
+                        value="{{page_obj.paginator.num_pages }}">Last</button>
+                    {% endif %}
+            </div>
+            <div class="d-none filter-on-pagination">
+                {{ filter.form|crispy }}
+            </div>
             {% endif %}
         </form>
     </div>
@@ -178,35 +171,38 @@
 <div class="row">
     <div class="col">
         <!-- Button trigger modal -->
-        <button id="confirmTrigger" type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#confirm">
-          Launch confirm modal
+        <button id="confirmTrigger" type="button" class="btn btn-primary d-none" data-toggle="modal"
+            data-target="#confirm">
+            Launch confirm modal
         </button>
 
         <!-- Modal -->
-        <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Confirm Import</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p>Selected file: <span id="txtFile" class="text-muted"></span></p>
-                <p>Are you sure you want to upload projects in the selected file?</p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmed" data-url="{%url 'projects-import'%}">Yes, Import</button>
-              </div>
+        <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Confirm Import</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Selected file: <span id="txtFile" class="text-muted"></span></p>
+                        <p>Are you sure you want to upload projects in the selected file?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmed"
+                            data-url="{%url 'projects-import'%}">Yes, Import</button>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-    docReady(function(){
+    docReady(function () {
         filter_form_rerender();
     });
 </script>

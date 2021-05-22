@@ -4,14 +4,20 @@ from setups import models as s_models
 
 
 class ProjectCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProjectCreateForm, self).__init__(*args, **kwargs)
+        self.fields['price'].label = "Price/t (TZS)"
+        self.fields['authority'].label = "Client"
+
     class Meta:
         model = models.Project
-        fields = ['name', 'type', 'size', 'start_date', 'region', 'district', 'town', 'duration', 'authority', 'quantity_demanded', 'quantity_supplied', 'remarks', 'latitude', 'longitude']
+        fields = ['name', 'type', 'size', 'start_date', 'region', 'district', 'town', 'duration', 'authority', 'quantity_demanded', 'quantity_supplied', 'price', 'remarks', 'latitude', 'longitude']
         widgets = {
             'remarks': forms.Textarea(attrs={'rows': 2}),
             'start_date': forms.DateInput(attrs={'class': 'datepicker', 'type': 'date'}),
             'latitude': forms.HiddenInput(),
             'longitude': forms.HiddenInput(),
+            'price': forms.NumberInput(),
         }
 
 

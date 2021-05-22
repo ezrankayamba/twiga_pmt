@@ -8,6 +8,10 @@ from django.core.serializers.json import DjangoJSONEncoder
 from setups import models as s_models
 
 
+def status_excl():
+    return ['CMP']
+
+
 class LazyEncoder(DjangoJSONEncoder):
     def default(self, obj):
         return super().default(obj)
@@ -36,7 +40,7 @@ def get_data_project_type(request):
     labels = []
     for item in list:
         labels.append(item.name)
-        data.append(item.projects.count())
+        data.append(item.projects.exclude(status__code__in=status_excl()).count())
     return JsonResponse({
         'data': data,
         'labels': labels
@@ -68,7 +72,7 @@ def get_data_project_list(request):
 
 @login_required
 def get_data_project_region(request):
-    list = prj_models.Project.objects.values('region__name').annotate(count=Count('id'))
+    list = prj_models.Project.objects.exclude(status__code_in=status_excl()).values('region__name').annotate(count=Count('id'))
     my_dict = {}
     data = []
     labels = []
@@ -88,7 +92,8 @@ def get_data_project_region(request):
 
 @login_required
 def get_data_project_region_plus(request):
-    list = prj_models.Project.objects.values('region__name', 'district__name').order_by('region__name', 'district__name').annotate(count=Count('id'))
+    list = prj_models.Project.objects.exclude(status__code__in=status_excl()).values('region__name', 'district__name').order_by('region__name', 'district__name').annotate(count=Count('id'))
+    print("SQL: ", list.query)
     r_dict = {}
     d_dict = {}
     my_dict = {}
@@ -152,7 +157,7 @@ def get_data_project_supplier(request):
     labels = []
     for item in s_models.Supplier.objects.all():
         labels.append(item.name)
-        data.append(item.projects.count())
+        data.append(item.projects.exclude(project__status__code__in=status_excl()).count())
     return JsonResponse({
         'data': data,
         'labels': labels
@@ -178,7 +183,7 @@ def get_data_project_size(request):
     labels = []
     for s in s_models.Size.objects.all():
         labels.append(s.name)
-        data.append(s.projects.count())
+        data.append(s.projects.exclude(status__code__in=status_excl()).count())
     return JsonResponse({
         'data': data,
         'labels': labels
