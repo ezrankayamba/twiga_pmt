@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}{% load crispy_forms_tags %} {% block content %}
+<div class="row pb-2">
+    <div class="col-md">
+        <h5>{{name.capitalize}} List</h5>
+    </div>
+    <div class="col-md">
+        <div class="button-group float-md-right">
+            <a class="btn btn-primary btn-sm " href="{% url add_url %}"><i class="fa fa-plus"></i> New
+                {{name.capitalize}}</a>
+        </div>
+    </div>
+</div>
+<div class="row pb-3 small">
+    <div class="col-md table-responsive-sm">
+        <table class="table table-sm table-hover table-bordered">
+            <thead class="bg-light">
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Group</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for e in object_list%}
+                <tr>
+                    <td>{{e.code}}</td>
+                    <td>{{e.name}}</td>
+                    <td>{{e.group}}</td>
+                    <td class="td-width-auto">
+                        {%include 'setups/list_controls.html'%}
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content%}

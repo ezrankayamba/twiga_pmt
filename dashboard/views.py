@@ -6,6 +6,7 @@ from django.db.models import Count
 from django.core.serializers import serialize
 from django.core.serializers.json import DjangoJSONEncoder
 from setups import models as s_models
+from django.db.models import Sum, Count
 
 
 def status_excl():
@@ -93,7 +94,6 @@ def get_data_project_region(request):
 @login_required
 def get_data_project_region_plus(request):
     list = prj_models.Project.objects.exclude(status__code__in=status_excl()).values('region__name', 'district__name').order_by('region__name', 'district__name').annotate(count=Count('id'))
-    print("SQL: ", list.query)
     r_dict = {}
     d_dict = {}
     my_dict = {}
@@ -168,9 +168,11 @@ def get_data_project_supplier(request):
 def get_data_project_status(request):
     data = []
     labels = []
-    for s in s_models.Status.objects.all():
-        labels.append(s.name)
-        data.append(s.projects.count())
+    qs = s_models.Status.objects.values('group').annotate(total=Count('projects')).order_by()
+    print(qs)
+    for s in qs:
+        labels.append(s['group'])
+        data.append(s['total'])
     return JsonResponse({
         'data': data,
         'labels': labels

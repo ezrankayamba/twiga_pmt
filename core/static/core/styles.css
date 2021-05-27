@@ -156,5 +156,19 @@ body,
 }
 
 .form-group input {
-    text-transform: capitalize;
+    text-transform: uppercase;
+}
+
+.form-group {
+    margin-bottom: .4em;
+    /* font-size: 1em; */
+}
+
+.form-group label{
+    margin-bottom: .2em;
+}
+
+.form-group input,
+.form-group select {
+    font-size: 1em;
 }

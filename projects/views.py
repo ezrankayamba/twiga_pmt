@@ -119,7 +119,7 @@ class SetupGenericCreateView(generic.CreateView):
         if name in ['projectcontractor']:
             self.fields = ['contractor', 'sub_contractor']
         elif name in ['projectsupplier']:
-            self.fields = ['supplier', 'price', 'quantity', 'under']
+            self.fields = ['supplier', 'brand', 'price', 'quantity']
         elif name in ['projectimage']:
             self.fields = ['image', 'title']
         else:

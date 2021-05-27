@@ -1,48 +1,49 @@
 <script type="text/javascript">
-docReady(function() {
-    console.log("Form setups")
-    let w = window.innerWidth / 2;
-    let h = (window.innerHeight * 3) / 4;
-    let baseUrl = window.location.origin;
-    let flds = document.querySelectorAll('.select');
-    for (let i = 0; i < flds.length; i++) {
-        let fld = flds[i]
-        if (fld) {
-            let name = fld.name;
-            console.log(fld, name)
-            let container;
-            if (name === 'other') {
-                container = document.querySelector(`#div_id_${name}`);
-            } else {
-                container = document.querySelector(`#div_id_${name}`);
+    docReady(function () {
+        console.log("Form setups")
+        let w = window.innerWidth / 2;
+        let h = (window.innerHeight * 3) / 4;
+        let baseUrl = window.location.origin;
+        let flds = document.querySelectorAll('.select');
+        for (let i = 0; i < flds.length; i++) {
+            let fld = flds[i]
+            if (fld) {
+                let name = fld.name;
+                console.log(fld, name)
+                if (name === "brand") continue;
+                let container;
+                if (name === 'other') {
+                    container = document.querySelector(`#div_id_${name}`);
+                } else {
+                    container = document.querySelector(`#div_id_${name}`);
+                }
+                console.log(container);
+                let sel = container.querySelector("select");
+                let btn = document.createElement("button");
+                btn.innerHTML = `<i class="fa fa-plus"></i>`;
+                btn.classList.add("btn");
+                btn.classList.add("btn-link");
+                btn.classList.add("text-secondary");
+                btn.classList.add("pr-0");
+                btn.classList.add("pl-1");
+                btn.dataset.url = "{{ setup_url }}";
+                btn.type = "button";
+                btn.classList.add("add-other");
+                btn.title = "Add other";
+                if (name === "district") {
+                    btn.disabled = document.querySelector("#id_region").value ? false : true;
+                    btn.id = "btn_select_district";
+                }
+                sel.parentNode.insertBefore(btn, sel.nextSibling);
+                sel.parentElement.classList.add("d-flex");
             }
-            console.log(container);
-            let sel = container.querySelector("select");
-            let btn = document.createElement("button");
-            btn.innerHTML = `<i class="fa fa-plus"></i>`;
-            btn.classList.add("btn");
-            btn.classList.add("btn-link");
-            btn.classList.add("text-secondary");
-            btn.classList.add("pr-0");
-            btn.classList.add("pl-1");
-            btn.dataset.url = "{{ setup_url }}";
-            btn.type = "button";
-            btn.classList.add("add-other");
-            btn.title = "Add other";
-            if (name === "district") {
-                btn.disabled = document.querySelector("#id_region").value ? false : true;
-                btn.id = "btn_select_district";
-            }
-            sel.parentNode.insertBefore(btn, sel.nextSibling);
-            sel.parentElement.classList.add("d-flex");
         }
-    }
 
-    let list = document.querySelectorAll(".add-other");
+        let list = document.querySelectorAll(".add-other");
 
-    list.forEach(btn => {
-        addOtherPopupHandler(baseUrl, btn);
+        list.forEach(btn => {
+            addOtherPopupHandler(baseUrl, btn);
+        });
     });
-});
 
 </script>

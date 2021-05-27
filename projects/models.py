@@ -14,6 +14,7 @@ def initial_status():
 
 class Project(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    client = models.CharField(max_length=255, null=True, blank=True)
     start_date = models.DateField(blank=True, null=True)
     type = models.ForeignKey(to=s_models.Type, related_name="projects", on_delete=models.PROTECT)
     status = models.ForeignKey(to=s_models.Status, related_name="projects", on_delete=models.PROTECT, default=initial_status, null=True)
@@ -32,7 +33,6 @@ class Project(models.Model):
     date_updated = models.DateTimeField(auto_now=True, null=True)
     created_by = models.ForeignKey(to=User, related_name="created_projects", on_delete=models.PROTECT, null=True)
     updated_by = models.ForeignKey(to=User, related_name="updated_projects", on_delete=models.PROTECT, null=True)
-    price = models.DecimalField(default=0, max_digits=20, decimal_places=2)  # price per ton
 
     class Meta:
         ordering = ['-date_created']
@@ -124,9 +124,9 @@ class ProjectConsultant(models.Model):
 class ProjectSupplier(models.Model):
     project = models.ForeignKey(to=Project, related_name="suppliers", on_delete=models.CASCADE)
     supplier = models.ForeignKey(to=s_models.Supplier, related_name="projects", on_delete=models.PROTECT)
-    price = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Price(TZS)'))
+    price = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Price/t (TZS)'))
     quantity = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=('Quantity(Tons)'))
-    under = models.ForeignKey(to=s_models.Supplier, related_name="distributors", on_delete=models.PROTECT, null=True, blank=True)
+    brand = models.ForeignKey(to=s_models.Brand, related_name="distributors", on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
         unique_together = [['project', 'supplier']]

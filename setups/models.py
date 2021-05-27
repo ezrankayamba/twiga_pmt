@@ -1,6 +1,6 @@
 from django.db import models
 
-SETUPS_LIST = ['authority', 'consultant', 'contractor', 'financer', 'supplier', 'size', 'status', 'region', 'district', 'type']
+SETUPS_LIST = ['brand', 'authority', 'consultant', 'contractor', 'financer', 'supplier', 'size', 'status', 'region', 'district', 'type']
 
 
 class Size(models.Model):
@@ -14,6 +14,7 @@ class Size(models.Model):
 class Status(models.Model):
     code = models.CharField(max_length=4, unique=True)
     name = models.CharField(max_length=40)
+    group = models.CharField(max_length=40, null=True)
 
     def __str__(self):
         return self.name
@@ -99,6 +100,18 @@ class Consultant(models.Model):
 
 
 class Supplier(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    contact_person = models.CharField(max_length=40, null=True, blank=True)
+    position = models.CharField(max_length=40, null=True, blank=True)
+    phone = models.CharField(max_length=40, null=True, blank=True)
+    email = models.CharField(max_length=40, null=True, blank=True)
+    location = models.CharField(max_length=40, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Brand(models.Model):
     name = models.CharField(max_length=100, unique=True)
     contact_person = models.CharField(max_length=40, null=True, blank=True)
     position = models.CharField(max_length=40, null=True, blank=True)

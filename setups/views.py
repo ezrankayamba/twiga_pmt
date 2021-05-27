@@ -127,7 +127,7 @@ class SizeCreateView(generic.CreateView):
 class StatusCreateView(generic.CreateView):
     model = models.Status
     template_name = 'setups/popups/status_form.html'
-    fields = ['code', 'name']
+    fields = ['code', 'name', 'group']
 
     def form_valid(self, form):
         instance = form.save()
@@ -209,7 +209,9 @@ class SetupGenericUpdateView(generic.UpdateView):
         name = self.model.__name__.lower()
         self.success_url = reverse(f'setups-{name}-list')
 
-        if name in ['size', 'status']:
+        if name in ['status']:
+            self.fields = ['code', 'name', 'group']
+        elif name in ['size']:
             self.fields = ['code', 'name']
         elif name in ['district']:
             self.fields = ['name', 'region']
