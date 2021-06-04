@@ -1,0 +1,20 @@
+<div class="card-header p-0 row">
+    <div class="col">
+        <a class="btn p-2 btn-block text-left" role="button" data-toggle="collapse" data-target="#authority"
+            aria-expanded="true" aria-controls="authority">
+            Client
+        </a>
+    </div>
+</div>
+<div id="authority" class="collapse" data-parent="#details">
+    <div class="card-body p-2">
+        {%if prj.client%}
+        <p class="mb-1">
+            {{prj.client}}
+        </p>
+        {%else%}
+        <a class="btn btn-sm btn-outline-primary" role="button" href="{% url 'projects-update' prj.id %}">Not set, Add
+            client</a>
+        {%endif%}
+    </div>
+</div>
