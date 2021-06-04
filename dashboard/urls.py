@@ -8,7 +8,8 @@ urlpatterns = [
     path('data/project-list', views.get_data_project_list, name='data-project-list'),
     path('data/project-status', views.get_data_project_status, name='data-project-status'),
     path('data/project-size', views.get_data_project_size, name='data-project-size'),
-    path('data/project-supplier', views.get_data_project_supplier, name='data-project-supplier'),
+    # path('data/project-supplier', views.get_data_project_supplier, name='data-project-supplier'),
+    path('data/project-brand', views.get_data_project_brand, name='data-project-brand'),
     path('data/project-region', views.get_data_project_region, name='data-project-region'),
     path('data/project-region-plus', views.get_data_project_region_plus, name='data-project-region-plus'),
 ]

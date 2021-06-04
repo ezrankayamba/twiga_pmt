@@ -155,7 +155,11 @@ body,
     -webkit-overflow-scrolling: touch;
 }
 
-.form-group input {
+.form-group input[name="name"],
+.form-group input[name="town"],
+.form-group input[name="supplier"],
+.form-group input[name="group"],
+.form-group input[name="client"] {
     text-transform: uppercase;
 }
 

@@ -6,6 +6,7 @@ from datetime import timedelta
 import decimal
 from django.contrib.auth.models import User
 from PIL import Image
+from core.models import UpperCaseCharField
 
 
 def initial_status():
@@ -13,15 +14,15 @@ def initial_status():
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    client = models.CharField(max_length=255, null=True, blank=True)
+    name = UpperCaseCharField(max_length=255, unique=True)
+    client = UpperCaseCharField(max_length=255, null=True, blank=True)
     start_date = models.DateField(blank=True, null=True)
     type = models.ForeignKey(to=s_models.Type, related_name="projects", on_delete=models.PROTECT)
     status = models.ForeignKey(to=s_models.Status, related_name="projects", on_delete=models.PROTECT, default=initial_status, null=True)
     size = models.ForeignKey(to=s_models.Size, related_name="projects", on_delete=models.PROTECT, null=True)
     region = models.ForeignKey(to=s_models.Region, related_name="projects", on_delete=models.PROTECT, null=True)
     district = models.ForeignKey(to=s_models.District, related_name="projects", on_delete=models.PROTECT, null=True)
-    town = models.CharField(max_length=40, null=True)
+    town = UpperCaseCharField(max_length=40, null=True)
     duration = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Duration (Years)'))
     authority = models.ForeignKey(to=s_models.Authority, related_name="projects", on_delete=models.PROTECT, null=True)
     remarks = models.CharField(max_length=1000, null=True, blank=True)
@@ -123,16 +124,17 @@ class ProjectConsultant(models.Model):
 
 class ProjectSupplier(models.Model):
     project = models.ForeignKey(to=Project, related_name="suppliers", on_delete=models.CASCADE)
-    supplier = models.ForeignKey(to=s_models.Supplier, related_name="projects", on_delete=models.PROTECT)
-    price = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Price/t (TZS)'))
+    # supplier = models.ForeignKey(to=s_models.Supplier, related_name="projects", on_delete=models.PROTECT)
+    supplier = UpperCaseCharField(max_length=255, null=True, blank=True)
+    price = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Price/t VAT excl. (TZS)'))
     quantity = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=('Quantity(Tons)'))
-    brand = models.ForeignKey(to=s_models.Brand, related_name="distributors", on_delete=models.PROTECT, null=True, blank=True)
+    brand = models.ForeignKey(to=s_models.Brand, related_name="suppliers", on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
-        unique_together = [['project', 'supplier']]
+        unique_together = [['project', 'brand']]
 
     def __str__(self):
-        return self.supplier.name
+        return self.supplier
 
     def get_absolute_url(self):
         return reverse('projects-detail', kwargs={'pk': self.project.id})

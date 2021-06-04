@@ -153,7 +153,7 @@ class SetupGenericUpdateView(generic.UpdateView):
         if name in ['projectcontractor']:
             self.fields = ['contractor', 'sub_contractor']
         elif name in ['projectsupplier']:
-            self.fields = ['supplier', 'price', 'quantity', 'under']
+            self.fields = ['supplier', 'price', 'quantity']
         elif name in ['projectimage']:
             self.fields = ['image', 'title']
         else:

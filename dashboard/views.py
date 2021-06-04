@@ -20,10 +20,15 @@ class LazyEncoder(DjangoJSONEncoder):
 
 @login_required
 def home(request):
+    # prj_list = prj_models.Project.objects.exclude(status__code__in=status_excl()).values('name').order_by('name').annotate(count=Count('id'))
+    # brand_list = prj_models.Project.objects.exclude(status__code__in=status_excl()).values('suppliers__brand__name').order_by('suppliers__brand__name').annotate(count=Count('id'))
+    # contr_list = prj_models.Project.objects.exclude(status__code__in=status_excl()).values('contractors__contractor__name').order_by('contractors__contractor__name').annotate(count=Count('id'))
+    # consul_list = prj_models.Project.objects.exclude(status__code__in=status_excl()).values('consultants__contractor__name').order_by('consultants__contractor__name').annotate(count=Count('id'))
+
     si = [
         {'name': 'Projects', 'value': prj_models.Project.objects.count()},
         {'name': 'Contractors', 'value': s_models.Contractor.objects.count()},
-        {'name': 'Suppliers', 'value': s_models.Supplier.objects.count()},
+        {'name': 'Brands', 'value': s_models.Brand.objects.count()},
         {'name': 'Consultants', 'value': s_models.Consultant.objects.count()},
     ]
     return render(request, 'dashboard/home.html', {'summary_items': si})
@@ -151,13 +156,30 @@ def get_data_project_region_plus(request):
     })
 
 
+# @login_required
+# def get_data_project_supplier(request):
+#     data = []
+#     labels = []
+#     for item in s_models.Supplier.objects.all():
+#         labels.append(item.name)
+#         data.append(item.projects.exclude(project__status__code__in=status_excl()).count())
+#     return JsonResponse({
+#         'data': data,
+#         'labels': labels
+#     })
+
 @login_required
-def get_data_project_supplier(request):
+def get_data_project_brand(request):
+    list = prj_models.Project.objects.exclude(status__code__in=status_excl()).values('suppliers__brand__name').order_by('suppliers__brand__name').annotate(count=Count('id'))
+    print(list)
     data = []
     labels = []
-    for item in s_models.Supplier.objects.all():
-        labels.append(item.name)
-        data.append(item.projects.exclude(project__status__code__in=status_excl()).count())
+    # item.suppliers.all().projects.exclude(project__status__code__in=status_excl()).count()
+    for item in list:
+        name = item['suppliers__brand__name'] if item['suppliers__brand__name'] else 'Un Assigned'
+        labels.append(name)
+        data.append(item['count'])
+
     return JsonResponse({
         'data': data,
         'labels': labels

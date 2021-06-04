@@ -1,23 +1,13 @@
 <div class="card-header p-0 row">
     <div class="col">
-        <a
-            class="btn p-2 btn-block text-left"
-            role="button"
-            data-toggle="collapse"
-            data-target="#supplier"
-            aria-expanded="false"
-            aria-controls="supplier"
-        >
+        <a class="btn p-2 btn-block text-left" role="button" data-toggle="collapse" data-target="#supplier"
+            aria-expanded="false" aria-controls="supplier">
             Suppliers
         </a>
     </div>
     <div class="col col-md-2 m-1">
-        <a
-            href="{%url 'projects-supplier-create' prj.id %}"
-            role="button"
-            class="btn btn-sm btn-outline-primary float-right"
-            >Add New</a
-        >
+        <a href="{%url 'projects-supplier-create' prj.id %}" role="button"
+            class="btn btn-sm btn-outline-primary float-right">Add New</a>
     </div>
 </div>
 <div id="supplier" class="collapse" data-parent="#details">
@@ -26,7 +16,10 @@
             {%for prj_sup in prj.suppliers.all%}
             <div class="col-md pb-3">
                 <p class="mb-1">
-                    {{prj_sup.supplier.name}}
+                    {{prj_sup.supplier}}
+                </p>
+                <p class="mb-1">
+                    {{prj_sup.brand}}
                 </p>
                 <p class="mb-1 text-muted">
                     {{prj_sup.supplier.contact_person}} -
@@ -38,20 +31,14 @@
                 <p class="mb-1 text-muted">
                     <i class="fa fa-at"></i> {{prj_sup.supplier.email}}
                 </p>
-                <form
-                    method="POST"
-                    action="{%url 'projects-supplier-delete' prj_sup.id%}"
-                >
+                <form method="POST" action="{%url 'projects-supplier-delete' prj_sup.id%}">
                     {% csrf_token %}
                     <button class="btn btn-sm btn-outline-danger">
                         <i class="fa fa-trash-alt"></i> Delete
                     </button>
-                    <a
-                        class="btn btn-sm btn-outline-secondary"
-                        href="{%url 'projects-supplier-update' prj.id prj_sup.id%}"
-                        role="button"
-                        ><i class="fa fa-edit"></i> Edit</a
-                    >
+                    <a class="btn btn-sm btn-outline-secondary"
+                        href="{%url 'projects-supplier-update' prj.id prj_sup.id%}" role="button"><i
+                            class="fa fa-edit"></i> Edit</a>
                 </form>
             </div>
             {%empty%}
