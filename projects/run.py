@@ -9,9 +9,9 @@ def make_all_caps(types):
             for f in fields:
                 if hasattr(item, f):
                     value = getattr(item, f)
-                    data = {}
-                    data[f] = value.upper() if value else value
+                    value = value.upper() if value else value
                     setattr(item, f, value)
+                    # print(f, value)
             try:
                 item.save()
             except:
