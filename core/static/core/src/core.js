@@ -510,13 +510,18 @@ function addOtherPopupHandler(baseUrl, btn) {
     });
 }
 function editOtherPopupHandler(baseUrl, btn) {
+
     //data-toggle="modal" data-target="#mapModel"
     btn.dataset.toggle = "modal";
-    btn.dataset.target = "#setup-model";
+
     btn.addEventListener("click", e => {
         let sel = e.target.parentElement.parentElement.querySelector('select')
+        let hasNoValue = !sel.value
+        console.log("editOtherPopupHandler", !sel.value)
+        btn.dataset.target = hasNoValue ? null : "#setup-model";
         if (!sel.value) return;
-        // console.log(sel.value)
+
+        console.log(sel.value)
         let url = btn.dataset.url.replace(/.$/, sel.value);
         url = baseUrl + url;
         if (btn.id === "btn_select_district") {

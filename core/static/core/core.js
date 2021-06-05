@@ -483,11 +483,13 @@ function addOtherPopupHandler(baseUrl, btn) {
 function editOtherPopupHandler(baseUrl, btn) {
   //data-toggle="modal" data-target="#mapModel"
   btn.dataset.toggle = "modal";
-  btn.dataset.target = "#setup-model";
   btn.addEventListener("click", function (e) {
     var sel = e.target.parentElement.parentElement.querySelector('select');
-    if (!sel.value) return; // console.log(sel.value)
-
+    var hasNoValue = !sel.value;
+    console.log("editOtherPopupHandler", !sel.value);
+    btn.dataset.target = hasNoValue ? null : "#setup-model";
+    if (!sel.value) return;
+    console.log(sel.value);
     var url = btn.dataset.url.replace(/.$/, sel.value);
     url = baseUrl + url;
 
