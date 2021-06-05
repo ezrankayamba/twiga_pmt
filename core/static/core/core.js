@@ -485,7 +485,8 @@ function editOtherPopupHandler(baseUrl, btn) {
   btn.dataset.toggle = "modal";
   btn.dataset.target = "#setup-model";
   btn.addEventListener("click", function (e) {
-    var sel = e.target.parentElement.parentElement.querySelector('select'); // console.log(sel.value)
+    var sel = e.target.parentElement.parentElement.querySelector('select');
+    if (!sel.value) return; // console.log(sel.value)
 
     var url = btn.dataset.url.replace(/.$/, sel.value);
     url = baseUrl + url;
