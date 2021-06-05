@@ -241,7 +241,7 @@ let dashboard_loadsuppliers = () => {
         });
 };
 
-let AIzaSyCYdFvjawrEv1Cj66Tj-2aiuG68U5TkWCg = () => {
+let dashboard_loadregions = () => {
     let chartEl = document.getElementById("projectRegion");
     var ctx = chartEl.getContext("2d");
     let fullData = [];
@@ -455,7 +455,6 @@ let refreshOnRegion = (el, cb) => {
             console.log("Request failed", error);
         });
 };
-
 function addOtherPopupHandler(baseUrl, btn) {
     //data-toggle="modal" data-target="#mapModel"
     btn.dataset.toggle = "modal";
@@ -486,6 +485,62 @@ function addOtherPopupHandler(baseUrl, btn) {
                     console.log("Submit: ", url, json);
                     fetch(url, {
                         method: "post",
+                        body: data
+                    })
+                        .then(res => res.text())
+                        .then(text => {
+                            console.log(text);
+                            let regex = /closePopup\((\d+), "([\w ]+)", "(#[\w]+)"\);/g;
+                            let params = [...text.matchAll(regex)];
+                            let id = parseInt(params[0][1]);
+                            let name = params[0][2];
+                            // let elId = params[0][3];
+                            let elId = btn.parentElement.querySelector(
+                                ".select"
+                            ).id;
+                            elId = `#${elId}`;
+                            console.log(id, name, elId);
+                            closePopup(id, name, elId);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                };
+            });
+    });
+}
+function editOtherPopupHandler(baseUrl, btn) {
+    //data-toggle="modal" data-target="#mapModel"
+    btn.dataset.toggle = "modal";
+    btn.dataset.target = "#setup-model";
+    btn.addEventListener("click", e => {
+        let sel = e.target.parentElement.parentElement.querySelector('select')
+        // console.log(sel.value)
+        let url = btn.dataset.url.replace(/.$/, sel.value);
+        url = baseUrl + url;
+        if (btn.id === "btn_select_district") {
+            url = `${url}?region=${document.querySelector("#id_region").value}`;
+        }
+        console.log(url);
+        // popupCenter(url, "popUpWindow", w, h);
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                // console.log(html)
+                let form = document.getElementById("setup-model-form");
+                form.innerHTML = html;
+
+                let btnSubmit = document.getElementById("btn-model-submit");
+                btnSubmit.onclick = () => {
+                    let data = new FormData(form.querySelector("form"));
+                    var object = {};
+                    data.forEach(function (value, key) {
+                        object[key] = value;
+                    });
+                    var json = JSON.stringify(object);
+                    console.log("Submit: ", url, json);
+                    fetch(url, {
+                        method: "POST",
                         body: data
                     })
                         .then(res => res.text())
@@ -559,23 +614,28 @@ let load_form_js = urls => {
             let container = document.querySelector(`#div_id_${name}`);
             if (container) {
                 let sel = container.querySelector("select");
-                let btn = document.createElement("button");
-                btn.innerHTML = `<i class="fa fa-plus"></i>`;
-                btn.classList.add("btn");
-                btn.classList.add("btn-link");
-                btn.classList.add("text-secondary");
-                btn.classList.add("pr-0");
-                btn.classList.add("pl-1");
-                btn.dataset.url = fld.url;
-                btn.type = "button";
-                btn.classList.add("add-other");
-                btn.title = "Add other";
-                if (name === "district") {
-                    btn.disabled = document.querySelector("#id_region").value
-                        ? false
-                        : true;
-                    btn.id = "btn_select_district";
+                let btn = null;
+                function addBtn(name) {
+                    let btn = document.createElement("button");
+                    btn.innerHTML = `<i class="fa fa-plus"></i>`;
+                    btn.classList.add("btn");
+                    btn.classList.add("btn-link");
+                    btn.classList.add("text-secondary");
+                    btn.classList.add("pr-0");
+                    btn.classList.add("pl-1");
+                    btn.dataset.url = fld.url;
+                    btn.type = "button";
+                    btn.classList.add(`${name}-other`);
+                    btn.title = `${name} other`;
+                    if (name === "district") {
+                        btn.disabled = document.querySelector("#id_region").value
+                            ? false
+                            : true;
+                        btn.id = "btn_select_district";
+                    }
                 }
+                // addBtn('add')
+                addBtn('edit')
                 sel.parentNode.insertBefore(btn, sel.nextSibling);
                 sel.parentElement.classList.add("d-flex");
                 if (name === "region") {
@@ -638,11 +698,14 @@ let load_form_js = urls => {
 
 let closePopup = (newID, newRepr, id) => {
     let x = document.querySelector(id);
-    let option = document.createElement("option");
+    console.log("Exist?", x.value, newID)
+    let exists = newID == x.value
+    console.log(x.value, newID)
+    let option = exists ? x.options[x.selectedIndex] : document.createElement("option");
     option.text = newRepr;
     option.selected = true;
     option.value = newID;
-    x.add(option);
+    if (!exists) x.add(option);
 
     console.log("Select: ", x);
     if (x.id === "id_region") {

@@ -14,7 +14,7 @@ urlpatterns = [
     path('<project_id>/audit/create', views.ProjectAuditCreateView.as_view(), name='projects-audit-create'),
 ]
 
-for name in ['consultant', 'contractor', 'financer', 'supplier', 'image']:
+for name in ['consultant', 'contractor', 'financer', 'supplier', 'image', 'client']:
     if name == 'image':
         tmpl = 'projects/image_form.html'
     else:

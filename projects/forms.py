@@ -11,7 +11,7 @@ class ProjectCreateForm(forms.ModelForm):
 
     class Meta:
         model = models.Project
-        fields = ['name', 'client', 'type', 'size', 'start_date', 'region', 'district', 'town', 'duration', 'quantity_demanded', 'quantity_supplied', 'remarks', 'latitude', 'longitude']
+        fields = ['name', 'type', 'size', 'start_date', 'region', 'district', 'town', 'duration', 'quantity_demanded', 'quantity_supplied', 'remarks', 'latitude', 'longitude']
         widgets = {
             'remarks': forms.Textarea(attrs={'rows': 2}),
             'start_date': forms.DateInput(attrs={'class': 'datepicker', 'type': 'date'}),
@@ -24,7 +24,8 @@ class ProjectCreateForm(forms.ModelForm):
 class ProjectUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Project
-        fields = ['name', 'client', 'type', 'size', 'start_date', 'status', 'region', 'district', 'town', 'duration', 'quantity_demanded', 'quantity_supplied', 'remarks', 'latitude', 'longitude']
+        fields = ['name', 'type', 'size', 'start_date', 'status', 'region', 'district',
+                  'town', 'duration', 'quantity_demanded', 'quantity_supplied', 'remarks', 'latitude', 'longitude']
         widgets = {
             'remarks': forms.Textarea(attrs={'rows': 2}),
             'start_date': forms.DateInput(attrs={'class': 'datepicker', 'type': 'date'}),

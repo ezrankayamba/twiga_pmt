@@ -1,0 +1,48 @@
+<div class="card-header p-0 row">
+    <div class="col">
+        <a class="btn p-2 btn-block text-left" role="button" data-toggle="collapse" data-target="#client"
+            aria-expanded="false" aria-controls="client">
+            Clients
+        </a>
+    </div>
+    <div class="col col-md-2 m-1">
+        <a href="{%url 'projects-client-create' prj.id %}" role="button"
+            class="btn btn-sm btn-outline-primary float-right">Add New</a>
+    </div>
+</div>
+<div id="client" class="collapse" data-parent="#details">
+    <div class="card-body p-2">
+        <div class="row">
+            {%for prj_client in prj.clients.all%}
+            <div class="col-md pb-3">
+                <p class="mb-1">
+                    {{prj_client.client.name}}
+                </p>
+                <p class="mb-1 text-muted">
+                    {{prj_client.client.contact_person}} -
+                    {{prj_client.client.position}}
+                </p>
+                <p class="mb-1 text-muted">
+                    <i class="fa fa-phone"></i> {{prj_client.client.phone}}
+                </p>
+                <p class="mb-1 text-muted">
+                    <i class="fa fa-at"></i> {{prj_client.client.email}}
+                </p>
+                <form method="POST" action="{%url 'projects-client-delete' prj_client.id%}">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-outline-danger">
+                        <i class="fa fa-trash-alt"></i> Delete
+                    </button>
+                    <a class="btn btn-sm btn-outline-secondary"
+                        href="{%url 'projects-client-update' prj.id prj_client.id%}" role="button"><i
+                            class="fa fa-edit"></i> Edit</a>
+                </form>
+            </div>
+            {%empty%}
+            <div class="col">
+                <p>No client added</p>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>

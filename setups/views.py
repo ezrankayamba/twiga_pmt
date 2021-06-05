@@ -1,3 +1,4 @@
+from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -176,6 +177,42 @@ class SetupPopupGenericCreateView(generic.CreateView):
             region = get_object_or_404(models.Region, id=self.request.GET.get('region'))
             form.instance.region = region
         instance = form.save()
+        return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_{name}");</script>')
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class SetupPopupGenericUpdateView(generic.UpdateView):
+    template_name = 'setups/popups/setup_form.html'
+
+    def __init__(self, *args, **kwargs):
+        super(SetupPopupGenericUpdateView, self).__init__(*args, **kwargs)
+        name = self.model.__name__.lower()
+        # self.success_url = reverse(f'setups-{name}-list')
+        if name in ['size', 'status']:
+            self.fields = ['code', 'name']
+        elif name in ['district']:
+            self.fields = ['name']
+        elif name in ['region', 'type']:
+            self.fields = ['name']
+        else:
+            self.fields = ['name', 'contact_person', 'position', 'phone', 'email', 'location']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.model.__name__
+        return context
+
+    def form_valid(self, form):
+        name = self.model.__name__.lower()
+        if name in ['district']:
+            region = get_object_or_404(models.Region, id=self.request.GET.get('region'))
+            form.instance.region = region
+        # instance = form.save()
+        try:
+            super().form_valid(form)
+        except:
+            pass
+        instance = form.instance
         return HttpResponse(f'<script>opener.closePopup({instance.id}, "{instance.name}", "#id_{name}");</script>')
 
 

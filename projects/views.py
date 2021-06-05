@@ -136,7 +136,8 @@ class SetupGenericCreateView(generic.CreateView):
         context['model_name'] = name
         context['count'] = self.model.objects.all().count()
         if name.lower() != 'image':
-            context['setup_url'] = reverse(f'popup-setups-{name.lower()}-create')
+            context['setup_url_add'] = reverse(f'popup-setups-{name.lower()}-create')
+            context['setup_url_edit'] = reverse(f'popup-setups-{name.lower()}-update', args=[0])
         return context
 
 
@@ -171,7 +172,12 @@ class SetupGenericUpdateView(generic.UpdateView):
         context['model_name'] = name
         context['count'] = self.model.objects.all().count()
         if name.lower() != 'image':
-            context['setup_url'] = reverse(f'popup-setups-{name.lower()}-create')
+            # context['setup_url'] = reverse(f'popup-setups-{name.lower()}-create')
+            cr_url = reverse(f'popup-setups-{name.lower()}-create')
+            ed_url = reverse(f'popup-setups-{name.lower()}-update', args=[0])
+            print(cr_url, ed_url)
+            context['setup_url_add'] = cr_url
+            context['setup_url_edit'] = ed_url
         return context
 
 

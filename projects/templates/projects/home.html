@@ -2,7 +2,10 @@
 {% block content %}
 <style type="text/css">
     form .input-group-text {
-        min-width: 6rem;
+        min-width: 6.5em;
+        max-width: 6.5em;
+        font-size: 1.2em !important;
+        padding: .8em 1em !important;
     }
 
     form {
@@ -11,12 +14,12 @@
 
     @media screen and (min-width: 30rem) {
         form input[name='name'].textinput {
-            min-width: 24.5rem;
+            min-width: 13.5em;
         }
 
         form .select {
-            max-width: 9rem;
-            min-width: 9rem;
+            max-width: 13.5em;
+            min-width: 13.5em;
         }
     }
 </style>
@@ -64,7 +67,7 @@
                         <th scope="col">Type</th>
                         <th scope="col">Size</th>
                         <th scope="col">StartDate</th>
-                        <th scope="col">Client</th>
+                        <th scope="col">Clients</th>
                         <th scope="col">Contractors</th>
                         <th scope="col">Consultants</th>
                         <th scope="col">Status</th>
@@ -89,7 +92,17 @@
                     <td>{{prj.type}}</td>
                     <td>{{prj.size}}</td>
                     <td>{{prj.start_date}}</td>
-                    <td>{{prj.client}}</td>
+                    <!-- <td>{{prj.client}}</td> -->
+                    <td>
+                        {%for c in prj.clients.all %}
+                        <p class="text-muted mb-0">
+                            <i class="fa fa-check text-muted"></i>
+                            {{c.client.name}}
+                        </p>
+                        {%empty%}
+                        <span class="text-warning">Not set</span>
+                        {%endfor%}
+                    </td>
                     <td>
                         {%for c in prj.contractors.all %}
                         <p class="text-muted mb-0">

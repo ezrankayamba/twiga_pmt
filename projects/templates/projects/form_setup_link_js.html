@@ -8,42 +8,65 @@
         for (let i = 0; i < flds.length; i++) {
             let fld = flds[i]
             if (fld) {
-                let name = fld.name;
-                console.log(fld, name)
-                if (name === "brand") continue;
+                // let name = fld.name;
+                console.log(fld, fld.name)
+                if (fld.name === "brand") continue;
                 let container;
-                if (name === 'other') {
-                    container = document.querySelector(`#div_id_${name}`);
+                if (fld.name === 'other') {
+                    container = document.querySelector(`#div_id_${fld.name}`);
                 } else {
-                    container = document.querySelector(`#div_id_${name}`);
+                    container = document.querySelector(`#div_id_${fld.name}`);
                 }
                 console.log(container);
                 let sel = container.querySelector("select");
-                let btn = document.createElement("button");
-                btn.innerHTML = `<i class="fa fa-plus"></i>`;
-                btn.classList.add("btn");
-                btn.classList.add("btn-link");
-                btn.classList.add("text-secondary");
-                btn.classList.add("pr-0");
-                btn.classList.add("pl-1");
-                btn.dataset.url = "{{ setup_url }}";
-                btn.type = "button";
-                btn.classList.add("add-other");
-                btn.title = "Add other";
-                if (name === "district") {
-                    btn.disabled = document.querySelector("#id_region").value ? false : true;
-                    btn.id = "btn_select_district";
+                let btn = null;
+                function addBtn(name, title, icon, url) {
+                    console.log(name, url)
+                    btn = document.createElement("button");
+                    btn.innerHTML = `<i class="fa fa-${icon}"></i>`;
+                    btn.classList.add("btn");
+                    btn.classList.add("btn-link");
+                    btn.classList.add("text-secondary");
+                    btn.classList.add("pr-0");
+                    btn.classList.add("pl-1");
+                    btn.dataset.url = url;
+                    btn.type = "button";
+                    btn.classList.add(`${name}-other`);
+                    btn.title = title;
+
+                    sel.parentNode.insertBefore(btn, sel.nextSibling);
+                    if (name === "district") {
+                        btn.disabled = document.querySelector("#id_region").value ? false : true;
+                        btn.id = "btn_select_district";
+                    }
                 }
-                sel.parentNode.insertBefore(btn, sel.nextSibling);
+                // let btn = document.createElement("button");
+                // btn.innerHTML = `<i class="fa fa-plus"></i>`;
+                // btn.classList.add("btn");
+                // btn.classList.add("btn-link");
+                // btn.classList.add("text-secondary");
+                // btn.classList.add("pr-0");
+                // btn.classList.add("pl-1");
+                // btn.dataset.url = "{{ setup_url }}";
+                // btn.type = "button";
+                // btn.classList.add("add-other");
+                // btn.title = "Add other2";
+                addBtn('add', 'Add new', 'plus', "{{ setup_url_add }}")
+                addBtn('edit', 'Edit this', 'edit', "{{ setup_url_edit }}")
                 sel.parentElement.classList.add("d-flex");
             }
         }
 
-        let list = document.querySelectorAll(".add-other");
+        let listAdd = document.querySelectorAll(".add-other");
+        let listEdit = document.querySelectorAll(".edit-other");
 
-        list.forEach(btn => {
+        listAdd.forEach(btn => {
             addOtherPopupHandler(baseUrl, btn);
         });
+        listEdit.forEach(btn => {
+            editOtherPopupHandler(baseUrl, btn);
+        });
+        // editOtherPopupHandler
     });
 
 </script>

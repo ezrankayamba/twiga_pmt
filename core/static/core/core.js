@@ -480,6 +480,64 @@ function addOtherPopupHandler(baseUrl, btn) {
   });
 }
 
+function editOtherPopupHandler(baseUrl, btn) {
+  //data-toggle="modal" data-target="#mapModel"
+  btn.dataset.toggle = "modal";
+  btn.dataset.target = "#setup-model";
+  btn.addEventListener("click", function (e) {
+    var sel = e.target.parentElement.parentElement.querySelector('select'); // console.log(sel.value)
+
+    var url = btn.dataset.url.replace(/.$/, sel.value);
+    url = baseUrl + url;
+
+    if (btn.id === "btn_select_district") {
+      url = "".concat(url, "?region=").concat(document.querySelector("#id_region").value);
+    }
+
+    console.log(url); // popupCenter(url, "popUpWindow", w, h);
+
+    fetch(url).then(function (res) {
+      return res.text();
+    }).then(function (html) {
+      // console.log(html)
+      var form = document.getElementById("setup-model-form");
+      form.innerHTML = html;
+      var btnSubmit = document.getElementById("btn-model-submit");
+
+      btnSubmit.onclick = function () {
+        var data = new FormData(form.querySelector("form"));
+        var object = {};
+        data.forEach(function (value, key) {
+          object[key] = value;
+        });
+        var json = JSON.stringify(object);
+        console.log("Submit: ", url, json);
+        fetch(url, {
+          method: "POST",
+          body: data
+        }).then(function (res) {
+          return res.text();
+        }).then(function (text) {
+          console.log(text);
+          var regex = /closePopup\((\d+), "([\w ]+)", "(#[\w]+)"\);/g;
+
+          var params = _toConsumableArray(text.matchAll(regex));
+
+          var id = parseInt(params[0][1]);
+          var name = params[0][2]; // let elId = params[0][3];
+
+          var elId = btn.parentElement.querySelector(".select").id;
+          elId = "#".concat(elId);
+          console.log(id, name, elId);
+          closePopup(id, name, elId);
+        }).catch(function (err) {
+          console.log(err);
+        });
+      };
+    });
+  });
+}
+
 var load_form_js = function load_form_js(urls) {
   // console.log(urls)
   loadDistrUrl = urls.querySelector(".popup-setups-load-districts").value;
@@ -522,23 +580,29 @@ var load_form_js = function load_form_js(urls) {
 
       if (container) {
         var sel = container.querySelector("select");
-        var btn = document.createElement("button");
-        btn.innerHTML = "<i class=\"fa fa-plus\"></i>";
-        btn.classList.add("btn");
-        btn.classList.add("btn-link");
-        btn.classList.add("text-secondary");
-        btn.classList.add("pr-0");
-        btn.classList.add("pl-1");
-        btn.dataset.url = fld.url;
-        btn.type = "button";
-        btn.classList.add("add-other");
-        btn.title = "Add other";
+        var btn = null;
 
-        if (name === "district") {
-          btn.disabled = document.querySelector("#id_region").value ? false : true;
-          btn.id = "btn_select_district";
-        }
+        function addBtn(name) {
+          var btn = document.createElement("button");
+          btn.innerHTML = "<i class=\"fa fa-plus\"></i>";
+          btn.classList.add("btn");
+          btn.classList.add("btn-link");
+          btn.classList.add("text-secondary");
+          btn.classList.add("pr-0");
+          btn.classList.add("pl-1");
+          btn.dataset.url = fld.url;
+          btn.type = "button";
+          btn.classList.add("".concat(name, "-other"));
+          btn.title = "".concat(name, " other");
 
+          if (name === "district") {
+            btn.disabled = document.querySelector("#id_region").value ? false : true;
+            btn.id = "btn_select_district";
+          }
+        } // addBtn('add')
+
+
+        addBtn('edit');
         sel.parentNode.insertBefore(btn, sel.nextSibling);
         sel.parentElement.classList.add("d-flex");
 
@@ -578,11 +642,14 @@ var load_form_js = function load_form_js(urls) {
 
 var closePopup = function closePopup(newID, newRepr, id) {
   var x = document.querySelector(id);
-  var option = document.createElement("option");
+  console.log("Exist?", x.value, newID);
+  var exists = newID == x.value;
+  console.log(x.value, newID);
+  var option = exists ? x.options[x.selectedIndex] : document.createElement("option");
   option.text = newRepr;
   option.selected = true;
   option.value = newID;
-  x.add(option);
+  if (!exists) x.add(option);
   console.log("Select: ", x);
 
   if (x.id === "id_region") {

@@ -1,7 +1,7 @@
 from django.db import models
 from core.models import UpperCaseCharField
 
-SETUPS_LIST = ['brand', 'authority', 'consultant', 'contractor', 'financer', 'supplier', 'size', 'status', 'region', 'district', 'type']
+SETUPS_LIST = ['brand', 'authority', 'consultant', 'contractor', 'financer', 'supplier', 'size', 'status', 'region', 'district', 'type', 'client']
 
 
 class Size(models.Model):
@@ -59,6 +59,21 @@ class Authority(models.Model):
 
     class Meta:
         verbose_name_plural = "Authorities"
+
+    def __str__(self):
+        return self.name
+
+
+class Client(models.Model):
+    name = UpperCaseCharField(max_length=100, unique=True)
+    contact_person = models.CharField(max_length=40, null=True, blank=True)
+    position = models.CharField(max_length=40, null=True, blank=True)
+    phone = models.CharField(max_length=40, null=True, blank=True)
+    email = models.CharField(max_length=40, null=True, blank=True)
+    location = models.CharField(max_length=40, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Clients"
 
     def __str__(self):
         return self.name

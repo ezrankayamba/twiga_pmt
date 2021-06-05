@@ -15,7 +15,6 @@ def initial_status():
 
 class Project(models.Model):
     name = UpperCaseCharField(max_length=255, unique=True)
-    client = UpperCaseCharField(max_length=255, null=True, blank=True)
     start_date = models.DateField(blank=True, null=True)
     type = models.ForeignKey(to=s_models.Type, related_name="projects", on_delete=models.PROTECT)
     status = models.ForeignKey(to=s_models.Status, related_name="projects", on_delete=models.PROTECT, default=initial_status, null=True)
@@ -100,6 +99,20 @@ class ProjectContractor(models.Model):
         return not self.sub_contractor
 
 
+class ProjectClient(models.Model):
+    project = models.ForeignKey(to=Project, related_name="clients", on_delete=models.CASCADE)
+    client = models.ForeignKey(to=s_models.Client, related_name="projects", on_delete=models.PROTECT)
+
+    class Meta:
+        unique_together = [['project', 'client']]
+
+    def __str__(self):
+        return self.client.name
+
+    def get_absolute_url(self):
+        return reverse('projects-detail', kwargs={'pk': self.project.id})
+
+
 class ProjectFinancer(models.Model):
     project = models.ForeignKey(to=Project, related_name="financers", on_delete=models.CASCADE)
     financer = models.ForeignKey(to=s_models.Financer, related_name="projects", on_delete=models.PROTECT)
@@ -124,8 +137,8 @@ class ProjectConsultant(models.Model):
 
 class ProjectSupplier(models.Model):
     project = models.ForeignKey(to=Project, related_name="suppliers", on_delete=models.CASCADE)
-    # supplier = models.ForeignKey(to=s_models.Supplier, related_name="projects", on_delete=models.PROTECT)
-    supplier = UpperCaseCharField(max_length=255, null=True, blank=True)
+    supplier = models.ForeignKey(to=s_models.Supplier, related_name="projects", on_delete=models.PROTECT)
+    # supplier = UpperCaseCharField(max_length=255, null=True, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=1, verbose_name=('Price/t VAT excl. (TZS)'))
     quantity = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=('Quantity(Tons)'))
     brand = models.ForeignKey(to=s_models.Brand, related_name="suppliers", on_delete=models.PROTECT, null=True, blank=True)
@@ -134,7 +147,7 @@ class ProjectSupplier(models.Model):
         unique_together = [['project', 'brand']]
 
     def __str__(self):
-        return self.supplier
+        return self.supplier.name
 
     def get_absolute_url(self):
         return reverse('projects-detail', kwargs={'pk': self.project.id})
