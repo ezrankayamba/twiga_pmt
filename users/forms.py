@@ -57,3 +57,7 @@ class PasswordChangeForm(forms.Form):
         widget=forms.PasswordInput,
         validators=[RegexValidator(r'^[a-zA-Z]{1}[a-zA-Z0-9]{5,9}$', message="Valid password start with letter, length between 6 and 10 characters")]
     )
+
+
+class ForgotPasswordForm(forms.Form):
+    username = forms.CharField(label="Enter your username")

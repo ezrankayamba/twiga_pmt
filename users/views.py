@@ -1,16 +1,25 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, PasswordChangeForm, UserProfileForm, UserCreateForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, PasswordChangeForm, ForgotPasswordForm, UserCreateForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AnonymousUser, User
 from core.models import Config
 from . import models
 from . import choices
 from django.urls import reverse
 from users import mixins, decorators as dec, choices as ch
+from core import mailsender as mailer
+
+import random
+import string
+
+
+def new_random_pass(length):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(length))
 
 
 @login_required
@@ -18,7 +27,7 @@ from users import mixins, decorators as dec, choices as ch
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
-        form.set_password = Config.objects.get(name='INITIAL_PASSWORD').value
+        form.set_password = new_random_pass(8)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -64,6 +73,22 @@ class ChangeMyPasswordView(LoginRequiredMixin, FormView):
         user = User.objects.filter(pk=self.request.user.id).first()
         user.set_password(data['new_password'])
         user.save()
+        return super().form_valid(form)
+
+
+class ForgotPasswordView(AnonymousUser, FormView):
+    form_class = ForgotPasswordForm
+    template_name = 'users/forgotpassword_form.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        print('Cleaned data: ', form.cleaned_data)
+        pwd = new_random_pass(8)
+        user = User.objects.filter(username=data['username']).first()
+        user.set_password(pwd)
+        user.save()
+        mailer.send_mail(to=[user.email], subject='Password Reset', text=f'Dear {user.username}, \nYou are successfully reset your password! \nYour default password is {pwd}')
         return super().form_valid(form)
 
 
@@ -127,10 +152,12 @@ class UserCreateView(LoginRequiredMixin, mixins.ViewAuthorizedMixin, CreateView)
     def form_valid(self, form):
         data = form.cleaned_data
         print(data)
-        user = User.objects.create_user(username=data['username'], email=data['email'], password=Config.objects.get(name='INITIAL_PASSWORD').value)
+        pwd = new_random_pass(8)
+        user = User.objects.create_user(username=data['username'], email=data['email'], password=pwd)
         p = user.profile
         p.role = data['role']
         p.save()
+        mailer.send_mail(to=[user.email], subject='New Registration', text=f'Dear {user.username}, \nYou are successfully registered! \nYour default password is {pwd}')
         return redirect('users-list')
 
 

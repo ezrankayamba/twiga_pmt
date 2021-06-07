@@ -510,10 +510,8 @@ function addOtherPopupHandler(baseUrl, btn) {
     });
 }
 function editOtherPopupHandler(baseUrl, btn) {
-
     //data-toggle="modal" data-target="#mapModel"
     btn.dataset.toggle = "modal";
-
     btn.addEventListener("click", e => {
         let sel = e.target.parentElement.parentElement.querySelector('select')
         let hasNoValue = !sel.value

@@ -17,6 +17,11 @@
                 </li>
                 {%endfor%}
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'users-change-password' %}" title="Change Password">
+                        Change Password
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'users-logout' %}" title="Logout">
                         Logout
                     </a>
