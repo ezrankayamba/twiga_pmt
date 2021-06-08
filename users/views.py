@@ -73,6 +73,9 @@ class ChangeMyPasswordView(LoginRequiredMixin, FormView):
         user = User.objects.filter(pk=self.request.user.id).first()
         user.set_password(data['new_password'])
         user.save()
+        p = user.profile
+        p.password_reset = False
+        p.save()
         return super().form_valid(form)
 
 
@@ -88,6 +91,9 @@ class ForgotPasswordView(AnonymousUser, FormView):
         user = User.objects.filter(username=data['username']).first()
         user.set_password(pwd)
         user.save()
+        p = user.profile
+        p.password_reset = True
+        p.save()
         mailer.send_mail(to=[user.email], subject='Password Reset', text=f'Dear {user.username}, \nYou are successfully reset your password! \nYour default password is {pwd}')
         return super().form_valid(form)
 

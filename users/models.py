@@ -36,6 +36,7 @@ class Profile(models.Model):
     created_by = models.ForeignKey(to=User, related_name="created_profiles", on_delete=models.PROTECT, null=True)
     updated_by = models.ForeignKey(to=User, related_name="updated_profiles", on_delete=models.PROTECT, null=True)
     role = models.ForeignKey(to=Role, related_name='profiles', on_delete=models.PROTECT, null=True)
+    password_reset = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.user.username}'

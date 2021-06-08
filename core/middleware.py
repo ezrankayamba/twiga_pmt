@@ -1,3 +1,7 @@
+from django.shortcuts import render, redirect
+from django.urls import reverse
+
+
 class MenuAuthorizationMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -13,6 +17,11 @@ class MenuAuthorizationMiddleware:
 
     def __call__(self, request):
         self.path = request.path
+        print(self.path, reverse('users-change-password'), request.user)
+        if not request.user.is_anonymous and request.user.profile.password_reset:
+            if not self.path.startswith(reverse('users-change-password')) and not self.path.startswith(reverse('users-logout')):
+                return redirect('users-change-password')
+
         if not self.path.startswith('/static') and not request.user.is_anonymous and request.user.profile.role:
             privileges = []
             for p in request.user.profile.role.privileges.all():
