@@ -13,9 +13,9 @@
                 if (fld.name === "brand") continue;
                 let container;
                 if (fld.name === 'other') {
-                    container = document.querySelector(`#div_id_${fld.name}`);
+                    container = document.querySelector("#div_id_"+fld.name);
                 } else {
-                    container = document.querySelector(`#div_id_${fld.name}`);
+                    container = document.querySelector("#div_id_"+fld.name);
                 }
                 console.log(container);
                 let sel = container.querySelector("select");
@@ -23,7 +23,7 @@
                 function addBtn(name, title, icon, url) {
                     console.log(name, url)
                     btn = document.createElement("button");
-                    btn.innerHTML = `<i class="fa fa-${icon}"></i>`;
+                    btn.innerHTML = '<i class="fa fa-'+icon+'"></i>';
                     btn.classList.add("btn");
                     btn.classList.add("btn-link");
                     btn.classList.add("text-secondary");
@@ -31,7 +31,7 @@
                     btn.classList.add("pl-1");
                     btn.dataset.url = url;
                     btn.type = "button";
-                    btn.classList.add(`${name}-other`);
+                    btn.classList.add(name+"-other");
                     btn.title = title;
 
                     sel.parentNode.insertBefore(btn, sel.nextSibling);
@@ -59,11 +59,15 @@
 
         let listAdd = document.querySelectorAll(".add-other");
         let listEdit = document.querySelectorAll(".edit-other");
-
-        listAdd.forEach(btn => {
+        var forEach = function (array, callback, scope) {
+            for (var i = 0; i < array.length; i++) {
+                callback.call(scope, i, array[i]); // passes back stuff we need
+            }
+        };
+        forEach(listAdd, function(index, btn){
             addOtherPopupHandler(baseUrl, btn);
         });
-        listEdit.forEach(btn => {
+        forEach(listEdit, function(index, btn) {
             editOtherPopupHandler(baseUrl, btn);
         });
         // editOtherPopupHandler

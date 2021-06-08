@@ -7,7 +7,7 @@ SECRET_KEY = 'kx0s=ez=%w&x7tjytzfd1%cihsuxjspe*j=j!!%%2k!xm6+zh2'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'pmt.nezatech.co.tz', '3365a343.ngrok.io']
+ALLOWED_HOSTS = ['localhost', 'pmt.nezatech.co.tz', '127.0.0.1']
 
 
 # Application definition
